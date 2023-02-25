@@ -19,7 +19,7 @@ const Login = ({navigation}) => {
       <Formik
         validationSchema={loginValidationSchema}
         initialValues={{email: '', password: ''}}
-        onSubmit={values => loginHandle(values)}>
+        onSubmit={values => console.log(values)}>
         {({
           handleChange,
           handleBlur,
@@ -56,13 +56,13 @@ const Login = ({navigation}) => {
                   error={touched.password && errors.password}
                   // keyboardType="email-address"
                 />
-                {touched.email && errors.email && <Text>Error</Text>}
+                {touched.password && errors.password && <Text>Error</Text>}
               </View>
 
               <View style={{marginTop: 21}}>
                 <CustomButton
-                  onPress={handleSubmit}
-                  title="Login"
+                  onPress={navigation.navigate('MainApp')}
+                  title="Masuk"
                   // enabled={isValid && !errors.email && !errors.password && dirty}
                   enabled={true}
                   buttonStyle={{marginTop: 10}}
