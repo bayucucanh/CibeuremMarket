@@ -61,7 +61,7 @@ const Login = ({navigation}) => {
 
               <View style={{marginTop: 21}}>
                 <CustomButton
-                  onPress={navigation.navigate('MainApp')}
+                  onPress={() => navigation.navigate('MainApp')}
                   title="Masuk"
                   // enabled={isValid && !errors.email && !errors.password && dirty}
                   enabled={true}

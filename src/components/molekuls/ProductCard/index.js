@@ -3,7 +3,7 @@ import React from 'react';
 import {COLORS, SIZES, FONTS} from '../../../constant';
 import CustomButton from '../CustomButton';
 
-const ProductCard = () => {
+const ProductCard = ({onPress}) => {
   return (
     <TouchableOpacity
       style={{
@@ -12,11 +12,13 @@ const ProductCard = () => {
         backgroundColor: 'white',
         elevation: 4,
         marginBottom: 10,
-        maxWidth: SIZES.width * 0.4,
+        maxWidth: SIZES.width * 0.43,
         borderWidth: 1,
         borderColor: COLORS.primaryColor,
         width: 192
-      }}>
+      }}
+      onPress={onPress}
+      >
       <Image
         style={{
           width: '100%',
@@ -51,7 +53,7 @@ const ProductCard = () => {
           Rp. Harga
         </Text>
       </View>
-      <CustomButton
+      {/* <CustomButton
         onPress={() => alert('detail')}
         title="Detail barang"
         size="small"
@@ -59,7 +61,7 @@ const ProductCard = () => {
         enabled={true}
         buttonStyle={{marginTop: 10, marginHorizontal: 3}}
         // isLoading={isLoading}
-      />
+      /> */}
     </TouchableOpacity>
   );
 };

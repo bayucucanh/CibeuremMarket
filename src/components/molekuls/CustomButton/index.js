@@ -1,4 +1,4 @@
-import { Text, ActivityIndicator } from 'react-native';
+import { Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { RectButton } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,7 +17,7 @@ function CustomButton({
   // const isLoading = useSelector((state) => state.global.isLoading);
 
   return (
-    <RectButton
+    <TouchableOpacity
       style={type ? {
         height: size === 'small' ? 36 : 48,
         alignItems: 'center',
@@ -53,7 +53,7 @@ function CustomButton({
           {title}
         </Text>
       {/* )} */}
-    </RectButton>
+    </TouchableOpacity>
   );
 }
 
