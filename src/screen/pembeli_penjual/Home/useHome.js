@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 
-const useHome = () => {
+const useHome = ({navigation}) => {
   const [searchProduct, setSearchProduct] = useState('')
   return [
     searchProduct,

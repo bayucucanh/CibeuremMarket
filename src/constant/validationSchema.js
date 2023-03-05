@@ -1,12 +1,7 @@
 import * as yup from 'yup';
 
 export const loginValidationSchema = yup.object().shape({
-  email: yup
-    .string()
-    .trim()
-    .email('emailAlertMatch')
-    .matches(/[a-z0-9._-]+@[a-z0-9]+\.[a-z]/)
-    .required('emailAlertRequired'),
+  nomor_hp: yup.string().trim().max(13).min(10).required('emailAlertRequired'),
   password: yup
     .string()
     .trim()
