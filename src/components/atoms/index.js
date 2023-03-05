@@ -1,3 +1,4 @@
 import Gap from "./Gap";
+import Loading from "./Loading";
 
-export {Gap}
+export {Gap, Loading}
