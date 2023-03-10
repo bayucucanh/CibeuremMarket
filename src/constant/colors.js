@@ -3,6 +3,8 @@ export const COLORS = {
   white: '#FFFFFF',
   primaryColor: '#FF3A3A',
   secondaryColor: '#FF8E8E',
+  thirdColor: '#FFEAEA',
+  fourColor: '#D10000',
   
   primaryPurple5: '#4B1979',
   primaryPurple4: '#7126B5',
