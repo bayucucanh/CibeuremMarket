@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React, {useCallback} from 'react';
 import Icon from 'react-native-vector-icons/Feather';
-import {COLORS} from '../../../constant';
+import {COLORS, FONTS} from '../../../constant';
 import {useNavigation} from '@react-navigation/native';
 
 const Headers = ({title}) => {
@@ -12,16 +12,17 @@ const Headers = ({title}) => {
     <View
       style={{flexDirection: 'row', alignItems: 'center', paddingVertical: 10}}>
       <TouchableOpacity onPress={handleGoBack}>
-        <Icon name="arrow-left" size={25} color={COLORS.black} />
+        <Icon name="arrow-left" size={26} color={COLORS.black} />
       </TouchableOpacity>
       <Text
-        style={{
-          fontWeight: '700',
-          fontSize: 20,
-          lineHeight: 30,
+        style={[{
+          ...FONTS.titleLargeBold,
+          // fontWeight: '700',
+          // fontSize: 20,
+          // lineHeight: 30,
           color: COLORS.primaryColor,
           marginLeft: 25,
-        }}>
+        }]}>
         {title}
       </Text>
     </View>

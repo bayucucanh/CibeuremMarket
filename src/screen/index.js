@@ -6,5 +6,6 @@ import Akun from "./pembeli_penjual/Akun";
 import Keranjang from "./pembeli_penjual/Keranjang";
 import Toko from "./pembeli_penjual/Toko";
 import DetailProduk from "./pembeli_penjual/DetailProduk";
+import RiwayatTransaksi from "./pembeli_penjual/RiwayatTransaksi";
 
-export {Login, Home, SplashScreen, RegisterUser, Akun, Keranjang, Toko, DetailProduk}
+export {Login, Home, SplashScreen, RegisterUser, Akun, Keranjang, Toko, DetailProduk, RiwayatTransaksi}
