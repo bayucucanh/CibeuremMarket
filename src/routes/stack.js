@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useDispatch, useSelector} from 'react-redux';
-import {DetailProduk, Login, RegisterUser, RiwayatTransaksi, SplashScreen} from '../screen';
+import {DetailProduk, Login, RegisterUser, RiwayatTransaksi, SplashScreen, UbahProfil} from '../screen';
 import MainApp from './MainApp';
 
 const Stack = createNativeStackNavigator();
@@ -37,6 +37,11 @@ const Router = () => {
       <Stack.Screen
         name="RiwayatTransaksi"
         component={RiwayatTransaksi}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="UbahProfil"
+        component={UbahProfil}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

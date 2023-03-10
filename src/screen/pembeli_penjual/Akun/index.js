@@ -61,6 +61,7 @@ const Akun = ({navigation}) => {
           isSeparate={true}
         />
         <ListButton
+          onPress={() => navigation.navigate('UbahProfil')}
           title="Ubah Profil"
           iconName="edit"
           isSeparate={true}
