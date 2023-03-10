@@ -68,6 +68,7 @@ const Akun = ({navigation}) => {
           style={{marginTop: 24}}
         />
         <ListButton
+          onPress={() => navigation.navigate('IsiSaldo')}
           title="Isi Saldo"
           iconName="money"
           isSeparate={true}

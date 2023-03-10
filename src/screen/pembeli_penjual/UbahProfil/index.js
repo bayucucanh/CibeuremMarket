@@ -86,7 +86,7 @@ const UbahProfil = () => {
         />
         <CustomButton
           // onPress={handleSubmit}
-          title="Buat Akun"
+          title="Ubah Akun"
           // enabled={isValid && !errors.email && !errors.password && dirty}
           enabled={true}
           buttonStyle={{marginTop: 20}}
