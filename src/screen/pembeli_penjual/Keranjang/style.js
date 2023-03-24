@@ -11,11 +11,13 @@ export default StyleSheet.create({
   card: {
     width: '90%',
     borderRadius: 20,
-    padding: 15,
+    // padding: 15,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     position: 'relative',
+    flexWrap: 'wrap',
     marginHorizontal: 20,
+    // borderWidth: 1,
     marginTop: 20,
     shadowColor: '#000',
     shadowOffset: {

@@ -1,1 +1,1 @@
-export const BASE_URL = 'https://c419-180-244-135-179.ngrok.io/api/v1';
+export const BASE_URL = 'https://abaa-103-141-61-14.ngrok.io/api/v1';

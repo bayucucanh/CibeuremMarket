@@ -9,14 +9,15 @@ export default StyleSheet.create({
     paddingBottom: 20
   },
   card: {
-    width: '90%',
+    width: '98%',
     borderRadius: 20,
-    padding: 15,
+    // padding: 15,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     position: 'relative',
-    marginHorizontal: 20,
-    marginTop: 20,
+    flexWrap: 'wrap',
+    // borderWidth: 1,
+    marginTop: 10,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

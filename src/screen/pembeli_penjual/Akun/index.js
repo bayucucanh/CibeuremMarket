@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
 import style from './style';
-import {COLORS, FONTS} from '../../../constant';
+import {COLORS, FONTS, SIZES} from '../../../constant';
 import {userAvatar} from '../../../assets';
 import {Gap, ListButton, Separator} from '../../../components';
 
@@ -11,7 +11,7 @@ const Akun = ({navigation}) => {
       <View
         style={{
           width: '100%',
-          height: 175,
+          height: SIZES.height * 0.25,
           backgroundColor: COLORS.thirdColor,
           borderRadius: 20,
           padding: 15,

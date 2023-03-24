@@ -9,5 +9,6 @@ import DetailProduk from "./pembeli_penjual/DetailProduk";
 import RiwayatTransaksi from "./pembeli_penjual/RiwayatTransaksi";
 import UbahProfil from "./pembeli_penjual/UbahProfil/";
 import IsiSaldo from "./pembeli_penjual/IsiSaldo";
+import NotaPembelian from "./pembeli_penjual/NotaPembelian";
 
-export {Login, Home, SplashScreen, RegisterUser, Akun, Keranjang, Toko, DetailProduk, RiwayatTransaksi, UbahProfil, IsiSaldo}
+export {Login, Home, SplashScreen, RegisterUser, Akun, Keranjang, Toko, DetailProduk, RiwayatTransaksi, UbahProfil, IsiSaldo, NotaPembelian}

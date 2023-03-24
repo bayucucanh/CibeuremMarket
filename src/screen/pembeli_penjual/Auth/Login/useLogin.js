@@ -1,6 +1,7 @@
 import {Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {loginPengguna} from '../../../../services';
+import { showDanger, showSuccess } from '../../../../constant';
 
 const useLogin = ({navigation}) => {
 
@@ -16,12 +17,18 @@ const useLogin = ({navigation}) => {
       setLoading(true)
       const response = await loginPengguna(data);
       if (response.status === 200) {
+        console.log(response);
         setLoading(false)
+        showSuccess('Login Berhasil')
+        navigation.replace('MainApp');
+      } else {
+        setLoading(false)
+        showDanger('Login Gagal')
         navigation.replace('MainApp');
       }
-      setLoading(false)
     } catch (error) {
-      alert('Login Gagal')
+      // alert('Login Gagal')
+      showDanger('Login Gagal')
     }
     
     

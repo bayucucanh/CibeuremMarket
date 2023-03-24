@@ -2,6 +2,7 @@ import {Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {registerPengguna} from '../../../../services';
 import axios from 'axios';
+import { showDanger, showSuccess } from '../../../../constant';
 
 const useRegister = ({navigation}) => {
 
@@ -19,12 +20,13 @@ const useRegister = ({navigation}) => {
     try {
       setLoading(true);
       const response = await registerPengguna(data);
-      console.log('ini res___', response.status);
-      if (response.status = 201) {
-      navigation.navigate('LoginScreen')
+      console.log(response);
+      if (response.status === 201) {
       setLoading(false);
+      showSuccess('Registrasi Berhasil')
+      navigation.navigate('LoginScreen')
       } else {
-        alert('Register Gagal');
+        showDanger('Registrasi Gagal')
         setLoading(false);
       }
     } catch (error) {

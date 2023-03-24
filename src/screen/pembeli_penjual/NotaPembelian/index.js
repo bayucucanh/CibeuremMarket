@@ -1,29 +1,24 @@
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React from 'react';
-import {COLORS, FONTS, SIZES} from '../../../constant';
+import {Headers} from '../../../components';
 import style from './style';
-import Icon from 'react-native-vector-icons/Feather';
+import {COLORS, FONTS, SIZES} from '../../../constant';
+import {ScrollView} from 'react-native-gesture-handler';
 
-const Keranjang = ({navigation}) => {
+const NotaPembelian = () => {
   return (
-    <View style={{flex: 1, backgroundColor: COLORS.white}}>
-      <ScrollView contentContainerStyle={[style.container]}>
+    <View style={[style.container, {flex: 1, paddingHorizontal: 15}]}>
+      <ScrollView>
+      <Headers title="Nota Pembelian" />
         <Text
           style={{
-            ...FONTS.headingNormalBold,
+            ...FONTS.headingNormalMedium,
             color: COLORS.black,
-            marginLeft: 20,
-            marginTop: 20,
+            marginTop: 10,
           }}>
-          Pesanan
+          Barang Belanjaan
         </Text>
+
         <View
           style={[
             style.card,
@@ -78,54 +73,53 @@ const Keranjang = ({navigation}) => {
           </View>
         </View>
 
-        <TouchableOpacity style={{alignItems: 'center', marginTop: 20}}>
-          <View
-            style={{
-              borderRadius: 100,
-              width: 50,
-              height: 50,
-              backgroundColor: '#E6F537',
-              borderWidth: 2,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Icon name="plus" size={30} color={COLORS.black} />
-          </View>
-          <Text style={{...FONTS.bodyLargeBold, color: COLORS.black}}>
-            Tambah Pesanan
+        <View
+          style={[style.card, {backgroundColor: COLORS.white, padding: 20,}]}>
+          <Text style={{...FONTS.bodyLargeMedium, color: COLORS.black}}>
+            Total Harga : Rp. 180.000.00
           </Text>
-        </TouchableOpacity>
-      </ScrollView>
-      <View style={{backgroundColor: COLORS.white}}>
-        <View style={{flexDirection: 'row', marginHorizontal: 20, marginVertical: 10}}>
-          <Text style={{...FONTS.bodyNormalBold, color: COLORS.black}}>
-            Total Harga : 
+          <Text style={{...FONTS.bodyNormalMedium}}>
+            Pembayaran Menggunakan Saldo
           </Text>
-          <Text style={{...FONTS.bodyNormalRegular, color: COLORS.black, marginLeft: 10}}>
-           Rp. 180.000.00
+          <Text style={{...FONTS.bodyNormalMedium, color: COLORS.black}}>
+            Pembeli Bayu Cucan Herdian
           </Text>
         </View>
+      </ScrollView>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('NotaPembelian')}
           style={{
-            backgroundColor: COLORS.primaryColor,
-            width: '90%',
-            // alignSelf: 'flex-end',
-            height: 40,
+            width: '48%',
+            height: 60,
+            backgroundColor: COLORS.white,
+            borderRadius: 100,
             justifyContent: 'center',
             alignItems: 'center',
-            left: 0,
-            borderRadius: 100,
-            marginHorizontal: 14,
-            marginBottom: 14,
+            borderWidth: 2,
+            borderColor: COLORS.primaryColor
           }}>
-          <Text style={{color: 'white'}}>Bayar Sekarang</Text>
-        </TouchableOpacity>
+            <Text style={{...FONTS.bodyNormalMedium, color: COLORS.primaryColor}}>
+            Ambil Sendiri
+          </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+          style={{
+            width: '48%',
+            height: 60,
+            backgroundColor: COLORS.primaryColor,
+            borderRadius: 100,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+            <Text style={{...FONTS.bodyNormalMedium, color: COLORS.white}}>
+            Lakukan Pengriman
+          </Text>
+          </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-export default Keranjang;
+export default NotaPembelian;
 
 const styles = StyleSheet.create({});
