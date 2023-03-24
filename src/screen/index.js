@@ -10,5 +10,8 @@ import RiwayatTransaksi from "./pembeli_penjual/RiwayatTransaksi";
 import UbahProfil from "./pembeli_penjual/UbahProfil/";
 import IsiSaldo from "./pembeli_penjual/IsiSaldo";
 import NotaPembelian from "./pembeli_penjual/NotaPembelian";
+import DaftarToko from "./pembeli_penjual/DaftarToko";
+import PemesananMasuk from "./pembeli_penjual/PemesananMasuk";
+import DetailPesanan from "./pembeli_penjual/DetailPesanan";
 
-export {Login, Home, SplashScreen, RegisterUser, Akun, Keranjang, Toko, DetailProduk, RiwayatTransaksi, UbahProfil, IsiSaldo, NotaPembelian}
+export {DetailPesanan, Login, Home, SplashScreen, RegisterUser, Akun, Keranjang, Toko, DetailProduk, RiwayatTransaksi, UbahProfil, IsiSaldo, NotaPembelian, DaftarToko, PemesananMasuk}
