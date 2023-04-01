@@ -6,7 +6,7 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import style from './style';
 import {Logo} from '../../../../assets';
 import {Formik} from 'formik';
@@ -14,9 +14,15 @@ import {COLORS, loginValidationSchema} from '../../../../constant';
 import {CustomButton, InputText, LoadingScreen} from '../../../../components';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import useLogin from './useLogin';
+import { useSelector } from 'react-redux';
 
 const Login = ({navigation}) => {
   const [loading, loginHandle] = useLogin({navigation});
+  const isLoading = useSelector(state => state.global.isLoading);
+
+  useEffect(() => {
+    console.log(isLoading);
+  }, [isLoading])
 
   return (
     <>
@@ -145,7 +151,7 @@ const Login = ({navigation}) => {
           )}
         </Formik>
       </ScrollView>
-      {loading && <LoadingScreen />}
+      {isLoading && <LoadingScreen />}
     </>
   );
 };

@@ -5,7 +5,7 @@ import style from './style';
 import {COLORS, FONTS, SIZES} from '../../../constant';
 import Icon from 'react-native-vector-icons/FontAwesome';
 //import TimePicker from the package we installed
-import TimePicker from 'react-native-simple-time-picker';
+// import TimePicker from 'react-native-simple-time-picker';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 const DaftarToko = ({navigation}) => {
