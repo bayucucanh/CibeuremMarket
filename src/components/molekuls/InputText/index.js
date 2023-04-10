@@ -56,14 +56,14 @@ const InputText = ({
       style={[styleOutlined, {
         borderRadius: 100,
         borderWidth: 2,
-        borderColor: "#FF8E8E",
+        borderColor: "black",
         justifyContent: secureTextEntry ? 'space-between' : 'center',
         paddingHorizontal: 16,
         flexDirection: secureTextEntry && 'row',
       }]}>
       <TextInput
         onFocus={() => setIsFocus(true)}
-        placeholderTextColor={COLORS.primaryColor}
+        placeholderTextColor={COLORS.black}
         onBlur={onBlur}
         multiline={multiline}
         onChangeText={onChangeText}

@@ -7,5 +7,6 @@ import LoadingScreen from "./LoadingScreen";
 import ListButton from "./ListButton";
 import HistoryCard from "./HistoryCard";
 import Empty from "./Empty";
+import PhotoProfile from "./PhotoProfile";
 
-export {InputText, CustomButton, Headers, SearchBar, ProductCard, LoadingScreen, ListButton, HistoryCard, Empty}
+export {InputText, CustomButton, Headers, SearchBar, ProductCard, LoadingScreen, ListButton, HistoryCard, Empty, PhotoProfile}

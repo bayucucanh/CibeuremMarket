@@ -5864,6 +5864,11 @@ react-native-dropdown-picker@^5.4.6:
   resolved "https://registry.npmjs.org/react-native-dropdown-picker/-/react-native-dropdown-picker-5.4.6.tgz"
   integrity sha512-T1XBHbE++M6aRU3wFYw3MvcOuabhWZ29RK/Ivdls2r1ZkZ62iEBZknLUPeVLMX3x6iUxj4Zgr3X2DGlEGXeHsA==
 
+react-native-fast-image@^8.6.3:
+  version "8.6.3"
+  resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-8.6.3.tgz#6edc3f9190092a909d636d93eecbcc54a8822255"
+  integrity sha512-Sdw4ESidXCXOmQ9EcYguNY2swyoWmx53kym2zRsvi+VeFCHEdkO+WG1DK+6W81juot40bbfLNhkc63QnWtesNg==
+
 react-native-flash-message@^0.4.0:
   version "0.4.0"
   resolved "https://registry.npmjs.org/react-native-flash-message/-/react-native-flash-message-0.4.0.tgz"
@@ -5889,6 +5894,11 @@ react-native-gradle-plugin@^0.0.5:
   integrity sha512-kGupXo+pD2mB6Z+Oyowor3qlCroiS32FNGoiGQdwU19u8o+NNhEZKwoKfC5Qt03bMZSmFlcAlTyf79vrS2BZKQ==
   dependencies:
     react-native-codegen "*"
+
+react-native-image-picker@^5.3.1:
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-5.3.1.tgz#836ab13c228174728a0bd68293b27dc5e1affa0f"
+  integrity sha512-zRCjtlE3KOeaWDM8gXzTwXfvo3ZeF2XMkHceU7CVCtKRleKxna/E4XWIPu/lXO2qlMdnSx1WvfPSbqzAX0qxpA==
 
 react-native-iphone-screen-helper@^2.0.2:
   version "2.0.3"

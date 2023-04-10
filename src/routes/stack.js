@@ -12,6 +12,7 @@ import {
   RegisterUser,
   RiwayatTransaksi,
   SplashScreen,
+  TambahBarang,
   UbahProfil,
 } from '../screen';
 import MainApp from './MainApp';
@@ -116,6 +117,11 @@ const Router = () => {
       <Stack.Screen
         name="DetailPesanan"
         component={DetailPesanan}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="TambahBarang"
+        component={TambahBarang}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

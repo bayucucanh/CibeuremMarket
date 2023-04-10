@@ -1,11 +1,30 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import style from './style';
 import {COLORS, FONTS, SIZES} from '../../../constant';
 import {userAvatar} from '../../../assets';
 import {Gap, ListButton, Separator} from '../../../components';
+import { pengguna } from '../../../services';
+import { useIsFocused } from '@react-navigation/native';
 
 const Akun = ({navigation}) => {
+  const isFocused = useIsFocused();
+  const [profile, setProfile] = useState([])
+
+  const getMe = async () => {
+    const response = await pengguna();
+    console.log(response?.data);
+    setProfile(response?.data?.data?.pengguna)
+  }
+
+  useEffect(() => {
+    if (isFocused) {
+      getMe()
+      console.log('pengguna', profile);
+    }
+  }, [isFocused]);
+  
+
   return (
     <View style={style.container}>
       <View
@@ -28,13 +47,13 @@ const Akun = ({navigation}) => {
             justifyContent: 'space-between',
           }}>
           <Text style={{...FONTS.bodyNormalBold, color: COLORS.fourColor}}>
-            Bayu Cucan
+            {profile?.nama_pengguna}
           </Text>
           <Text style={{...FONTS.bodyNormalBold, color: COLORS.fourColor}}>
-            0895401000012
+            {profile?.nomor_hp}
           </Text>
           <Text style={{...FONTS.bodyNormalBold, color: COLORS.fourColor}}>
-            Saldo: Rp.850.000.00
+            {profile?.nomor_ktp}
           </Text>
           <TouchableOpacity
             style={{

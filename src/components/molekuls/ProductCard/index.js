@@ -3,7 +3,12 @@ import React from 'react';
 import {COLORS, SIZES, FONTS} from '../../../constant';
 import CustomButton from '../CustomButton';
 
-const ProductCard = ({onPress}) => {
+const ProductCard = ({
+  onPress,
+  nama_barang,
+  deskripsi_barang,
+  harga_barang,
+}) => {
   return (
     <TouchableOpacity
       style={{
@@ -15,10 +20,9 @@ const ProductCard = ({onPress}) => {
         maxWidth: SIZES.width * 0.43,
         borderWidth: 1,
         borderColor: COLORS.primaryColor,
-        width: 192
+        width: 192,
       }}
-      onPress={onPress}
-      >
+      onPress={onPress}>
       <Image
         style={{
           width: '100%',
@@ -30,27 +34,31 @@ const ProductCard = ({onPress}) => {
           uri: 'https://gallery.poskota.co.id/storage/Foto/20220120_132247.jpg',
         }}
       />
-      <View style={{ marginHorizontal: 10 }}>
+      <View style={{marginHorizontal: 10}}>
         <Text
           style={[
-            FONTS.bodyNormalRegular,
+            FONTS.bodyNormalBold,
             {color: '#1C1B1F', fontWeight: '400', marginTop: 9},
-          ]}>
-          Nama Barang
+          ]}
+          ellipsizeMode="tail"
+          numberOfLines={1}>
+          {nama_barang}
+        </Text>
+        <Text
+          style={[
+            FONTS.bodyNormalRegular,
+            {color: '#49454F', fontWeight: '400'},
+          ]}
+          ellipsizeMode="tail"
+          numberOfLines={1}>
+          {deskripsi_barang}
         </Text>
         <Text
           style={[
             FONTS.bodyNormalRegular,
             {color: '#49454F', fontWeight: '400'},
           ]}>
-          Deskripsi
-        </Text>
-        <Text
-          style={[
-            FONTS.bodyNormalRegular,
-            {color: '#49454F', fontWeight: '400'},
-          ]}>
-          Rp. Harga
+          Rp. {harga_barang}
         </Text>
       </View>
       {/* <CustomButton

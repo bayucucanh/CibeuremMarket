@@ -13,5 +13,6 @@ import NotaPembelian from "./pembeli_penjual/NotaPembelian";
 import DaftarToko from "./pembeli_penjual/DaftarToko";
 import PemesananMasuk from "./pembeli_penjual/PemesananMasuk";
 import DetailPesanan from "./pembeli_penjual/DetailPesanan";
+import TambahBarang from "./pembeli_penjual/TambahBarang";
 
-export {DetailPesanan, Login, Home, SplashScreen, RegisterUser, Akun, Keranjang, Toko, DetailProduk, RiwayatTransaksi, UbahProfil, IsiSaldo, NotaPembelian, DaftarToko, PemesananMasuk}
+export {DetailPesanan, Login, Home, SplashScreen, RegisterUser, Akun, Keranjang, Toko, DetailProduk, RiwayatTransaksi, UbahProfil, IsiSaldo, NotaPembelian, DaftarToko, PemesananMasuk, TambahBarang}

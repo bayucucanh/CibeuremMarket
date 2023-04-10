@@ -28,6 +28,7 @@ export const loginUser = (nomor_hp, password, navigation) => async dispatch => {
       if (response?.data?.data?.user?.role === "penjual&pembeli") {
         navigation.replace('MainApp');
         Auth.setAccount(response.data);
+        Auth.setToken(response?.data?.data?.user?.token)
         dispatch(setUser(response?.data?.data));
       } else {
         // Dani isi navigasi nya disini
