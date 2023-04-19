@@ -8,7 +8,7 @@ import {
 import React, {useState} from 'react';
 import {Headers, InputText} from '../../../components';
 import style from './style';
-import {COLORS, FONTS, SIZES, showSuccess} from '../../../constant';
+import {COLORS, FONTS, SIZES, showDanger, showSuccess} from '../../../constant';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {PhotoProfile} from '../../../components';
@@ -100,7 +100,8 @@ const DaftarToko = ({navigation}) => {
         navigation.navigate('MainApp');
       }
     } catch (error) {
-      console.log('Gagal');
+      // console.log('Gagal');
+      showDanger('Toko Gagal Didaftarkan')
     }
   };
 
