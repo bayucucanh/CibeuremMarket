@@ -1,4 +1,4 @@
-import {Text, View, Image, TouchableOpacity, ScrollView} from 'react-native';
+import {Text, View, Image, TouchableOpacity, ScrollView, FlatList} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import style from './style';
 import {empty} from '../../../assets/image';
@@ -6,17 +6,31 @@ import {COLORS, FONTS, SIZES} from '../../../constant';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import {Empty, ProductCard} from '../../../components';
 import {useIsFocused} from '@react-navigation/native';
-import {toko} from '../../../services';
+import {myProduct, toko} from '../../../services';
 import Icon2 from 'react-native-vector-icons/Feather';
+import Auth from '../../../services/Auth';
 
 const Toko = ({navigation}) => {
   const isFocused = useIsFocused();
 
   const [registStoreCheck, setRegistStoreCheck] = useState(false);
+  const [dataToko, setDataToko] = useState({});
+  const [allProduct, setAllProduct] = useState([]);
+  const getMyProduct = async () => {
+    const response = await myProduct();
+
+    console.log(response);
+    setAllProduct(response?.data?.data?.barang)
+    console.log('allProduct', allProduct);
+  }
 
   const getStore = async () => {
     const response = await toko();
-    console.log(response?.data?.data?.toko.length === 0);
+    
+    setDataToko(response?.data?.data?.toko[0]);
+    const token = await Auth.getToken();
+    console.log(dataToko);
+    console.log(token);
     if (response?.data?.data?.toko.length === 0) {
       setRegistStoreCheck(true);
     } else {
@@ -28,6 +42,7 @@ const Toko = ({navigation}) => {
   useEffect(() => {
     if (isFocused) {
       getStore();
+      getMyProduct()
     }
   }, [isFocused]);
 
@@ -70,7 +85,7 @@ const Toko = ({navigation}) => {
                 textAlign: 'center',
                 marginVertical: 11,
               }}>
-              Toko Jagal Abadi
+              {dataToko?.nama_toko}
             </Text>
             <View style={{flexDirection: 'row', marginTop: 5}}>
               <Icon name="location-pin" size={20} color="black" />
@@ -80,7 +95,7 @@ const Toko = ({navigation}) => {
                   marginLeft: 20,
                   color: COLORS.black,
                 }}>
-                Alamat : Blok C4 No 24
+                Alamat : {dataToko?.alamat_toko}
               </Text>
             </View>
             <View style={{flexDirection: 'row', marginTop: 5}}>
@@ -91,7 +106,7 @@ const Toko = ({navigation}) => {
                   marginLeft: 20,
                   color: COLORS.black,
                 }}>
-                Jam Buka : Setiap Hari, 04.00-15.00
+                Jam Buka : {dataToko?.jam_buka}
               </Text>
             </View>
             <View style={{flexDirection: 'row', marginTop: 5}}>
@@ -102,7 +117,7 @@ const Toko = ({navigation}) => {
                   marginLeft: 20,
                   color: COLORS.black,
                 }}>
-                No Hp : 085321227418
+                No Hp : {dataToko?.nomor_hp_toko}
               </Text>
             </View>
             <View style={{flexDirection: 'row', marginVertical: 5}}>
@@ -113,12 +128,11 @@ const Toko = ({navigation}) => {
                   marginLeft: 20,
                   color: COLORS.black,
                 }}>
-                Email : jagalabadi@gmail.com
+                Email : {dataToko?.email_toko}
               </Text>
             </View>
             <Text style={{...FONTS.bodyNormalMedium, color: COLORS.black}}>
-              Merupakan toko yang menjual berbagai macam daging seperti daging
-              sapi, daging ayam, dan daging kambing.
+              {dataToko?.deskripsi_toko}
             </Text>
           </View>
 
@@ -159,7 +173,7 @@ const Toko = ({navigation}) => {
                   borderStyle: 'dashed',
                   borderColor: COLORS.neutral2,
                 }}
-                onPress={() => navigation.navigate('TambahBarang')}
+                onPress={() => navigation.navigate('TambahBarang', {idToko: dataToko?.id_toko})}
                 >
                 <Icon2 name="plus" size={30} style={{color: COLORS.neutral3}} />
                 <Text
@@ -168,9 +182,33 @@ const Toko = ({navigation}) => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
+            <FlatList
+          data={allProduct}
+          numColumns={2}
+          initialNumToRender={7}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(item, index) => item.id + index.toString()}
+          maxToRenderPerBatch={1000}
+          windowSize={60}
+          updateCellsBatchingPeriod={60}
+          ListEmptyComponent={<Text>Kosong</Text>}
+          columnWrapperStyle={{
+            marginBottom: SIZES.padding4,
+            justifyContent: 'space-between',
+            paddingHorizontal: SIZES.base,
+          }}
+          renderItem={({item}) => (
+            <ProductCard
+              nama_barang={item.nama_barang}
+              deskripsi_barang={item.deskripsi_barang}
+              harga_barang={item.harga_barang}
+              gambarBarang={item.gambar_barang}
+              onPress={() =>
+                navigation.navigate('DetailProduk', {productId: item.id_barang})
+              }
+            />
+          )}
+        />
           </View>
         </ScrollView>
       )}

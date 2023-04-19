@@ -8,6 +8,7 @@ const ProductCard = ({
   nama_barang,
   deskripsi_barang,
   harga_barang,
+  gambarBarang
 }) => {
   return (
     <TouchableOpacity
@@ -31,7 +32,7 @@ const ProductCard = ({
           borderTopLeftRadius: 12,
         }}
         source={{
-          uri: 'https://gallery.poskota.co.id/storage/Foto/20220120_132247.jpg',
+          uri: gambarBarang,
         }}
       />
       <View style={{marginHorizontal: 10}}>

@@ -43,6 +43,7 @@ const Home = ({navigation}) => {
               nama_barang={item.nama_barang}
               deskripsi_barang={item.deskripsi_barang}
               harga_barang={item.harga_barang}
+              gambarBarang={item.gambar_barang}
               onPress={() =>
                 navigation.navigate('DetailProduk', {productId: item.id_barang})
               }

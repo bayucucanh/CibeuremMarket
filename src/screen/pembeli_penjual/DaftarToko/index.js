@@ -8,7 +8,7 @@ import {
 import React, {useState} from 'react';
 import {Headers, InputText} from '../../../components';
 import style from './style';
-import {COLORS, FONTS, SIZES, showDanger, showSuccess} from '../../../constant';
+import {BASE_URL, COLORS, FONTS, SIZES, showDanger, showSuccess} from '../../../constant';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {PhotoProfile} from '../../../components';
@@ -83,7 +83,8 @@ const DaftarToko = ({navigation}) => {
       const token = await Auth.getToken();
       console.log(token);
       const res = await fetch(
-        'https://2e5d-36-74-43-165.ngrok.io/api/v1/pengguna/toko',
+        // 'https://2e5d-36-74-43-165.ngrok.io/api/v1/pengguna/toko',
+        `${BASE_URL}/pengguna/toko`,
         {
           method: 'POST',
           headers: {
@@ -93,6 +94,7 @@ const DaftarToko = ({navigation}) => {
           body: formdata,
         },
       );
+      console.log(res);
       if (res.status >= 200 || 201) {
         showSuccess('Toko Berhasil Didaftarkan');
         setFieldValue(null);

@@ -26,6 +26,10 @@ export const toko = () => {
   return apiGet(`${BASE_URL}/pengguna/toko`)
 }
 
+export const myProduct = () => {
+  return apiGet(`${BASE_URL}/pengguna/barang/me`)
+}
+
 export const createToko = data => {
   // console.log(`${BASE_URL}/pengguna/toko`, data);
   return apiPost(`${BASE_URL}/pengguna/toko`, data);

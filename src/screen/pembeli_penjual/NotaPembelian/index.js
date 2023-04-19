@@ -12,7 +12,7 @@ const NotaPembelian = () => {
       <Headers title="Nota Pembelian" />
         <Text
           style={{
-            ...FONTS.headingNormalMedium,
+            ...FONTS.bodyLargeBold,
             color: COLORS.black,
             marginTop: 10,
           }}>
@@ -90,7 +90,7 @@ const NotaPembelian = () => {
         <TouchableOpacity
           style={{
             width: '48%',
-            height: 60,
+            height: 40,
             backgroundColor: COLORS.white,
             borderRadius: 100,
             justifyContent: 'center',
@@ -105,7 +105,7 @@ const NotaPembelian = () => {
           <TouchableOpacity
           style={{
             width: '48%',
-            height: 60,
+            height: 40,
             backgroundColor: COLORS.primaryColor,
             borderRadius: 100,
             justifyContent: 'center',
