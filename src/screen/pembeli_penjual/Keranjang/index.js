@@ -5,13 +5,35 @@ import {
   Text,
   View,
   TouchableOpacity,
+  FlatList
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {COLORS, FONTS, SIZES} from '../../../constant';
 import style from './style';
 import Icon from 'react-native-vector-icons/Feather';
+import { useIsFocused } from '@react-navigation/native';
+import { listProductCart } from '../../../services';
+import { ListProduct } from '../../../components';
 
 const Keranjang = ({navigation}) => {
+
+  const isFocused = useIsFocused();
+
+  const [product, setProduct] = useState([])
+
+  const getListCartProduct = async () => {
+    const response = await listProductCart();
+    console.log(response);
+    setProduct(response?.data?.data?.belanjaan)
+  }
+
+  useEffect(() => {
+    if (isFocused) {
+      getListCartProduct()
+      console.log('product', product);
+    }
+  }, [isFocused]);
+
   return (
     <View style={{flex: 1, backgroundColor: COLORS.white}}>
       <ScrollView contentContainerStyle={[style.container]}>
@@ -24,7 +46,25 @@ const Keranjang = ({navigation}) => {
           }}>
           Pesanan
         </Text>
-        <View
+        
+        <FlatList
+          data={product}
+          numColumns={1}
+          initialNumToRender={7}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(item, index) => item.id + index.toString()}
+          maxToRenderPerBatch={1000}
+          windowSize={60}
+          updateCellsBatchingPeriod={60}
+          ListEmptyComponent={<Text>Kerangjang osong</Text>}
+          renderItem={({item}) => (
+            <View style={{ marginHorizontal: 20, marginTop: 10 }}>
+              <ListProduct gambarBarang='https://assets.pikiran-rakyat.com/crop/0x0:0x0/x/photo/2021/10/14/1452578967.jpg' namaBarang="Daging" jumlahPesanan={10} TotalHarga={item.harga_belanjaan}/>
+            </View>
+          )}
+        />
+        
+        {/* <View
           style={[
             style.card,
             {
@@ -76,7 +116,7 @@ const Keranjang = ({navigation}) => {
               </Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </View> */}
 
         <TouchableOpacity style={{alignItems: 'center', marginTop: 20}}>
           <View

@@ -1,29 +1,55 @@
 import {Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import { detailProduct } from '../../../services';
+import {addCart, detailProduct, pengguna} from '../../../services';
+import {BASE_URL, showDanger, showSuccess} from '../../../constant';
 
 const useDetailProduk = ({navigation, route}) => {
+  const {productId} = route.params;
 
-  const { productId } = route.params;
-
-  const [product, setProduct] = useState([])
+  const [product, setProduct] = useState([]);
 
   const getDetailProduct = async () => {
-    setLoading(true)
+    setLoading(true);
     const response = await detailProduct(productId);
-    console.log(response?.data?.data?.barang);
-    setProduct(response?.data?.data?.barang)
-    setLoading(false)
-  }
+    setProduct(response?.data?.data?.barang);
+    setLoading(false);
+  };
+
+  const buyProduct = async () => {
+    const responseUser = await pengguna();
+
+    setLoading(true);
+    const formdata = new FormData();
+
+    formdata.append('harga_belanjaan', product?.harga_barang);
+    formdata.append(
+      'id_pengguna',
+      responseUser?.data?.data?.pengguna?.id_pengguna,
+    );
+    formdata.append('id_barang', product?.id_barang);
+
+    const data = {
+      harga_belanjaan: product?.harga_barang,
+      id_pengguna: responseUser?.data?.data?.pengguna?.id_pengguna,
+      id_barang: product?.id_barang
+    }
+    const response = await addCart(data);
+    if (response?.status >= 200 || 201) {
+      showSuccess("Barang Berhasil Ditambahkan")
+    } else {
+      showDanger("Barang Gagal Ditambahkan")
+    }
+    setLoading(false);
+  };
 
   useEffect(() => {
-    getDetailProduct()
-  }, [])
-  
+    getDetailProduct();
+    console.log(product?.harga_barang);
+  }, []);
 
   const [loading, setLoading] = useState(false);
 
-  return [loading, product, setProduct];
+  return [loading, product, setProduct, buyProduct];
 };
 
 export default useDetailProduk;

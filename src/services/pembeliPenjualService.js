@@ -10,8 +10,17 @@ export const registerPengguna = data => {
   return apiPost(`${BASE_URL}/pengguna/register`, data);
 }
 
+export const addCart = data => {
+  // console.log(`${BASE_URL}/pengguna/register`, data);
+  return apiPost(`${BASE_URL}/pengguna/belanjaan`, data);
+}
+
 export const listProduct = () => {
   return apiGet(`${BASE_URL}/pengguna/barang`)
+}
+
+export const listProductCart = () => {
+  return apiGet(`${BASE_URL}/pengguna/belanjaan`)
 }
 
 export const detailProduct = id => {
