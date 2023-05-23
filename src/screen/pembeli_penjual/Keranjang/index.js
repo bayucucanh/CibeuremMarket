@@ -20,11 +20,13 @@ const Keranjang = ({navigation}) => {
   const isFocused = useIsFocused();
 
   const [product, setProduct] = useState([])
+  const [totalBelanja, setTotalBelanja] = useState(0)
+  const [barangDiPilih, setBarangDiPilih] = useState({})
 
   const getListCartProduct = async () => {
     const response = await listProductCart();
     console.log(response);
-    setProduct(response?.data?.data?.belanjaan)
+    setProduct(response?.data?.data?.belanjaan);
   }
 
   useEffect(() => {
@@ -46,7 +48,6 @@ const Keranjang = ({navigation}) => {
           }}>
           Pesanan
         </Text>
-        
         <FlatList
           data={product}
           numColumns={1}
@@ -59,7 +60,10 @@ const Keranjang = ({navigation}) => {
           ListEmptyComponent={<Text>Kerangjang osong</Text>}
           renderItem={({item}) => (
             <View style={{ marginHorizontal: 20, marginTop: 10 }}>
-              <ListProduct gambarBarang='https://assets.pikiran-rakyat.com/crop/0x0:0x0/x/photo/2021/10/14/1452578967.jpg' namaBarang="Daging" jumlahPesanan={10} TotalHarga={item.harga_belanjaan}/>
+              <ListProduct onPress={() => {
+                setTotalBelanja(item.harga_belanjaan)
+                setBarangDiPilih(item)
+                }} gambarBarang={item.tb_barang.gambar_barang} namaBarang={item.tb_barang.nama_barang} jumlahPesanan={item.jumlah_belanjaan} TotalHarga={item.harga_belanjaan}/>
             </View>
           )}
         />
@@ -142,11 +146,11 @@ const Keranjang = ({navigation}) => {
             Total Harga : 
           </Text>
           <Text style={{...FONTS.bodyNormalRegular, color: COLORS.black, marginLeft: 10}}>
-           Rp. 180.000.00
+           {totalBelanja}
           </Text>
         </View>
         <TouchableOpacity
-          onPress={() => navigation.navigate('NotaPembelian')}
+          onPress={() => navigation.navigate('NotaPembelian', {product: barangDiPilih})}
           style={{
             backgroundColor: COLORS.primaryColor,
             width: '90%',

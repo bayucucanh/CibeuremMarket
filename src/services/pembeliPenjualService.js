@@ -1,4 +1,4 @@
-import { apiPost, apiGet, apiPut, apiDelete, apiPostMulti } from "../constant";
+import { apiPost, apiGet, apiPut, apiDelete, apiPostMulti, apiPatch } from "../constant";
 import { BASE_URL } from "../constant";
 
 export const loginPengguna = data => {
@@ -23,6 +23,10 @@ export const listProductCart = () => {
   return apiGet(`${BASE_URL}/pengguna/belanjaan`)
 }
 
+export const buyProduct = data => {
+  return apiPost(`${BASE_URL}/pengguna/transaksi`, data);
+}
+
 export const detailProduct = id => {
   return apiGet(`${BASE_URL}/pengguna/barang/${id}`)
 }
@@ -39,7 +43,27 @@ export const myProduct = () => {
   return apiGet(`${BASE_URL}/pengguna/barang/me`)
 }
 
+export const myTransaction = () => {
+  return apiGet(`${BASE_URL}/pengguna/transaksi?role=pembeli`)
+}
+
+export const changeStatusTrans= (id, data) => {
+  return apiPatch(`${BASE_URL}/pengguna/transaksi/${id}`, {data})
+}
+
+export const detailTransaction = (id) => {
+  return apiGet(`${BASE_URL}/pengguna/transaksi/${id}`)
+}
+
+export const incomingsOrder = () => {
+  return apiGet(`${BASE_URL}/pengguna/transaksi?role=penjual`)
+}
+
 export const createToko = data => {
   // console.log(`${BASE_URL}/pengguna/toko`, data);
   return apiPost(`${BASE_URL}/pengguna/toko`, data);
+}
+
+export const deleteProdukInCart = id_belanjaan => {
+  return apiDelete(`${BASE_URL}/pengguna/belanjaan/${id_belanjaan}`,);
 }

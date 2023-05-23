@@ -16,9 +16,7 @@ import {InputText, LoadingScreen} from '../../../components';
 import Icon from 'react-native-vector-icons/Feather';
 
 const DetailProduk = ({navigation, route}) => {
-  const [loading, product, setProduct, buyProduct] = useDetailProduk({navigation, route});
-
-  const [qty, setQty] = useState(0);
+  const [loading, product, setProduct, buyProduct, qty, setQty] = useDetailProduk({navigation, route});
 
   return (
     <>

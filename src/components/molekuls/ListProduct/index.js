@@ -1,10 +1,11 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React from 'react';
 import { COLORS, FONTS } from '../../../constant';
 
-const ListProduct = ({gambarBarang, namaBarang, jumlahPesanan, TotalHarga}) => {
+const ListProduct = ({gambarBarang, namaBarang, jumlahPesanan, TotalHarga, onPress}) => {
   return (
-    <View
+    <TouchableOpacity
+      onPress={onPress}
       style={{
         borderWidth: 2,
         borderColor: COLORS.primaryColor,
@@ -25,7 +26,7 @@ const ListProduct = ({gambarBarang, namaBarang, jumlahPesanan, TotalHarga}) => {
         <Text>{jumlahPesanan}</Text>
         <Text>{TotalHarga}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

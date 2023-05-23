@@ -1,11 +1,44 @@
 import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {Headers} from '../../../components';
 import style from './style';
-import {COLORS, FONTS, SIZES} from '../../../constant';
+import {COLORS, FONTS, SIZES, showSuccess} from '../../../constant';
 import {ScrollView} from 'react-native-gesture-handler';
+import { buyProduct, deleteProdukInCart } from '../../../services';
 
-const NotaPembelian = () => {
+const NotaPembelian = ({route, navigation}) => {
+  const {product} = route.params;
+
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    console.log(product);
+  }, [])
+
+  const buyNow = async () => {
+    setLoading(true);
+    const data = {
+      nama_belanjaan: product?.tb_barang?.nama_barang,
+      jumlah_belanjaan: product?.jumlah_belanjaan,
+      harga_belanjaan: product?.harga_belanjaan,
+      total_harga: product?.harga_belanjaan,
+      metode_pembayaran: "cod",
+      status_transaksi: "pending",
+      id_pengguna: product?.id_pengguna,
+      id_toko: product?.tb_barang?.tb_toko?.id_toko,
+      id_belanjaan: product?.id_belanjaan
+    }
+    console.log('Push___', data);
+    const response = await buyProduct(data);
+    console.log(response);
+    if (response.status === 201) {
+      showSuccess(response?.data?.message)
+      const hapus = await deleteProdukInCart(product?.id_belanjaan);
+      console.log(hapus);
+      navigation.replace('RiwayatTransaksi')
+    }
+  }
+  
   return (
     <View style={[style.container, {flex: 1, paddingHorizontal: 15}]}>
       <ScrollView>
@@ -30,24 +63,25 @@ const NotaPembelian = () => {
           ]}>
           <Image
             source={{
-              uri: 'https://awsimages.detik.net.id/visual/2022/02/23/penjual-daging-sapi-di-pasar-kebayoran-lama-jakarta-rabu-2322022-cnbc-indonesiamuhammad-sabki-11.jpeg?w=650',
+              uri: product?.tb_barang?.gambar_barang              ,
             }}
             style={{
-              width: '50%',
+              width: '35%',
               height: SIZES.height * 0.25,
               borderBottomLeftRadius: 20,
               borderTopLeftRadius: 20,
             }}
           />
-          <View style={{marginLeft: 10, marginTop: 5}}>
+          <View style={{marginLeft: 15, marginTop: 5}}>
             <Text style={{...FONTS.bodyNormalMedium, color: COLORS.black}}>
-              Berat 3 Kg
+              Berat {product?.jumlah_belanjaan} {product?.tb_barang?.ukuran_barang}
             </Text>
-            <Text style={{...FONTS.bodyLargeBold, color: COLORS.black}}>
-              Daging Sapi
+            <Text style={{...FONTS.bodyLargeBold, color: COLORS.black, maxWidth: '90%',}} numberOfLines={2}
+              ellipsizeMode="tail">
+              {product?.tb_barang?.nama_barang}
             </Text>
             <Text style={{...FONTS.bodyNormalMedium, color: COLORS.black}}>
-              Total Rp. 180.000.00
+              {product?.harga_belanjaan}
             </Text>
             <Text
               style={{
@@ -57,7 +91,7 @@ const NotaPembelian = () => {
               }}
               numberOfLines={2}
               ellipsizeMode="tail">
-              Toko Jagal Abadi Blok C4 No 24
+              {product?.tb_barang?.tb_toko?.nama_toko}
             </Text>
             <TouchableOpacity>
               <Text
@@ -76,10 +110,10 @@ const NotaPembelian = () => {
         <View
           style={[style.card, {backgroundColor: COLORS.white, padding: 20,}]}>
           <Text style={{...FONTS.bodyLargeMedium, color: COLORS.black}}>
-            Total Harga : Rp. 180.000.00
+            Total Harga : Rp. {product?.harga_belanjaan}
           </Text>
           <Text style={{...FONTS.bodyNormalMedium}}>
-            Pembayaran Menggunakan Saldo
+            Pembayaran COD (Dibayar ditempat)
           </Text>
           <Text style={{...FONTS.bodyNormalMedium, color: COLORS.black}}>
             Pembeli Bayu Cucan Herdian
@@ -87,7 +121,7 @@ const NotaPembelian = () => {
         </View>
       </ScrollView>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             width: '48%',
             height: 40,
@@ -101,10 +135,11 @@ const NotaPembelian = () => {
             <Text style={{...FONTS.bodyNormalMedium, color: COLORS.primaryColor}}>
             Ambil Sendiri
           </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
+          onPress={() => buyNow()}
           style={{
-            width: '48%',
+            width: '100%',
             height: 40,
             backgroundColor: COLORS.primaryColor,
             borderRadius: 100,
@@ -112,7 +147,7 @@ const NotaPembelian = () => {
             alignItems: 'center',
           }}>
             <Text style={{...FONTS.bodyNormalMedium, color: COLORS.white}}>
-            Lakukan Pengriman
+            Pesan Sekarang
           </Text>
           </TouchableOpacity>
       </View>

@@ -7,6 +7,7 @@ const useDetailProduk = ({navigation, route}) => {
   const {productId} = route.params;
 
   const [product, setProduct] = useState([]);
+  const [qty, setQty] = useState(0);
 
   const getDetailProduct = async () => {
     setLoading(true);
@@ -29,15 +30,21 @@ const useDetailProduk = ({navigation, route}) => {
     formdata.append('id_barang', product?.id_barang);
 
     const data = {
-      harga_belanjaan: product?.harga_barang,
+      harga_belanjaan: product?.harga_barang * qty,
+      jumlah_belanjaan: qty,
       id_pengguna: responseUser?.data?.data?.pengguna?.id_pengguna,
-      id_barang: product?.id_barang
-    }
-    const response = await addCart(data);
-    if (response?.status >= 200 || 201) {
-      showSuccess("Barang Berhasil Ditambahkan")
+      id_barang: product?.id_barang,
+    };
+    console.log(data);
+    if (qty === 0) {
+      showDanger('Silahkan Masukan Jumlah barang');
     } else {
-      showDanger("Barang Gagal Ditambahkan")
+      const response = await addCart(data);
+      if (response?.status >= 200 || 201) {
+        showSuccess('Barang Berhasil Ditambahkan');
+      } else {
+        showDanger('Barang Gagal Ditambahkan');
+      }
     }
     setLoading(false);
   };
@@ -49,7 +56,7 @@ const useDetailProduk = ({navigation, route}) => {
 
   const [loading, setLoading] = useState(false);
 
-  return [loading, product, setProduct, buyProduct];
+  return [loading, product, setProduct, buyProduct, qty, setQty];
 };
 
 export default useDetailProduk;

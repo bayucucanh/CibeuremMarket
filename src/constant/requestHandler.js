@@ -59,6 +59,16 @@ export const apiPut = (url, data, config = null) => {
     });
 };
 
+export const apiPatch = (url, data, config = null) => {
+  return Axios.patch(url, data, config)
+    .then(response => {
+      return response;
+    })
+    .catch(err => {
+      return err;
+    });
+};
+
 export const apiDelete = (url, config = null) => {
   return Axios.delete(url, config)
     .then(response => {

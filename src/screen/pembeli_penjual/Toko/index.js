@@ -162,7 +162,7 @@ const Toko = ({navigation}) => {
               flexWrap: 'wrap',
             }}>
             <View style={{maxWidth: SIZES.width * 0.42}}>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={{
                   borderWidth: 2,
                   borderRadius: SIZES.radius1,
@@ -180,7 +180,7 @@ const Toko = ({navigation}) => {
                   style={{...FONTS.bodyNormalRegular, color: COLORS.neutral3}}>
                   Tambah Barang
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
             <FlatList
           data={allProduct}
