@@ -4,10 +4,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { COLORS, FONTS } from '../../../constant';
 import { Separator } from '../../atoms';
 
-const ListButton = ({title, iconName, isSeparate}) => {
+const ListButton = ({onPress, title, iconName, isSeparate, style}) => {
   return (
     <>
-    <TouchableOpacity style={{ flexDirection: 'row' }}>
+    <TouchableOpacity style={[style, { flexDirection: 'row' }]} onPress={onPress}>
       <Icon name={iconName} size={25} color={COLORS.black}/>
       <Text style={{ marginLeft: 6, color: COLORS.black, ...FONTS.bodyLargeMedium }}>{title}</Text>
     </TouchableOpacity>

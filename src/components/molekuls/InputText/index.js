@@ -36,6 +36,7 @@ const InputText = ({
   name,
   onBlur,
   secureTextEntry,
+  styleOutlined
 }) => {
   const [isFocus, setIsFocus] = useState(false);
   const {passwordVisibility, rightIcon, handlePasswordVisibility} =
@@ -52,17 +53,17 @@ const InputText = ({
 
   return (
     <View
-      style={{
+      style={[styleOutlined, {
         borderRadius: 100,
         borderWidth: 2,
-        borderColor: "#FF8E8E",
+        borderColor: "black",
         justifyContent: secureTextEntry ? 'space-between' : 'center',
         paddingHorizontal: 16,
         flexDirection: secureTextEntry && 'row',
-      }}>
+      }]}>
       <TextInput
         onFocus={() => setIsFocus(true)}
-        placeholderTextColor={COLORS.primaryColor}
+        placeholderTextColor={COLORS.black}
         onBlur={onBlur}
         multiline={multiline}
         onChangeText={onChangeText}
