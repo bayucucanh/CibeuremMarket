@@ -1,4 +1,11 @@
-import {Text, View, Image, TouchableOpacity, ScrollView, FlatList} from 'react-native';
+import {
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  FlatList,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import style from './style';
 import {empty} from '../../../assets/image';
@@ -20,16 +27,16 @@ const Toko = ({navigation}) => {
     const response = await myProduct();
 
     console.log(response);
-    setAllProduct(response?.data?.data?.barang)
+    setAllProduct(response?.data?.data?.barang);
     console.log('allProduct', allProduct);
-  }
+  };
 
   const getStore = async () => {
     const response = await toko();
-    
+
     setDataToko(response?.data?.data?.toko[0]);
     const token = await Auth.getToken();
-    console.log(dataToko);
+    console.log('toko', response);
     console.log(token);
     if (response?.data?.data?.toko.length === 0) {
       setRegistStoreCheck(true);
@@ -42,7 +49,7 @@ const Toko = ({navigation}) => {
   useEffect(() => {
     if (isFocused) {
       getStore();
-      getMyProduct()
+      getMyProduct();
     }
   }, [isFocused]);
 
@@ -162,7 +169,7 @@ const Toko = ({navigation}) => {
               flexWrap: 'wrap',
             }}>
             <View style={{maxWidth: SIZES.width * 0.42}}>
-              {/* <TouchableOpacity
+              <TouchableOpacity
                 style={{
                   borderWidth: 2,
                   borderRadius: SIZES.radius1,
@@ -173,16 +180,34 @@ const Toko = ({navigation}) => {
                   borderStyle: 'dashed',
                   borderColor: COLORS.neutral2,
                 }}
-                onPress={() => navigation.navigate('TambahBarang', {idToko: dataToko?.id_toko})}
-                >
+                onPress={() =>
+                  navigation.navigate('TambahBarang', {
+                    idToko: dataToko?.id_toko,
+                  })
+                }>
                 <Icon2 name="plus" size={30} style={{color: COLORS.neutral3}} />
                 <Text
                   style={{...FONTS.bodyNormalRegular, color: COLORS.neutral3}}>
                   Tambah Barang
                 </Text>
-              </TouchableOpacity> */}
+              </TouchableOpacity>
             </View>
-            <FlatList
+
+            {allProduct.length > 0 &&
+              allProduct.map(item => (
+                <ProductCard
+                  nama_barang={item.nama_barang}
+                  deskripsi_barang={item.deskripsi_barang}
+                  harga_barang={item.harga_barang}
+                  gambarBarang={item.gambar_barang}
+                  onPress={() =>
+                    navigation.navigate('EditBarang', {
+                      productId: item.id_barang,
+                    })
+                  }
+                />
+              ))}
+            {/* <FlatList
           data={allProduct}
           numColumns={2}
           initialNumToRender={7}
@@ -208,7 +233,7 @@ const Toko = ({navigation}) => {
               }
             />
           )}
-        />
+        /> */}
           </View>
         </ScrollView>
       )}

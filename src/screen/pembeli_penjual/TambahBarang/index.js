@@ -1,17 +1,29 @@
-import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import style from './style';
-import {Headers, InputText, PhotoProfile} from '../../../components';
-import {BASE_URL, COLORS, FONTS, showDanger, showSuccess} from '../../../constant';
+import {Headers, InputText, LoadingScreen, PhotoProfile} from '../../../components';
+import {
+  BASE_URL,
+  COLORS,
+  FONTS,
+  showDanger,
+  showSuccess,
+} from '../../../constant';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Auth from '../../../services/Auth';
 
 const TambahBarang = ({navigation, route}) => {
-
-  const { idToko } = route.params;
+  const {idToko} = route.params;
 
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [valueOpen, setValueOpen] = useState(null);
   const [valueOpen2, setValueOpen2] = useState(null);
   const [fieldBarang, setFieldBarang] = useState(null);
@@ -39,56 +51,65 @@ const TambahBarang = ({navigation, route}) => {
 
   useEffect(() => {
     console.log(idToko);
-  }, [])
-  
-  const submitProduct= async (valueOpen, valueOpen2) => {
+  }, []);
+
+  const submitProduct = async (valueOpen, valueOpen2) => {
+    setLoading(true);
     setData({...data, per: valueOpen, jenisBarang: valueOpen2});
-    if (data.per === null && data.jenisBarang === null && data.namaBarang && data.hargaBarang && data.stock) {
-      alert('Klik Submit Sekali Lagi');
-    }
+    if (
+      data.per === null &&
+      data.jenisBarang === null &&
+      data.namaBarang &&
+      data.hargaBarang &&
+      data.stock
+    ) {
+      alert('Gagal, Klik Submit Sekali Lagi');
+    } else {
+      try {
+        const formdata = new FormData();
+        formdata.append('nama_barang', data.namaBarang);
+        formdata.append('harga_barang', data.hargaBarang);
+        formdata.append('ukuran_barang', data.per);
+        formdata.append('jenis_barang', data.jenisBarang);
+        formdata.append('stok_barang', parseInt(data.stock));
+        formdata.append('deskripsi_barang', data.description);
+        formdata.append('gambar_barang', {
+          uri: fieldBarang.uri,
+          type: fieldBarang.type,
+          name: fieldBarang.fileName,
+        });
+        formdata.append('id_toko', idToko);
 
-    try {
-      const formdata = new FormData();
-      formdata.append('nama_barang', data.namaBarang);
-      formdata.append('harga_barang', data.hargaBarang);
-      formdata.append('ukuran_barang', data.per);
-      formdata.append('jenis_barang', data.jenisBarang);
-      formdata.append('stok_barang', parseInt(data.stock));
-      formdata.append('deskripsi_barang', data.description);
-      formdata.append('gambar_barang', {
-        uri: fieldBarang.uri,
-        type: fieldBarang.type,
-        name: fieldBarang.fileName,
-      });
-      formdata.append('id_toko', idToko);
-
-      console.log(formdata);
-      const token = await Auth.getToken();
-      const res = await fetch(
-        // 'https://2e5d-36-74-43-165.ngrok.io/api/v1/pengguna/toko',
-        `${BASE_URL}/pengguna/barang`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: 'Bearer ' + token,
+        console.log(formdata);
+        const token = await Auth.getToken();
+        const res = await fetch(
+          // 'https://2e5d-36-74-43-165.ngrok.io/api/v1/pengguna/toko',
+          `${BASE_URL}/pengguna/barang`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: 'Bearer ' + token,
+            },
+            body: formdata,
           },
-          body: formdata,
-        },
-      );
-      console.log(res);
-      if (res.status >= 200 || 201) {
-        showSuccess('Barang Berhasil Ditambahkan');
-        setFieldBarang(null)
-        navigation.navigate('MainApp');
+        );
+        console.log(res);
+        if (res.status >= 200 || 201) {
+          showSuccess('Barang Berhasil Ditambahkan');
+          setFieldBarang(null);
+          navigation.navigate('MainApp');
+        }
+      } catch (error) {
+        // console.log('Gagal');
+        showDanger('Barang Gagal Ditambahkan');
       }
-    } catch (error) {
-      // console.log('Gagal');
-      showDanger('Barang Gagal Ditambahkan')
     }
+    setLoading(false)
   };
 
   return (
+    <>
     <ScrollView style={style.container}>
       <Headers title="Tambah Barang" />
 
@@ -227,7 +248,7 @@ const TambahBarang = ({navigation, route}) => {
         onChangeText={val => setData({...data, description: val})}
       />
 
-<Text
+      <Text
         style={{
           ...FONTS.bodyNormalBold,
           color: COLORS.black,
@@ -247,7 +268,7 @@ const TambahBarang = ({navigation, route}) => {
         // styleImage={{marginTop: 20}}
       />
 
-<TouchableOpacity
+      <TouchableOpacity
         style={{
           marginTop: 20,
           borderRadius: 100,
@@ -258,13 +279,14 @@ const TambahBarang = ({navigation, route}) => {
           justifyContent: 'center',
           alignItems: 'center',
         }}
-        onPress={() => submitProduct(valueOpen, valueOpen2)}
-        >
+        onPress={() => submitProduct(valueOpen, valueOpen2)}>
         <Text style={{...FONTS.bodyNormalBold, color: COLORS.white}}>
           Tambah Barang
         </Text>
       </TouchableOpacity>
     </ScrollView>
+    {loading && <LoadingScreen />}
+    </>
   );
 };
 

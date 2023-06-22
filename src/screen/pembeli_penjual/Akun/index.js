@@ -6,8 +6,12 @@ import {userAvatar} from '../../../assets';
 import {Gap, ListButton, Separator} from '../../../components';
 import { pengguna } from '../../../services';
 import { useIsFocused } from '@react-navigation/native';
+import Auth from '../../../services/Auth';
+import { useDispatch } from 'react-redux';
+import { successLogout } from '../../../redux/state/setUser';
 
 const Akun = ({navigation}) => {
+  const dispatch = useDispatch()
   const isFocused = useIsFocused();
   const [profile, setProfile] = useState([])
 
@@ -15,6 +19,12 @@ const Akun = ({navigation}) => {
     const response = await pengguna();
     console.log(response?.data);
     setProfile(response?.data?.data?.pengguna)
+  }
+
+  const logout = () => {
+    Auth.logout();
+    navigation.navigate("SplashScreen");
+    dispatch(successLogout());
   }
 
   useEffect(() => {
@@ -86,13 +96,13 @@ const Akun = ({navigation}) => {
           isSeparate={true}
           style={{marginTop: 24}}
         />
-        <ListButton
+        {/* <ListButton
           onPress={() => navigation.navigate('IsiSaldo')}
           title="Isi Saldo"
           iconName="money"
           isSeparate={true}
           style={{marginTop: 24}}
-        />
+        /> */}
         <ListButton
           title="Tentang Aplikasi"
           iconName="exclamation"
@@ -106,6 +116,7 @@ const Akun = ({navigation}) => {
           style={{marginTop: 24}}
         />
         <ListButton
+          onPress={() => logout()}
           title="Keluar"
           iconName="sign-out"
           isSeparate={true}

@@ -2,9 +2,11 @@ import React, {useState, useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useDispatch, useSelector} from 'react-redux';
 import {
+  CariBarang,
   DaftarToko,
   DetailPesanan,
   DetailProduk,
+  EditBarang,
   IsiSaldo,
   Login,
   NotaPembelian,
@@ -122,6 +124,16 @@ const Router = () => {
       <Stack.Screen
         name="TambahBarang"
         component={TambahBarang}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="EditBarang"
+        component={EditBarang}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="CariBarang"
+        component={CariBarang}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

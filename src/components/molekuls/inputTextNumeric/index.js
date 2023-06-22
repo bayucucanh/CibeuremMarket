@@ -24,7 +24,7 @@ const useTogglePasswordVisibility = secureTextEntry => {
   };
 };
 
-const InputText = ({
+const InputTextNumeric = ({
   placeholder,
   multiline,
   style,
@@ -64,14 +64,13 @@ const InputText = ({
       }]}>
       <TextInput
         onFocus={() => setIsFocus(true)}
-        // defaultValue={`${defaultValue}`}
+        defaultValue={`${defaultValue}`}
         placeholderTextColor={COLORS.black}
         onBlur={onBlur}
         multiline={multiline}
         onChangeText={onChangeText}
         value={value}
         name={name}
-        secureTextEntry={passwordVisibility}
         style={[
           {
             ...style,
@@ -87,17 +86,10 @@ const InputText = ({
         keyboardType={type}
         placeholder={placeholder}
       />
-      {secureTextEntry && (
-        <Pressable
-          onPress={handlePasswordVisibility}
-          style={{justifyContent: 'center'}}>
-          <Icon name={rightIcon} size={22} color="#232323" />
-        </Pressable>
-      )}
     </View>
   );
 };
 
-export default InputText;
+export default InputTextNumeric;
 
 const styles = StyleSheet.create({});

@@ -6,7 +6,7 @@ import {
   ScrollView,
 } from 'react-native';
 import React, {useState} from 'react';
-import {Headers, InputText} from '../../../components';
+import {Headers, InputText, LoadingScreen} from '../../../components';
 import style from './style';
 import {BASE_URL, COLORS, FONTS, SIZES, showDanger, showSuccess} from '../../../constant';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -16,6 +16,7 @@ import Auth from '../../../services/Auth';
 
 const DaftarToko = ({navigation}) => {
   const [open1, setOpen1] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [valueOpen, setValueOpen] = useState(null);
   const [valueClose, setValueClose] = useState(null);
@@ -52,6 +53,7 @@ const DaftarToko = ({navigation}) => {
   ]);
 
   const submitStore = async (valueOpen, valueClose) => {
+    setLoading(true)
     setData({...data, closeHour: valueClose, openHour: valueOpen});
     if (data.openHour === null && data.closeHour === null) {
       alert('Klik Submit Sekali Lagi');
@@ -95,7 +97,7 @@ const DaftarToko = ({navigation}) => {
         },
       );
       console.log(res);
-      if (res.status >= 200 || 201) {
+      if (res.status == 200 || 201 && res.status !== 400) {
         showSuccess('Toko Berhasil Didaftarkan');
         setFieldValue(null);
         setFieldSurat(null);
@@ -105,10 +107,12 @@ const DaftarToko = ({navigation}) => {
       // console.log('Gagal');
       showDanger('Toko Gagal Didaftarkan')
     }
+    setLoading(false)
   };
 
   return (
-    <ScrollView
+    <>
+      <ScrollView
       style={[style.container, {paddingHorizontal: 20, paddingVertical: 20}]}>
       <Headers title="Daftar Toko" />
       <PhotoProfile
@@ -312,7 +316,9 @@ const DaftarToko = ({navigation}) => {
           Daftar Toko
         </Text>
       </TouchableOpacity>
-    </ScrollView>
+      </ScrollView>
+      {loading && <LoadingScreen />}
+    </>
   );
 };
 

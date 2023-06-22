@@ -7,7 +7,7 @@ const useDetailProduk = ({navigation, route}) => {
   const {productId} = route.params;
 
   const [product, setProduct] = useState([]);
-  const [qty, setQty] = useState(0);
+  const [qty, setQty] = useState(1);
 
   const getDetailProduct = async () => {
     setLoading(true);

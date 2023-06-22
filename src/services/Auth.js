@@ -18,7 +18,8 @@ async function setToken(token) {
 }
 
 async function logout() {
-  return Storage.clear('account');
+  Storage.clear('account');
+  Storage.clear('accessToken');
 }
 
 export default {
