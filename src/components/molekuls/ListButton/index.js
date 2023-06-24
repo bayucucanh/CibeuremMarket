@@ -8,8 +8,10 @@ const ListButton = ({onPress, title, iconName, isSeparate, style}) => {
   return (
     <>
     <TouchableOpacity style={[style, { flexDirection: 'row' }]} onPress={onPress}>
-      <Icon name={iconName} size={25} color={COLORS.black}/>
-      <Text style={{ marginLeft: 6, color: COLORS.black, ...FONTS.bodyLargeMedium }}>{title}</Text>
+      <View style={{ width: 30 }}>
+        <Icon name={iconName} size={25} color={COLORS.black}/>
+      </View>
+      <Text style={{ marginLeft: 15, color: COLORS.black, ...FONTS.bodyLargeMedium }}>{title}</Text>
     </TouchableOpacity>
     {isSeparate && (<Separator />)}
     </>

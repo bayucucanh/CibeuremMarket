@@ -96,13 +96,13 @@ const Akun = ({navigation}) => {
           isSeparate={true}
           style={{marginTop: 24}}
         />
-        {/* <ListButton
+        <ListButton
           onPress={() => navigation.navigate('IsiSaldo')}
           title="Isi Saldo"
           iconName="money"
           isSeparate={true}
           style={{marginTop: 24}}
-        /> */}
+        />
         <ListButton
           title="Tentang Aplikasi"
           iconName="exclamation"

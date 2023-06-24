@@ -5,10 +5,11 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
+  ImageBackground,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import style from './style';
-import {empty} from '../../../assets/image';
+import {empty, patternpad} from '../../../assets/image';
 import {COLORS, FONTS, SIZES} from '../../../constant';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import {Empty, ProductCard} from '../../../components';
@@ -73,7 +74,18 @@ const Toko = ({navigation}) => {
             style.container,
             {paddingHorizontal: 20, paddingTop: 10},
           ]}>
-          <View style={{borderWidth: 2, padding: 20, borderRadius: 20}}>
+          <View
+            source={patternpad}
+            style={[style.card2, {
+              // borderWidth: 2,
+              backgroundColor: COLORS.white,
+              padding: 20,
+              borderRadius: 20,
+              position: 'relative',
+            }]}>
+            <TouchableOpacity style={{ position: 'absolute', right: 5, top: 5, width: 50, height: 50, borderRadius: 50, justifyContent: 'center', alignItems: 'center' }}>
+              <Icon2 name="edit" size={30} style={{color: COLORS.primaryColor}} />
+            </TouchableOpacity>
             <Image
               source={{
                 uri: 'https://mmc.tirto.id/image/otf/500x0/2021/03/16/header-src_ratio-16x9.jpeg',

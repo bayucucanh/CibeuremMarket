@@ -13,14 +13,14 @@ function SearchBar({ onChangeText, value }) {
     <View style={{
       elevation: 4,
       // marginHorizontal: SIZES.padding5,
-      marginTop: 18,
+      // marginTop: 18,
       backgroundColor: COLORS.neutral1,
       flexDirection: 'row',
       paddingHorizontal: SIZES.padding5,
       alignItems: 'center',
-      borderRadius: 20,
+      borderRadius: 10,
       borderWidth: 2,
-      borderColor: COLORS.primaryColor
+      borderColor: COLORS.white
     }}
     >
       <TextInput
@@ -31,7 +31,7 @@ function SearchBar({ onChangeText, value }) {
           alignItems: 'baseline',
         }]}
         placeholder="Cari barang atau toko..."
-        placeholderTextColor={COLORS.primaryColor}
+        placeholderTextColor={'#fe906e'}
       />
     </View>
   );

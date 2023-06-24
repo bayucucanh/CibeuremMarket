@@ -4,7 +4,7 @@ import { COLORS } from '../../../constant';
 
 function Separator() {
   return (
-    <View style={{ backgroundColor: COLORS.black, height: 2, marginTop: 6 }} />
+    <View style={{ backgroundColor: "#efefef", height: 2, marginTop: 6 }} />
   );
 }
 

@@ -57,7 +57,6 @@ const Keranjang = ({navigation}) => {
           maxToRenderPerBatch={1000}
           windowSize={60}
           updateCellsBatchingPeriod={60}
-          ListEmptyComponent={<Text>Kerangjang osong</Text>}
           renderItem={({item}) => (
             <View style={{ marginHorizontal: 20, marginTop: 10 }}>
               <ListProduct onPress={() => {
@@ -122,23 +121,26 @@ const Keranjang = ({navigation}) => {
           </View>
         </View> */}
 
-        <TouchableOpacity style={{alignItems: 'center', marginTop: 20}}>
+        <TouchableOpacity style={{alignItems: 'center', marginTop: 20, borderRadius: 10, borderWidth: 2, marginHorizontal: 20, padding: 10, borderStyle: 'dashed',  borderColor: COLORS.neutral2,}}>
           <View
             style={{
               borderRadius: 100,
               width: 50,
               height: 50,
-              backgroundColor: '#E6F537',
-              borderWidth: 2,
+              // backgroundColor: '#E6F537',
+              // borderWidth: 2,
               justifyContent: 'center',
               alignItems: 'center',
+              borderColor: COLORS.neutral2
             }}>
-            <Icon name="plus" size={30} color={COLORS.black} />
+            <Icon name="plus" size={35} color={ COLORS.neutral2} />
           </View>
-          <Text style={{...FONTS.bodyLargeBold, color: COLORS.black}}>
+          {/* <Text style={{...FONTS.bodyLargeBold, color:  COLORS.neutral2}}>
             Tambah Pesanan
-          </Text>
+          </Text> */}
         </TouchableOpacity>
+
+
       </ScrollView>
       <View style={{backgroundColor: COLORS.white}}>
         <View style={{flexDirection: 'row', marginHorizontal: 20, marginVertical: 10}}>

@@ -17,9 +17,18 @@ async function setToken(token) {
   return Storage.set('accessToken', token);
 }
 
+async function getSaldo() {
+  return Storage.get('saldo');
+}
+
+async function setSaldo(val) {
+  return Storage.set('saldo', val);
+}
+
 async function logout() {
   Storage.clear('account');
   Storage.clear('accessToken');
+  Storage.clear('saldo');
 }
 
 export default {
@@ -27,5 +36,7 @@ export default {
   getAccount,
   setAccount,
   getToken,
-  setToken
+  setToken,
+  getSaldo,
+  setSaldo
 };

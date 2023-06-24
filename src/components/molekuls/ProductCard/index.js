@@ -1,6 +1,6 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import {COLORS, SIZES, FONTS} from '../../../constant';
+import {COLORS, SIZES, FONTS, formatRupiah} from '../../../constant';
 import CustomButton from '../CustomButton';
 
 const ProductCard = ({
@@ -18,7 +18,7 @@ const ProductCard = ({
         backgroundColor: 'white',
         elevation: 4,
         marginBottom: 10,
-        maxWidth: SIZES.width * 0.43,
+        maxWidth: SIZES.width * 0.42,
         borderWidth: 1,
         borderColor: COLORS.primaryColor,
         width: 192,
@@ -59,7 +59,7 @@ const ProductCard = ({
             FONTS.bodyNormalRegular,
             {color: '#49454F', fontWeight: '400'},
           ]}>
-          Rp. {harga_barang}
+          {formatRupiah(harga_barang)}
         </Text>
       </View>
       {/* <CustomButton

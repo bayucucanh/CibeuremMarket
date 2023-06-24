@@ -55,9 +55,9 @@ const InputText = ({
   return (
     <View
       style={[styleOutlined, {
-        borderRadius: 100,
+        borderRadius: 10,
         borderWidth: 2,
-        borderColor: "black",
+        borderColor: COLORS.neutral2,
         justifyContent: secureTextEntry ? 'space-between' : 'center',
         paddingHorizontal: 16,
         flexDirection: secureTextEntry && 'row',
