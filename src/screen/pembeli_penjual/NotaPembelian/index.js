@@ -1,4 +1,12 @@
-import {Image, StyleSheet, Text, View, TouchableOpacity, ScrollView} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  FlatList,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Headers, InputText} from '../../../components';
 import style from './style';
@@ -20,7 +28,7 @@ const NotaPembelian = ({route, navigation}) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log(product);
+    console.log('product', product);
   }, []);
 
   const buyNow = async () => {
@@ -85,20 +93,20 @@ const NotaPembelian = ({route, navigation}) => {
           }}>
           Barang Belanjaan
         </Text>
-        <View
+        {/* <View
           style={[
             style.card,
             {padding: 10, backgroundColor: COLORS.white, position: 'relative'},
           ]}>
           <Image
             source={{
-              uri: 'https://res.cloudinary.com/dk0z4ums3/image/upload/v1605524896/attached_image/mengolah-daging-sapi-dengan-benar.jpg',
+              uri: product?.tb_barang?.gambar_barang,
             }}
             style={{width: 100, height: 100}}
           />
           <View style={{marginLeft: 30, marginTop: 5}}>
             <Text style={{...FONTS.bodyLargeMedium, color: COLORS.black}}>
-              Nama Barang
+              {product?.tb_barang?.nama_barang}
             </Text>
             <Text
               style={{
@@ -106,7 +114,7 @@ const NotaPembelian = ({route, navigation}) => {
                 color: COLORS.primaryColor,
                 marginTop: 5,
               }}>
-              {formatRupiah(110000)}
+              {formatRupiah(product?.harga_belanjaan)}
             </Text>
           </View>
           <Text
@@ -120,47 +128,70 @@ const NotaPembelian = ({route, navigation}) => {
             }}>
             x 2
           </Text>
-        </View>
-        <View
-          style={[
-            style.card,
-            {padding: 10, backgroundColor: COLORS.white, position: 'relative'},
-          ]}>
-          <Image
-            source={{
-              uri: 'https://res.cloudinary.com/dk0z4ums3/image/upload/v1605524896/attached_image/mengolah-daging-sapi-dengan-benar.jpg',
-            }}
-            style={{width: 100, height: 100}}
-          />
-          <View style={{marginLeft: 30, marginTop: 5}}>
-            <Text style={{...FONTS.bodyLargeMedium, color: COLORS.black}}>
-              Nama Barang
-            </Text>
-            <Text
-              style={{
-                ...FONTS.bodyLargeMedium,
-                color: COLORS.primaryColor,
-                marginTop: 5,
-              }}>
-              {formatRupiah(110000)}
-            </Text>
-          </View>
-          <Text
-            style={{
-              ...FONTS.bodyLargeBold,
-              position: 'absolute',
-              color: COLORS.black,
-              marginTop: 5,
-              right: 15,
-              alignSelf: 'center',
-            }}>
-            x 2
-          </Text>
-        </View>
+        </View> */}
+
+        <FlatList
+          data={product}
+          numColumns={1}
+          initialNumToRender={7}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(item, index) => item.id + index.toString()}
+          maxToRenderPerBatch={1000}
+          windowSize={60}
+          updateCellsBatchingPeriod={60}
+          renderItem={({item}) => (
+            <View
+              style={[
+                style.card,
+                {
+                  padding: 10,
+                  backgroundColor: COLORS.white,
+                  position: 'relative',
+                },
+              ]}>
+              <Image
+                source={{
+                  uri: 'https://res.cloudinary.com/dk0z4ums3/image/upload/v1605524896/attached_image/mengolah-daging-sapi-dengan-benar.jpg',
+                }}
+                style={{width: 100, height: 100}}
+              />
+              <View style={{marginLeft: 30, marginTop: 5}}>
+                <Text style={{...FONTS.bodyLargeMedium, color: COLORS.black}}>
+                  {item.name}
+                </Text>
+                <Text
+                  style={{
+                    ...FONTS.bodyLargeMedium,
+                    color: COLORS.primaryColor,
+                    marginTop: 5,
+                  }}>
+                  {formatRupiah(item.harga)}
+                </Text>
+              </View>
+              <Text
+                style={{
+                  ...FONTS.bodyLargeBold,
+                  position: 'absolute',
+                  color: COLORS.black,
+                  marginTop: 5,
+                  right: 15,
+                  alignSelf: 'center',
+                }}>
+                x {item.qty}
+              </Text>
+            </View>
+          )}
+        />
+
         <TouchableOpacity
           style={[
             style.card,
-            {backgroundColor: COLORS.white, padding: 10, marginTop: 2, justifyContent: 'space-between'},
+            {
+              backgroundColor: COLORS.white,
+              padding: 10,
+              marginTop: 2,
+              justifyContent: 'space-between',
+            },
           ]}>
           <View>
             <Text
@@ -189,13 +220,23 @@ const NotaPembelian = ({route, navigation}) => {
               Jln. Sukamulus No.17 RT001/RW0018
             </Text>
           </View>
-          
-          <Icon name='chevron-right' size={35} color={COLORS.neutral2} style={{ alignSelf: 'center' }}/>
+
+          <Icon
+            name="chevron-right"
+            size={35}
+            color={COLORS.neutral2}
+            style={{alignSelf: 'center'}}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={[
             style.card,
-            {backgroundColor: COLORS.white, padding: 10, marginTop: 2, justifyContent: 'space-between'},
+            {
+              backgroundColor: COLORS.white,
+              padding: 10,
+              marginTop: 2,
+              justifyContent: 'space-between',
+            },
           ]}>
           <View>
             <Text
@@ -216,8 +257,13 @@ const NotaPembelian = ({route, navigation}) => {
               Saldo Dompet Cibeurem
             </Text>
           </View>
-          
-          <Icon name='chevron-right' size={35} color={COLORS.neutral2} style={{ alignSelf: 'center' }}/>
+
+          <Icon
+            name="chevron-right"
+            size={35}
+            color={COLORS.neutral2}
+            style={{alignSelf: 'center'}}
+          />
         </TouchableOpacity>
 
         <View
@@ -234,7 +280,7 @@ const NotaPembelian = ({route, navigation}) => {
             }}>
             Sub Total
           </Text>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View>
               <Text
                 style={{
@@ -256,16 +302,16 @@ const NotaPembelian = ({route, navigation}) => {
                 style={{
                   ...FONTS.bodyNormalMedium,
                   color: COLORS.black,
-                  textAlign: 'right'
+                  textAlign: 'right',
                 }}>
-                {formatRupiah((15000))}
+                {formatRupiah(15000)}
               </Text>
               <Text
                 style={{
                   ...FONTS.bodyLargeBold,
                   color: COLORS.primaryColor,
                 }}>
-                {formatRupiah((115000))}
+                {formatRupiah(product?.harga_belanjaan + 15000)}
               </Text>
             </View>
           </View>
@@ -338,7 +384,12 @@ const NotaPembelian = ({route, navigation}) => {
           </Text>
         </View> */}
       </ScrollView>
-      <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          paddingHorizontal: 20,
+        }}>
         {/* <TouchableOpacity
           style={{
             width: '48%',

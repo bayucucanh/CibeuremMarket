@@ -55,9 +55,9 @@ const InputTextNumeric = ({
   return (
     <View
       style={[styleOutlined, {
-        borderRadius: 100,
+        borderRadius: 10,
         borderWidth: 2,
-        borderColor: "black",
+        borderColor: COLORS.neutral2,
         justifyContent: secureTextEntry ? 'space-between' : 'center',
         paddingHorizontal: 16,
         flexDirection: secureTextEntry && 'row',
@@ -74,7 +74,7 @@ const InputTextNumeric = ({
         style={[
           {
             ...style,
-            width: '90%',
+            width: '100%',
             // borderRadius: SIZES.radius2,
             // borderWidth: 2,
             // borderColor: checkError(),

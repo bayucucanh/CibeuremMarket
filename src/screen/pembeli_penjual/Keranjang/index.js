@@ -5,36 +5,76 @@ import {
   Text,
   View,
   TouchableOpacity,
-  FlatList
+  FlatList,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {COLORS, FONTS, SIZES} from '../../../constant';
+import {COLORS, FONTS, SIZES, formatRupiah} from '../../../constant';
 import style from './style';
 import Icon from 'react-native-vector-icons/Feather';
-import { useIsFocused } from '@react-navigation/native';
-import { listProductCart } from '../../../services';
-import { ListProduct } from '../../../components';
+import {useIsFocused} from '@react-navigation/native';
+import {listProductCart} from '../../../services';
+import {ListProduct} from '../../../components';
+import CheckBox from '@react-native-community/checkbox';
 
 const Keranjang = ({navigation}) => {
-
   const isFocused = useIsFocused();
 
-  const [product, setProduct] = useState([])
-  const [totalBelanja, setTotalBelanja] = useState(0)
-  const [barangDiPilih, setBarangDiPilih] = useState({})
+  const friendsArray = [
+    {
+      id: 1,
+      name: 'Wagyu A5',
+      harga: 1000000,
+      qty: 3,
+    },
+    {
+      id: 2,
+      name: 'Ayam Pejantan',
+      harga: 32000,
+      qty: 1,
+    },
+    {
+      id: 3,
+      name: 'Ayam Negri',
+      harga: 32000,
+      qty: 3,
+    },
+  ];
+
+  const [product, setProduct] = useState([]);
+  const [checkbox, setCheckbox] = useState([]);
+  const [barangCheckbox, setBarangCheck] = useState([]);
+  const [pickProduct, setPickProduct] = useState(friendsArray);
+  const [totalBelanja, setTotalBelanja] = useState(0);
+  const [isSelected, setSelection] = useState(false);
+  const [barangDiPilih, setBarangDiPilih] = useState({});
 
   const getListCartProduct = async () => {
     const response = await listProductCart();
     console.log(response);
     setProduct(response?.data?.data?.belanjaan);
+  };
+
+  function toggleChecked(idToToggle) {
+    console.log('checkbox', checkbox);
+    setCheckbox(prev => {
+      if (prev.includes(idToToggle)) {
+        return prev.filter(id => id !== idToToggle);
+      }
+      return [...prev, idToToggle];
+    });
   }
 
   useEffect(() => {
     if (isFocused) {
-      getListCartProduct()
+      getListCartProduct();
       console.log('product', product);
     }
-  }, [isFocused]);
+    console.log(pickProduct);
+    let totalItems = 0;
+    for (const item of checkbox) {
+      setTotalBelanja(totalItems += item.harga)
+    }
+  }, [isFocused, checkbox]);
 
   return (
     <View style={{flex: 1, backgroundColor: COLORS.white}}>
@@ -48,8 +88,9 @@ const Keranjang = ({navigation}) => {
           }}>
           Pesanan
         </Text>
+
         <FlatList
-          data={product}
+          data={pickProduct}
           numColumns={1}
           initialNumToRender={7}
           showsVerticalScrollIndicator={false}
@@ -58,103 +99,97 @@ const Keranjang = ({navigation}) => {
           windowSize={60}
           updateCellsBatchingPeriod={60}
           renderItem={({item}) => (
-            <View style={{ marginHorizontal: 20, marginTop: 10 }}>
-              <ListProduct onPress={() => {
-                setTotalBelanja(item.harga_belanjaan)
-                setBarangDiPilih(item)
-                }} gambarBarang={item.tb_barang.gambar_barang} namaBarang={item.tb_barang.nama_barang} jumlahPesanan={item.jumlah_belanjaan} TotalHarga={item.harga_belanjaan}/>
-            </View>
-          )}
-        />
-        
-        {/* <View
-          style={[
-            style.card,
-            {
-              // height: SIZES.height * 0.08,
-              backgroundColor: COLORS.white,
-              // alignItems: 'center',
-            },
-          ]}>
-          <Image
-            source={{
-              uri: 'https://awsimages.detik.net.id/visual/2022/02/23/penjual-daging-sapi-di-pasar-kebayoran-lama-jakarta-rabu-2322022-cnbc-indonesiamuhammad-sabki-11.jpeg?w=650',
-            }}
-            style={{
-              width: '50%',
-              height: SIZES.height * 0.25,
-              borderBottomLeftRadius: 20,
-              borderTopLeftRadius: 20,
-            }}
-          />
-          <View style={{marginLeft: 10, marginTop: 5}}>
-            <Text style={{...FONTS.bodyNormalMedium, color: COLORS.black}}>
-              Berat 3 Kg
-            </Text>
-            <Text style={{...FONTS.bodyLargeBold, color: COLORS.black}}>
-              Daging Sapi
-            </Text>
-            <Text style={{...FONTS.bodyNormalMedium, color: COLORS.black}}>
-              Total Rp. 180.000.00
-            </Text>
-            <Text
-              style={{
-                ...FONTS.bodyNormalBold,
-                color: COLORS.black,
-                maxWidth: '50%',
+            <TouchableOpacity
+              onPress={() => {
+                toggleChecked(item);
               }}
-              numberOfLines={2}
-              ellipsizeMode="tail">
-              Toko Jagal Abadi Blok C4 No 24
-            </Text>
-            <TouchableOpacity>
+              style={[
+                style.card,
+                {
+                  padding: 10,
+                  backgroundColor: COLORS.white,
+                  position: 'relative',
+                },
+              ]}>
+              <CheckBox
+                value={checkbox.includes(item) ? true : false}
+                onValueChange={value => toggleChecked(item)}
+                tintColor={COLORS.primaryColor}
+                style={{alignSelf: 'center'}}
+              />
+              <Image
+                source={{
+                  uri: 'https://dharmajaya.co.id/assets/uploads/products/NewFolder%202/Daging%20Sengkel.jpg',
+                }}
+                style={{width: 80, height: 80, marginLeft: 10}}
+              />
+              <View style={{marginLeft: 20}}>
+                <Text style={{...FONTS.bodyLargeBold, color: COLORS.black}}>
+                  {item.name}
+                </Text>
+                <Text
+                  style={{
+                    ...FONTS.bodyNormalMedium,
+                    color: COLORS.primaryColor,
+                  }}>
+                  {formatRupiah(item.harga)}/Kg
+                </Text>
+              </View>
               <Text
                 style={{
-                  ...FONTS.bodyNormalBold,
+                  ...FONTS.bodyLargeBold,
                   color: COLORS.primaryColor,
-                  marginTop: 30,
-                  textAlign: 'center',
+                  position: 'absolute',
+                  right: 20,
+                  alignSelf: 'center',
                 }}>
-                Detail...
+                x {item.qty}
               </Text>
             </TouchableOpacity>
-          </View>
-        </View> */}
-
-        <TouchableOpacity style={{alignItems: 'center', marginTop: 20, borderRadius: 10, borderWidth: 2, marginHorizontal: 20, padding: 10, borderStyle: 'dashed',  borderColor: COLORS.neutral2,}}>
-          <View
-            style={{
-              borderRadius: 100,
-              width: 50,
-              height: 50,
-              // backgroundColor: '#E6F537',
-              // borderWidth: 2,
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderColor: COLORS.neutral2
-            }}>
-            <Icon name="plus" size={35} color={ COLORS.neutral2} />
-          </View>
-          {/* <Text style={{...FONTS.bodyLargeBold, color:  COLORS.neutral2}}>
+          )}
+        />
+        <TouchableOpacity
+          style={{
+            alignItems: 'center',
+            marginTop: 20,
+            borderRadius: 10,
+            borderWidth: 2,
+            marginHorizontal: 20,
+            padding: 10,
+            borderStyle: 'dashed',
+            borderColor: COLORS.neutral2,
+          }}>
+          <Text style={{...FONTS.bodyLargeBold, color: COLORS.neutral2}}>
             Tambah Pesanan
-          </Text> */}
+          </Text>
         </TouchableOpacity>
-
-
       </ScrollView>
       <View style={{backgroundColor: COLORS.white}}>
-        <View style={{flexDirection: 'row', marginHorizontal: 20, marginVertical: 10}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            marginHorizontal: 20,
+            marginVertical: 10,
+          }}>
           <Text style={{...FONTS.bodyNormalBold, color: COLORS.black}}>
-            Total Harga : 
+            Total Harga :
           </Text>
-          <Text style={{...FONTS.bodyNormalRegular, color: COLORS.black, marginLeft: 10}}>
-           {totalBelanja}
+          <Text
+            style={{
+              ...FONTS.bodyNormalRegular,
+              color: COLORS.black,
+              marginLeft: 10,
+            }}>
+            {checkbox.length === 0 ? "Rp. 0" : formatRupiah(totalBelanja)}
           </Text>
         </View>
         <TouchableOpacity
-          onPress={() => navigation.navigate('NotaPembelian', {product: barangDiPilih})}
+        disabled={checkbox.length === 0 ? true : false}
+          onPress={() =>
+            navigation.navigate('NotaPembelian', {product: checkbox})
+          }
           style={{
-            backgroundColor: COLORS.primaryColor,
+            backgroundColor: checkbox.length === 0 ? COLORS.neutral2 : COLORS.primaryColor,
             width: '90%',
             // alignSelf: 'flex-end',
             height: 40,
@@ -165,7 +200,9 @@ const Keranjang = ({navigation}) => {
             marginHorizontal: 14,
             marginBottom: 14,
           }}>
-          <Text style={{color: 'white'}}>Bayar Sekarang</Text>
+          <Text style={{color: 'white', ...FONTS.bodyNormalBold}}>
+            Bayar Sekarang
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
