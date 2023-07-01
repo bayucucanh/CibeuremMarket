@@ -14,5 +14,7 @@ import DaftarToko from "./pembeli_penjual/DaftarToko";
 import PemesananMasuk from "./pembeli_penjual/PemesananMasuk";
 import DetailPesanan from "./pembeli_penjual/DetailPesanan";
 import TambahBarang from "./pembeli_penjual/TambahBarang";
+import EditBarang from "./pembeli_penjual/EditBarang";
+import CariBarang from "./pembeli_penjual/CariBarang";
 
-export {DetailPesanan, Login, Home, SplashScreen, RegisterUser, Akun, Keranjang, Toko, DetailProduk, RiwayatTransaksi, UbahProfil, IsiSaldo, NotaPembelian, DaftarToko, PemesananMasuk, TambahBarang}
+export {DetailPesanan, Login, Home, SplashScreen, RegisterUser, Akun, Keranjang, Toko, DetailProduk, RiwayatTransaksi, UbahProfil, IsiSaldo, NotaPembelian, DaftarToko, PemesananMasuk, TambahBarang, EditBarang, CariBarang}

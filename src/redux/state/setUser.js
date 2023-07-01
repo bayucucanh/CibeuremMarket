@@ -1,7 +1,7 @@
 import {showDanger, showSuccess} from '../../constant';
 import {loginPengguna} from '../../services';
 import Auth from '../../services/Auth';
-import {LOGIN_FAILED, LOGIN_SUCCESS} from '../types';
+import {LOGIN_FAILED, LOGIN_SUCCESS, LOGOUT_SUCCESS} from '../types';
 import { setLoading } from './globalAction';
 
 export const setUser = payload => ({
@@ -11,6 +11,10 @@ export const setUser = payload => ({
 
 export const failedLogin = () => ({
   type: LOGIN_FAILED,
+});
+
+export const successLogout = () => ({
+  type: LOGOUT_SUCCESS,
 });
 
 export const loginUser = (nomor_hp, password, navigation) => async dispatch => {

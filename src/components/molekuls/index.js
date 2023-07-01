@@ -9,5 +9,9 @@ import HistoryCard from "./HistoryCard";
 import Empty from "./Empty";
 import PhotoProfile from "./PhotoProfile";
 import ListProduct from "./ListProduct";
+import InputTextNumeric from "./inputTextNumeric";
+import InputDropdown from "./InputDropdown";
+import SaldoButton from "./SaldoButton";
+import BottomSheetComponent from "./BottomSheet";
 
-export {InputText, CustomButton, Headers, SearchBar, ProductCard, LoadingScreen, ListButton, HistoryCard, Empty, PhotoProfile, ListProduct}
+export {InputText, CustomButton, Headers, SearchBar, ProductCard, LoadingScreen, ListButton, HistoryCard, Empty, PhotoProfile, ListProduct, InputTextNumeric, SaldoButton, InputDropdown, BottomSheetComponent}

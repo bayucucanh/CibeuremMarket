@@ -20,11 +20,11 @@ const ListProduct = ({gambarBarang, namaBarang, jumlahPesanan, TotalHarga, onPre
         style={{width: 100, height: 100}}
       />
       <View style={{marginLeft: 20}}>
-        <Text style={{...FONTS.bodyNormalBold, color: COLORS.black}}>
+        <Text style={{...FONTS.bodyLargeBold, color: COLORS.black}}>
           {namaBarang}
         </Text>
-        <Text>{jumlahPesanan}</Text>
-        <Text>{TotalHarga}</Text>
+        <Text style={{ ...FONTS.bodyNormalRegular, color: COLORS.black }}>Total Pesanan : {jumlahPesanan}</Text>
+        <Text style={{ ...FONTS.bodyNormalRegular, color: COLORS.black }}>Jumlah Harga : Rp.{TotalHarga}</Text>
       </View>
     </TouchableOpacity>
   );

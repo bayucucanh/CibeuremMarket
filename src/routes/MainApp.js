@@ -4,6 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Akun, Home, Keranjang, Login, Toko} from '../screen';
 import Icon from 'react-native-vector-icons/Feather';
 import Icon2 from 'react-native-vector-icons/FontAwesome5';
+import { COLORS } from '../constant';
 
 
 const Tab = createBottomTabNavigator();
@@ -12,7 +13,9 @@ const MainApp = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: 'black',
+        tabBarActiveTintColor: COLORS.primaryColor,
+        swipeEnabled: true,
+        animationEnabled: true,
         tabBarStyle: {
           height: 62,
           paddingTop: 10,
@@ -21,7 +24,7 @@ const MainApp = () => {
         },
         tabBarLabelStyle: {
           fontFamily: 'Poppins-Bold',
-          fontSize: 12,
+          fontSize: 14,
         },
       }}>
       <Tab.Screen

@@ -12,28 +12,27 @@ function SearchBar({ onChangeText, value }) {
   return (
     <View style={{
       elevation: 4,
-      marginHorizontal: SIZES.padding5,
-      marginTop: 18,
+      // marginHorizontal: SIZES.padding5,
+      // marginTop: 18,
       backgroundColor: COLORS.neutral1,
       flexDirection: 'row',
       paddingHorizontal: SIZES.padding5,
       alignItems: 'center',
-      borderRadius: 100,
+      borderRadius: 10,
       borderWidth: 2,
-      borderColor: COLORS.primaryColor
+      borderColor: COLORS.white
     }}
     >
       <TextInput
         onChangeText={onChangeText}
         value={value}
         style={[FONTS.bodyNormalBold, {
-          width: '90%',
+          width: '100%',
           alignItems: 'baseline',
         }]}
         placeholder="Cari barang atau toko..."
-        placeholderTextColor={COLORS.primaryColor}
+        placeholderTextColor={'#fe906e'}
       />
-      <Icon name="search" color={COLORS.primaryColor} size={SIZES.icon} style={{ position: 'absolute', right: SIZES.padding5 }} />
     </View>
   );
 }

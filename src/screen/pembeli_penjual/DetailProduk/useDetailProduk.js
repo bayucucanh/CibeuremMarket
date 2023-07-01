@@ -7,7 +7,8 @@ const useDetailProduk = ({navigation, route}) => {
   const {productId} = route.params;
 
   const [product, setProduct] = useState([]);
-  const [qty, setQty] = useState(0);
+  const [qty, setQty] = useState(1);
+  const [tawaran, setTawaran] = useState(0);
 
   const getDetailProduct = async () => {
     setLoading(true);
@@ -30,7 +31,7 @@ const useDetailProduk = ({navigation, route}) => {
     formdata.append('id_barang', product?.id_barang);
 
     const data = {
-      harga_belanjaan: product?.harga_barang * qty,
+      harga_belanjaan: tawaran * qty,
       jumlah_belanjaan: qty,
       id_pengguna: responseUser?.data?.data?.pengguna?.id_pengguna,
       id_barang: product?.id_barang,
@@ -56,7 +57,7 @@ const useDetailProduk = ({navigation, route}) => {
 
   const [loading, setLoading] = useState(false);
 
-  return [loading, product, setProduct, buyProduct, qty, setQty];
+  return [loading, product, setProduct, buyProduct, qty, setQty, tawaran, setTawaran,];
 };
 
 export default useDetailProduk;

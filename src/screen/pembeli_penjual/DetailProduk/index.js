@@ -9,14 +9,23 @@ import {
 import React, {useState} from 'react';
 import useDetailProduk from './useDetailProduk';
 import style from './style';
-import {COLORS, FONTS, SIZES} from '../../../constant';
+import {COLORS, FONTS, SIZES, formatRupiah} from '../../../constant';
 import {userAvatar} from '../../../assets';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {InputText, LoadingScreen} from '../../../components';
+import {InputText, InputTextNumeric, LoadingScreen} from '../../../components';
 import Icon from 'react-native-vector-icons/Feather';
 
 const DetailProduk = ({navigation, route}) => {
-  const [loading, product, setProduct, buyProduct, qty, setQty] = useDetailProduk({navigation, route});
+  const [
+    loading,
+    product,
+    setProduct,
+    buyProduct,
+    qty,
+    setQty,
+    tawaran,
+    setTawaran,
+  ] = useDetailProduk({navigation, route});
 
   return (
     <>
@@ -45,7 +54,7 @@ const DetailProduk = ({navigation, route}) => {
                 {product?.nama_barang}
               </Text>
               <Text style={{...FONTS.bodyNormalMedium, color: COLORS.black}}>
-                Rp. {product?.harga_barang}
+                {formatRupiah(product?.harga_barang)}
               </Text>
             </View>
           </View>
@@ -127,7 +136,7 @@ const DetailProduk = ({navigation, route}) => {
                 {product?.tb_toko?.nama_toko}
               </Text>
               <Text style={{...FONTS.bodyNormalBold, color: COLORS.fourColor}}>
-              {product?.tb_toko?.alamat_toko}
+                {product?.tb_toko?.alamat_toko}
               </Text>
               <TouchableOpacity
                 style={{
@@ -159,22 +168,49 @@ const DetailProduk = ({navigation, route}) => {
             <Text style={{...FONTS.bodyNormalBold, color: COLORS.black}}>
               Jumlah Pesanan
             </Text>
-            <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <TouchableOpacity onPress={() => setQty(qty - 1)}>
                 <Icon name="minus" size={20} />
               </TouchableOpacity>
-              <Text
+              <View
                 style={{
-                  ...FONTS.bodySmallMedium,
-                  color: COLORS.black,
-                  marginHorizontal: 10,
+                  width: 30,
+                  height: 30,
+                  borderWidth: 1,
+                  borderColor: COLORS.neutral2,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginHorizontal: 5,
                 }}>
-                {qty}
-              </Text>
+                <Text
+                  style={{
+                    ...FONTS.bodySmallMedium,
+                    color: COLORS.black,
+                    marginHorizontal: 10,
+                  }}>
+                  {qty}
+                </Text>
+              </View>
               <TouchableOpacity onPress={() => setQty(qty + 1)}>
                 <Icon name="plus" size={20} />
               </TouchableOpacity>
             </View>
+          </View>
+          <View
+            style={{
+              marginHorizontal: 20,
+              marginBottom: 10,
+            }}>
+            <Text style={{...FONTS.bodyNormalBold, color: COLORS.black}}>
+              Tawaran Harga
+            </Text>
+            <InputTextNumeric
+              type="numeric"
+              placeholder="Masukan Harga"
+              value={tawaran}
+              defaultValue={`${product?.harga_barang}`}
+              onChangeText={val => setTawaran(val)}
+            />
           </View>
           <TouchableOpacity
             onPress={() => buyProduct()}
@@ -190,7 +226,9 @@ const DetailProduk = ({navigation, route}) => {
               marginHorizontal: 14,
               marginBottom: 14,
             }}>
-            <Text style={{color: 'white'}}>Masukan Keranjang</Text>
+            <Text style={{color: 'white', ...FONTS.bodyNormalBold}}>
+              Masukan Keranjang
+            </Text>
           </TouchableOpacity>
         </View>
         {/* {

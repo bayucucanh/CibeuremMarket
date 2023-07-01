@@ -19,6 +19,10 @@ export const listProduct = () => {
   return apiGet(`${BASE_URL}/pengguna/barang`)
 }
 
+export const listProductBySearch = (value) => {
+  return apiGet(`${BASE_URL}/pengguna/barang?cari=${value}`)
+}
+
 export const listProductCart = () => {
   return apiGet(`${BASE_URL}/pengguna/belanjaan`)
 }
@@ -29,6 +33,10 @@ export const buyProduct = data => {
 
 export const detailProduct = id => {
   return apiGet(`${BASE_URL}/pengguna/barang/${id}`)
+}
+
+export const deleteProduct = id => {
+  return apiDelete(`${BASE_URL}/pengguna/barang/${id}`)
 }
 
 export const pengguna = () => {

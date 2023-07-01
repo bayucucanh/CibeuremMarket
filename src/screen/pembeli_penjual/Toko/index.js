@@ -1,7 +1,15 @@
-import {Text, View, Image, TouchableOpacity, ScrollView, FlatList} from 'react-native';
+import {
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  FlatList,
+  ImageBackground,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import style from './style';
-import {empty} from '../../../assets/image';
+import {empty, patternpad} from '../../../assets/image';
 import {COLORS, FONTS, SIZES} from '../../../constant';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import {Empty, ProductCard} from '../../../components';
@@ -20,16 +28,16 @@ const Toko = ({navigation}) => {
     const response = await myProduct();
 
     console.log(response);
-    setAllProduct(response?.data?.data?.barang)
+    setAllProduct(response?.data?.data?.barang);
     console.log('allProduct', allProduct);
-  }
+  };
 
   const getStore = async () => {
     const response = await toko();
-    
+
     setDataToko(response?.data?.data?.toko[0]);
     const token = await Auth.getToken();
-    console.log(dataToko);
+    console.log('toko', response);
     console.log(token);
     if (response?.data?.data?.toko.length === 0) {
       setRegistStoreCheck(true);
@@ -42,7 +50,7 @@ const Toko = ({navigation}) => {
   useEffect(() => {
     if (isFocused) {
       getStore();
-      getMyProduct()
+      getMyProduct();
     }
   }, [isFocused]);
 
@@ -66,7 +74,18 @@ const Toko = ({navigation}) => {
             style.container,
             {paddingHorizontal: 20, paddingTop: 10},
           ]}>
-          <View style={{borderWidth: 2, padding: 20, borderRadius: 20}}>
+          <View
+            source={patternpad}
+            style={[style.card2, {
+              // borderWidth: 2,
+              backgroundColor: COLORS.white,
+              padding: 20,
+              borderRadius: 20,
+              position: 'relative',
+            }]}>
+            <TouchableOpacity style={{ position: 'absolute', right: 5, top: 5, width: 50, height: 50, borderRadius: 50, justifyContent: 'center', alignItems: 'center' }}>
+              <Icon2 name="edit" size={30} style={{color: COLORS.primaryColor}} />
+            </TouchableOpacity>
             <Image
               source={{
                 uri: 'https://mmc.tirto.id/image/otf/500x0/2021/03/16/header-src_ratio-16x9.jpeg',
@@ -162,7 +181,7 @@ const Toko = ({navigation}) => {
               flexWrap: 'wrap',
             }}>
             <View style={{maxWidth: SIZES.width * 0.42}}>
-              {/* <TouchableOpacity
+              <TouchableOpacity
                 style={{
                   borderWidth: 2,
                   borderRadius: SIZES.radius1,
@@ -173,16 +192,34 @@ const Toko = ({navigation}) => {
                   borderStyle: 'dashed',
                   borderColor: COLORS.neutral2,
                 }}
-                onPress={() => navigation.navigate('TambahBarang', {idToko: dataToko?.id_toko})}
-                >
+                onPress={() =>
+                  navigation.navigate('TambahBarang', {
+                    idToko: dataToko?.id_toko,
+                  })
+                }>
                 <Icon2 name="plus" size={30} style={{color: COLORS.neutral3}} />
                 <Text
                   style={{...FONTS.bodyNormalRegular, color: COLORS.neutral3}}>
                   Tambah Barang
                 </Text>
-              </TouchableOpacity> */}
+              </TouchableOpacity>
             </View>
-            <FlatList
+
+            {allProduct.length > 0 &&
+              allProduct.map(item => (
+                <ProductCard
+                  nama_barang={item.nama_barang}
+                  deskripsi_barang={item.deskripsi_barang}
+                  harga_barang={item.harga_barang}
+                  gambarBarang={item.gambar_barang}
+                  onPress={() =>
+                    navigation.navigate('EditBarang', {
+                      productId: item.id_barang,
+                    })
+                  }
+                />
+              ))}
+            {/* <FlatList
           data={allProduct}
           numColumns={2}
           initialNumToRender={7}
@@ -208,7 +245,7 @@ const Toko = ({navigation}) => {
               }
             />
           )}
-        />
+        /> */}
           </View>
         </ScrollView>
       )}

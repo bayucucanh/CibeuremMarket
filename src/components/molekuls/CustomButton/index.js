@@ -2,7 +2,7 @@ import { Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { RectButton } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
-import { COLORS } from '../../../constant';
+import { COLORS, FONTS } from '../../../constant';
 
 function CustomButton({
   title,
@@ -48,6 +48,7 @@ function CustomButton({
           marginLeft: 8,
           textAlignVertical: 'center',
           ...textStyle,
+          ...FONTS.bodyNormalBold
         }]}
         >
           {title}

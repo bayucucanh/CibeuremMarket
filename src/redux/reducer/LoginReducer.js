@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS } from "../types";
+import { LOGIN_SUCCESS, LOGOUT_SUCCESS } from "../types";
 
 const initialState = {
   userData: [],
@@ -13,7 +13,7 @@ const LoginReducer = (state = initialState, action = {}) => {
         userData: action.payload,
         isLogin: true,
       };
-    case "LOGOUT":
+    case LOGOUT_SUCCESS:
       return {
         ...state,
         isLogin: false,
