@@ -11,7 +11,7 @@ const ListButton = ({onPress, title, iconName, isSeparate, style}) => {
       <View style={{ width: 30 }}>
         <Icon name={iconName} size={25} color={COLORS.black}/>
       </View>
-      <Text style={{ marginLeft: 15, color: COLORS.black, ...FONTS.bodyLargeMedium }}>{title}</Text>
+      <Text style={{ marginLeft: 15, color: COLORS.black, ...FONTS.bodyNormalMedium }}>{title}</Text>
     </TouchableOpacity>
     {isSeparate && (<Separator />)}
     </>
