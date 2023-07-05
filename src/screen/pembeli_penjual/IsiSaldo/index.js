@@ -26,6 +26,7 @@ import Auth from '../../../services/Auth';
 
 const IsiSaldo = () => {
   const [open, setOpen] = useState(false);
+  const [visible, setVisible] = useState(false);
   const [value, setValue] = useState(null);
   const [active, setActive] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -40,7 +41,6 @@ const IsiSaldo = () => {
   const tambahSaldo = async () => {
     const saldoKu = await Auth.getSaldo();
     Auth.setSaldo(saldo + saldoKu);
-    console.log('MySaldo', saldoKu);
   };
 
   const OpenURLPayment = async () => {
@@ -50,15 +50,6 @@ const IsiSaldo = () => {
     // Checking if the link is supported for links with custom URL scheme.
     const supported = await Linking.canOpenURL(web);
     console.log('supported', supported);
-
-    // if (supported) {
-    //   // Opening the link with some app, if the URL scheme is "http" the web link should be opened
-    //   // by some browser in the mobile
-    //   await Linking.openURL(web);
-    //   setModalVisible(!modalVisible);
-    // } else {
-    //   Alert.alert(`Don't know how to open this URL: ${web}`);
-    // }
   };
 
   return (
@@ -116,8 +107,6 @@ const IsiSaldo = () => {
           }}
           placeholder="Pilih Metode Pembayaran"
           defaultValue={'Mandiri'}
-          // multiple={true}
-          // multipleText="Mandiri"
           open={open}
           value={value}
           items={items}

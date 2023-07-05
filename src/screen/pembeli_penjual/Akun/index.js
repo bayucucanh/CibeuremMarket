@@ -4,7 +4,7 @@ import style from './style';
 import {COLORS, FONTS, SIZES, formatRupiah} from '../../../constant';
 import {userAvatar} from '../../../assets';
 import {Gap, ListButton, Separator} from '../../../components';
-import {pengguna} from '../../../services';
+import {myTransaction, pengguna} from '../../../services';
 import {useIsFocused} from '@react-navigation/native';
 import Auth from '../../../services/Auth';
 import {useDispatch} from 'react-redux';
@@ -18,6 +18,23 @@ const Akun = ({navigation}) => {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const [profile, setProfile] = useState([]);
+  const [pending, setPending] = useState({
+    total: 0,
+    status: "pending"
+  });
+  const [dikemas, setDikemas] = useState({
+    total: 0,
+    status: "dikemas"
+  });
+  const [dikirim, setDikirim] = useState({
+    total: 0,
+    status: "dikirim"
+  });
+  const [selesai, setSelesai] = useState({
+    total: 0,
+    status: "selesai"
+  });
+
   const [saldo, setSaldo] = useState(0);
 
   const getMe = async () => {
@@ -31,6 +48,19 @@ const Akun = ({navigation}) => {
     setSaldo(saldoku);
   };
 
+  const getMyTransaction = async () => {
+    const response = await myTransaction();
+    console.log("Transaksi", response?.data?.data.length === 0);
+    if (response?.data?.data.length === 0) {
+      setPending({...pending, total: 0})
+      setDikemas({...dikemas, total: 0})
+      setDikirim({...dikirim, total: 0})
+      setSelesai({...selesai, total: 0})
+    } else {
+      console.log("Belum");
+    }
+  }
+
   const logout = () => {
     Auth.logout();
     navigation.navigate('SplashScreen');
@@ -41,8 +71,7 @@ const Akun = ({navigation}) => {
     if (isFocused) {
       getMe();
       getSaldo();
-      console.log('pengguna', profile);
-      console.log('saldo', saldo);
+      getMyTransaction();
     }
   }, [isFocused]);
 
@@ -74,12 +103,12 @@ const Akun = ({navigation}) => {
           position: 'relative',
         }}>
         <TouchableOpacity onPress={() => navigation.navigate("UbahProfil")} style={{ width: 100, height: 100, borderRadius: 100/2, borderWidth: 2, borderColor: COLORS.primaryColor, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.primaryColor }}>
-          <Image source={{ uri: "https://imgv3.fotor.com/images/gallery/Realistic-Male-Profile-Picture.jpg" }} style={{ width: 95, height: 95, borderRadius: 95/2,}}/>
+          <Image source={{ uri: profile?.foto_pengguna === null ? "https://analisa.io/images/person-dummy.jpg" : profile?.foto_pengguna}} style={{ width: 95, height: 95, borderRadius: 95/2,}}/>
         </TouchableOpacity>
 
         <View style={{ marginLeft: 20 }}>
           <Text style={{...FONTS.bodyNormalMedium, color: COLORS.black}}>
-            Bayu Cucan Herdian
+            {profile?.nama_pengguna}
           </Text>
           <Text style={{...FONTS.bodyNormalMedium, color: COLORS.neutral3}}>
             Saldo Anda
@@ -123,7 +152,9 @@ const Akun = ({navigation}) => {
 
             padding: 20,
           }}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("RiwayatTransaksi", {status: "pending"})}
+          >
             <View
               style={{
                 width: 50,
@@ -154,7 +185,7 @@ const Akun = ({navigation}) => {
                   width: 25,
                 }}>
                 <Text style={{...FONTS.bodySmallRegular, color: COLORS.white}}>
-                  5
+                  {pending.total}
                 </Text>
               </View>
             </View>
@@ -162,7 +193,9 @@ const Akun = ({navigation}) => {
               Pending
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("RiwayatTransaksi", {status: "dikemas"})}
+          >
             <View
               style={{
                 width: 50,
@@ -193,7 +226,7 @@ const Akun = ({navigation}) => {
                   width: 25,
                 }}>
                 <Text style={{...FONTS.bodySmallRegular, color: COLORS.white}}>
-                  5
+                  {dikemas.total}
                 </Text>
               </View>
             </View>
@@ -201,7 +234,9 @@ const Akun = ({navigation}) => {
               Dikemas
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("RiwayatTransaksi", {status: "dikirim"})}
+          >
             <View
               style={{
                 width: 50,
@@ -232,7 +267,7 @@ const Akun = ({navigation}) => {
                   width: 25,
                 }}>
                 <Text style={{...FONTS.bodySmallRegular, color: COLORS.white}}>
-                  5
+                  {dikirim.total}
                 </Text>
               </View>
             </View>
@@ -240,7 +275,9 @@ const Akun = ({navigation}) => {
               Dikirim
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("RiwayatTransaksi", {status: "selesai"})}
+          >
             <View
               style={{
                 width: 50,
@@ -271,7 +308,7 @@ const Akun = ({navigation}) => {
                   width: 25,
                 }}>
                 <Text style={{...FONTS.bodySmallRegular, color: COLORS.white}}>
-                  5
+                  {selesai.total}
                 </Text>
               </View>
             </View>

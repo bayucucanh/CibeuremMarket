@@ -11,6 +11,7 @@ import style from './style';
 import Swiper from 'react-native-swiper';
 import {Logo} from '../../assets';
 import { COLORS } from '../../constant';
+import { useSelector } from 'react-redux';
 
 var splashs = [
   require('../../assets/image/1.jpg'),
@@ -20,9 +21,17 @@ var splashs = [
 ];
 
 const SplashScreen = ({navigation}) => {
+
+  const login = useSelector(state => state.login.isLogin);
+
+
   useEffect(() => {
     setTimeout(() => {
-      navigation.replace('MainApp');
+      if (!login) {
+        navigation.replace('LoginScreen');
+      } else {
+        navigation.replace('MainApp');
+      }
     }, 5000);
   }, []);
 

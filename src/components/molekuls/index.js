@@ -13,5 +13,6 @@ import InputTextNumeric from "./inputTextNumeric";
 import InputDropdown from "./InputDropdown";
 import SaldoButton from "./SaldoButton";
 import BottomSheetComponent from "./BottomSheet";
+import CustomModal from "./CustomModal";
 
-export {InputText, CustomButton, Headers, SearchBar, ProductCard, LoadingScreen, ListButton, HistoryCard, Empty, PhotoProfile, ListProduct, InputTextNumeric, SaldoButton, InputDropdown, BottomSheetComponent}
+export {InputText, CustomButton, Headers, SearchBar, ProductCard, LoadingScreen, ListButton, HistoryCard, Empty, PhotoProfile, ListProduct, InputTextNumeric, SaldoButton, InputDropdown, BottomSheetComponent, CustomModal}

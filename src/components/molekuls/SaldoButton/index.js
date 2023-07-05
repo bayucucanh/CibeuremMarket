@@ -3,7 +3,6 @@ import React from 'react';
 import {COLORS, FONTS} from '../../../constant';
 
 const SaldoButton = ({valueSaldo, onPress, active}) => {
-  console.log(valueSaldo);
 
   return (
     <TouchableOpacity

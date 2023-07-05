@@ -5,7 +5,9 @@ import { Headers, HistoryCard } from '../../../components'
 import { myTransaction } from '../../../services'
 import { SIZES, COLORS, FONTS } from '../../../constant'
 
-const RiwayatTransaksi = () => {
+const RiwayatTransaksi = ({route}) => {
+
+  const {status} = route.params;
 
   const [transaction, setTransaction] = useState([])
   const [loading, setLoading] = useState(false)
@@ -13,9 +15,13 @@ const RiwayatTransaksi = () => {
   const getMyTransaction = async () => {
     setLoading(true)
     const response = await myTransaction();
-    console.log(response);
+    console.log("response", response?.data?.data.length === 0);
     if (response.status === 200) {
-      setTransaction(response?.data?.data);
+      if (response?.data?.data.length === 0) {
+        setTransaction(response?.data?.data);
+      } else {
+        setTransaction(response?.data?.data.filter((item) => item.status_transaksi === status));
+      }
     }
     setLoading(false)
   }

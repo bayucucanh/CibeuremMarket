@@ -8,7 +8,7 @@ import {
   FlatList,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {Headers, InputText} from '../../../components';
+import {CustomModal, Headers, InputText, Separator} from '../../../components';
 import style from './style';
 import {
   COLORS,
@@ -21,37 +21,244 @@ import {
 import {buyProduct, deleteProdukInCart} from '../../../services';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import Icon from 'react-native-vector-icons/Entypo';
+import Icon2 from 'react-native-vector-icons/AntDesign';
+import Auth from '../../../services/Auth';
+import {Logo} from '../../../assets';
 
 const NotaPembelian = ({route, navigation}) => {
   const {product} = route.params;
 
   const [loading, setLoading] = useState(false);
+  const [saldo, setSaldo] = useState(0);
+  const [totalHarga, setTotalHarga] = useState(0);
+  const [visible, setVisible] = useState(false);
+  const [visiblePayment, setVisiblePayment] = useState(false);
+  const [alamat, setAlamat] = useState(null);
+  const [nama, setNama] = useState(null);
+  const [nohp, setNohp] = useState(null);
+  const [payment, setPayment] = useState(null);
+
+  const getSaldo = async () => {
+    const saldoKu = await Auth.getSaldo();
+    setSaldo(saldoKu);
+  };
 
   useEffect(() => {
     console.log('product', product);
+    getSaldo();
+    console.log('saldo', saldo);
+    let totalHarga = 0;
+    for (const item of product) {
+      setTotalHarga((totalHarga += item.harga_belanjaan));
+    }
   }, []);
 
+  function contentAddress() {
+    return (
+      <View>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            // marginBottom: 20,
+          }}>
+          <Text style={{...FONTS.bodyLargeBold, color: COLORS.primaryColor}}>
+            Tambahkan Alamat
+          </Text>
+          <TouchableOpacity onPress={() => setVisible(!visible)}>
+            <Icon2
+              name="closecircleo"
+              size={20}
+              color={COLORS.neutral3}
+              style={{alignSelf: 'center'}}
+            />
+          </TouchableOpacity>
+        </View>
+
+        <Text
+          style={{
+            ...FONTS.bodyNormalMedium,
+            color: COLORS.black,
+            marginTop: 20,
+            marginBottom: 5,
+          }}>
+          Rincian Alamat
+        </Text>
+        <InputText
+          placeholder={'Masukan Alamatmu'}
+          value={alamat}
+          onChangeText={val => setAlamat(val)}
+        />
+        <Text
+          style={{
+            ...FONTS.bodyNormalMedium,
+            color: COLORS.black,
+            marginTop: 10,
+            marginBottom: 5,
+          }}>
+          Nama Lengkap
+        </Text>
+        <InputText
+          placeholder={'Masukan Nama Lengkapmu'}
+          value={alamat}
+          onChangeText={val => setAlamat(val)}
+        />
+        <Text
+          style={{
+            ...FONTS.bodyNormalMedium,
+            color: COLORS.black,
+            marginTop: 10,
+            marginBottom: 5,
+          }}>
+          No. Handphone
+        </Text>
+        <InputText
+          placeholder={'Masukan No. Handphonemu'}
+          value={alamat}
+          onChangeText={val => setAlamat(val)}
+        />
+
+        <TouchableOpacity
+          onPress={() => setVisible(!visible)}
+          style={{
+            width: '100%',
+            height: 40,
+            backgroundColor: COLORS.primaryColor,
+            borderRadius: 100,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: 10,
+            // marginHorizontal: 10
+          }}>
+          <Text style={{...FONTS.bodyNormalBold, color: COLORS.white}}>
+            Simpan Alamat
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  function contentPayment() {
+    return (
+      <View>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            // marginBottom: 20,
+          }}>
+          <Text style={{...FONTS.bodyLargeBold, color: COLORS.primaryColor}}>
+            Pilih Metode Pembayaran
+          </Text>
+          <TouchableOpacity onPress={() => setVisiblePayment(!visiblePayment)}>
+            <Icon2
+              name="closecircleo"
+              size={20}
+              color={COLORS.neutral3}
+              style={{alignSelf: 'center'}}
+            />
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity
+          style={{flexDirection: 'row', marginTop: 20}}
+          disabled={saldo === null || saldo < totalHarga}>
+          <Icon2
+            name="wallet"
+            size={20}
+            color={
+              saldo === null || saldo < totalHarga
+                ? COLORS.neutral3
+                : COLORS.primaryColor
+            }
+          />
+          <Text
+            style={{
+              ...FONTS.bodyNormalMedium,
+              color:
+                saldo === null || saldo < totalHarga
+                  ? COLORS.neutral3
+                  : COLORS.black,
+              marginLeft: 20,
+            }}>
+            Dompet Cibeurem (
+            {saldo === null || saldo < totalHarga
+              ? 'Saldo Kurang'
+              : formatRupiah(saldo === null ? 0 : saldo)}
+            )
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{flexDirection: 'row', marginTop: 20}}>
+          <Icon2 name="gift" size={20} color={COLORS.primaryColor} />
+          <Text
+            style={{
+              ...FONTS.bodyNormalMedium,
+              color: COLORS.black,
+              marginLeft: 20,
+            }}>
+            COD (Bayar di Tempat)
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{flexDirection: 'row', marginTop: 20}}
+          disabled={true}>
+          <Icon2 name="creditcard" size={20} color={COLORS.neutral3} />
+          <Text
+            style={{
+              ...FONTS.bodyNormalMedium,
+              color: COLORS.neutral3,
+              marginLeft: 20,
+            }}>
+            Bank Transfer (Belum Tersedia)
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => setVisible(!visible)}
+          style={{
+            width: '100%',
+            height: 40,
+            backgroundColor: COLORS.primaryColor,
+            borderRadius: 100,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: 10,
+            // marginHorizontal: 10
+          }}>
+          <Text style={{...FONTS.bodyNormalBold, color: COLORS.white}}>
+            Simpan Alamat
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   const buyNow = async () => {
-    setLoading(true);
-    const data = {
-      nama_belanjaan: product?.tb_barang?.nama_barang,
-      jumlah_belanjaan: product?.jumlah_belanjaan,
-      harga_belanjaan: product?.harga_belanjaan,
-      total_harga: product?.harga_belanjaan,
-      metode_pembayaran: 'cod',
-      status_transaksi: 'pending',
-      id_pengguna: product?.id_pengguna,
-      id_toko: product?.tb_barang?.tb_toko?.id_toko,
-      id_belanjaan: product?.id_belanjaan,
-    };
-    console.log('Push___', data);
-    const response = await buyProduct(data);
-    console.log(response);
-    if (response.status === 201) {
-      showSuccess(response?.data?.message);
-      const hapus = await deleteProdukInCart(product?.id_belanjaan);
-      console.log(hapus);
-      navigation.replace('RiwayatTransaksi');
+    for (const item of product) {
+      setLoading(true);
+      const data = {
+        nama_belanjaan: item?.tb_barang?.nama_barang,
+        jumlah_belanjaan: item?.jumlah_belanjaan,
+        harga_belanjaan: item?.harga_belanjaan,
+        total_harga: item?.harga_belanjaan,
+        metode_pembayaran: 'cod',
+        status_transaksi: 'pending',
+        id_pengguna: item?.id_pengguna,
+        id_toko: item?.tb_barang?.tb_toko?.id_toko,
+        id_belanjaan: item?.id_belanjaan,
+        id_barang: item?.tb_barang?.id_barang
+      };
+      console.log('Push___', data);
+      const response = await buyProduct(data);
+      console.log(response);
+      if (response.status === 201) {
+        showSuccess(response?.data?.message);
+        const hapus = await deleteProdukInCart(item?.id_belanjaan);
+        console.log(hapus);
+        // navigation.replace('RiwayatTransaksi');
+      }
     }
   };
 
@@ -157,7 +364,7 @@ const NotaPembelian = ({route, navigation}) => {
               />
               <View style={{marginLeft: 30, marginTop: 5}}>
                 <Text style={{...FONTS.bodyLargeMedium, color: COLORS.black}}>
-                  {item.name}
+                  {item.tb_barang?.nama_barang}
                 </Text>
                 <Text
                   style={{
@@ -165,7 +372,7 @@ const NotaPembelian = ({route, navigation}) => {
                     color: COLORS.primaryColor,
                     marginTop: 5,
                   }}>
-                  {formatRupiah(item.harga)}
+                  {formatRupiah(item.harga_belanjaan)}
                 </Text>
               </View>
               <Text
@@ -177,13 +384,14 @@ const NotaPembelian = ({route, navigation}) => {
                   right: 15,
                   alignSelf: 'center',
                 }}>
-                x {item.qty}
+                x {item.jumlah_belanjaan}
               </Text>
             </View>
           )}
         />
 
         <TouchableOpacity
+          onPress={() => setVisible(!visible)}
           style={[
             style.card,
             {
@@ -229,6 +437,7 @@ const NotaPembelian = ({route, navigation}) => {
           />
         </TouchableOpacity>
         <TouchableOpacity
+          onPress={() => setVisiblePayment(!visiblePayment)}
           style={[
             style.card,
             {
@@ -311,78 +520,14 @@ const NotaPembelian = ({route, navigation}) => {
                   ...FONTS.bodyLargeBold,
                   color: COLORS.primaryColor,
                 }}>
-                {formatRupiah(product?.harga_belanjaan + 15000)}
+                {formatRupiah(totalHarga + 15000)}
               </Text>
             </View>
           </View>
         </View>
-        {/* <View
-          style={[
-            style.card,
-            {
-              // height: SIZES.height * 0.08,
-              backgroundColor: COLORS.white,
-              // alignItems: 'center',
-            },
-          ]}>
-          <Image
-            source={{
-              uri: product?.tb_barang?.gambar_barang              ,
-            }}
-            style={{
-              width: '35%',
-              height: SIZES.height * 0.25,
-              borderBottomLeftRadius: 20,
-              borderTopLeftRadius: 20,
-            }}
-          />
-          <View style={{marginLeft: 15, marginTop: 5}}>
-            <Text style={{...FONTS.bodyNormalMedium, color: COLORS.black}}>
-              Berat {product?.jumlah_belanjaan} {product?.tb_barang?.ukuran_barang}
-            </Text>
-            <Text style={{...FONTS.bodyLargeBold, color: COLORS.black, maxWidth: '90%',}} numberOfLines={2}
-              ellipsizeMode="tail">
-              {product?.tb_barang?.nama_barang}
-            </Text>
-            <Text style={{...FONTS.bodyNormalMedium, color: COLORS.black}}>
-              {product?.harga_belanjaan}
-            </Text>
-            <Text
-              style={{
-                ...FONTS.bodyNormalBold,
-                color: COLORS.black,
-                maxWidth: '50%',
-              }}
-              numberOfLines={2}
-              ellipsizeMode="tail">
-              {product?.tb_barang?.tb_toko?.nama_toko}
-            </Text>
-            <TouchableOpacity>
-              <Text
-                style={{
-                  ...FONTS.bodyNormalBold,
-                  color: COLORS.primaryColor,
-                  marginTop: 30,
-                  textAlign: 'center',
-                }}>
-                Detail...
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
 
-        <View
-          style={[style.card, {backgroundColor: COLORS.white, padding: 20,}]}>
-          <Text style={{...FONTS.bodyLargeMedium, color: COLORS.black}}>
-            Total Harga : Rp. {product?.harga_belanjaan}
-          </Text>
-          <Text style={{...FONTS.bodyNormalMedium}}>
-            Pembayaran COD (Dibayar ditempat)
-          </Text>
-          <Text style={{...FONTS.bodyNormalMedium, color: COLORS.black}}>
-            Pembeli Bayu Cucan Herdian
-          </Text>
-        </View> */}
+        <CustomModal visibleModal={visible} content={contentAddress()} />
+        <CustomModal visibleModal={visiblePayment} content={contentPayment()} />
       </ScrollView>
       <View
         style={{
@@ -390,21 +535,6 @@ const NotaPembelian = ({route, navigation}) => {
           justifyContent: 'space-between',
           paddingHorizontal: 20,
         }}>
-        {/* <TouchableOpacity
-          style={{
-            width: '48%',
-            height: 40,
-            backgroundColor: COLORS.white,
-            borderRadius: 100,
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderWidth: 2,
-            borderColor: COLORS.primaryColor
-          }}>
-            <Text style={{...FONTS.bodyNormalMedium, color: COLORS.primaryColor}}>
-            Ambil Sendiri
-          </Text>
-          </TouchableOpacity> */}
         <TouchableOpacity
           onPress={() => buyNow()}
           style={{

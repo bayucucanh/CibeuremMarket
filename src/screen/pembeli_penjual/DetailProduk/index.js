@@ -12,8 +12,15 @@ import style from './style';
 import {COLORS, FONTS, SIZES, formatRupiah} from '../../../constant';
 import {userAvatar} from '../../../assets';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {InputText, InputTextNumeric, LoadingScreen} from '../../../components';
+import {
+  CustomModal,
+  InputText,
+  InputTextNumeric,
+  LoadingScreen,
+} from '../../../components';
 import Icon from 'react-native-vector-icons/Feather';
+import Icon2 from 'react-native-vector-icons/AntDesign';
+
 
 const DetailProduk = ({navigation, route}) => {
   const [
@@ -25,6 +32,8 @@ const DetailProduk = ({navigation, route}) => {
     setQty,
     tawaran,
     setTawaran,
+    visible,
+    setVisible,
   ] = useDetailProduk({navigation, route});
 
   return (
@@ -155,65 +164,113 @@ const DetailProduk = ({navigation, route}) => {
             </View>
           </View>
 
+          <CustomModal
+            visibleModal={visible}
+            content={
+              <View style={{ paddingHorizontal: 10 }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    // marginBottom: 20,
+                  }}>
+                  <Text
+                    style={{
+                      ...FONTS.bodyLargeBold,
+                      color: COLORS.primaryColor,
+                    }}>
+                    Masukan Jumlah & Tawaran Harga
+                  </Text>
+                  <TouchableOpacity onPress={() => setVisible(!visible)}>
+                    <Icon2
+                      name="closecircleo"
+                      size={20}
+                      color={COLORS.neutral3}
+                      style={{alignSelf: 'center'}}
+                    />
+                  </TouchableOpacity>
+                </View>
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    // marginHorizontal: 20,
+                    marginVertical: 10,
+                  }}>
+                  <Text style={{...FONTS.bodyNormalBold, color: COLORS.black}}>
+                    Jumlah Pesanan
+                  </Text>
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <TouchableOpacity onPress={() => setQty(qty - 1)}>
+                      <Icon name="minus" size={20} />
+                    </TouchableOpacity>
+                    <View
+                      style={{
+                        width: 30,
+                        height: 30,
+                        borderWidth: 1,
+                        borderColor: COLORS.neutral2,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginHorizontal: 5,
+                      }}>
+                      <Text
+                        style={{
+                          ...FONTS.bodySmallMedium,
+                          color: COLORS.black,
+                          marginHorizontal: 10,
+                        }}>
+                        {qty}
+                      </Text>
+                    </View>
+                    <TouchableOpacity onPress={() => setQty(qty + 1)}>
+                      <Icon name="plus" size={20} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    // marginHorizontal: 20,
+                    marginBottom: 10,
+                  }}>
+                  <Text style={{...FONTS.bodyNormalBold, color: COLORS.black}}>
+                    Tawaran Harga
+                  </Text>
+                  <InputTextNumeric
+                    type="numeric"
+                    placeholder="Masukan Harga"
+                    value={tawaran}
+                    defaultValue={`${product?.harga_barang}`}
+                    onChangeText={val => setTawaran(val)}
+                  />
+                </View>
+                <TouchableOpacity
+                  onPress={() => buyProduct()}
+                  style={{
+                    backgroundColor: COLORS.primaryColor,
+                    width: '100%',
+                    // alignSelf: 'flex-end',
+                    height: 40,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 100,
+                    // marginHorizontal: 14,
+                    marginBottom: 14,
+                  }}>
+                  <Text style={{color: 'white', ...FONTS.bodyNormalBold}}>
+                    Masukan Keranjang
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            }
+          />
           {/* <Text>DetailProduk</Text> */}
         </ScrollView>
         <View style={{backgroundColor: COLORS.white}}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginHorizontal: 20,
-              marginVertical: 10,
-            }}>
-            <Text style={{...FONTS.bodyNormalBold, color: COLORS.black}}>
-              Jumlah Pesanan
-            </Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <TouchableOpacity onPress={() => setQty(qty - 1)}>
-                <Icon name="minus" size={20} />
-              </TouchableOpacity>
-              <View
-                style={{
-                  width: 30,
-                  height: 30,
-                  borderWidth: 1,
-                  borderColor: COLORS.neutral2,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginHorizontal: 5,
-                }}>
-                <Text
-                  style={{
-                    ...FONTS.bodySmallMedium,
-                    color: COLORS.black,
-                    marginHorizontal: 10,
-                  }}>
-                  {qty}
-                </Text>
-              </View>
-              <TouchableOpacity onPress={() => setQty(qty + 1)}>
-                <Icon name="plus" size={20} />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View
-            style={{
-              marginHorizontal: 20,
-              marginBottom: 10,
-            }}>
-            <Text style={{...FONTS.bodyNormalBold, color: COLORS.black}}>
-              Tawaran Harga
-            </Text>
-            <InputTextNumeric
-              type="numeric"
-              placeholder="Masukan Harga"
-              value={tawaran}
-              defaultValue={`${product?.harga_barang}`}
-              onChangeText={val => setTawaran(val)}
-            />
-          </View>
           <TouchableOpacity
-            onPress={() => buyProduct()}
+            onPress={() => setVisible(true)}
             style={{
               backgroundColor: COLORS.primaryColor,
               width: '90%',

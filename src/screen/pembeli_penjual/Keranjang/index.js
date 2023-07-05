@@ -43,7 +43,7 @@ const Keranjang = ({navigation}) => {
   const [product, setProduct] = useState([]);
   const [checkbox, setCheckbox] = useState([]);
   const [barangCheckbox, setBarangCheck] = useState([]);
-  const [pickProduct, setPickProduct] = useState(friendsArray);
+  const [pickProduct, setPickProduct] = useState([]);
   const [totalBelanja, setTotalBelanja] = useState(0);
   const [isSelected, setSelection] = useState(false);
   const [barangDiPilih, setBarangDiPilih] = useState({});
@@ -55,7 +55,7 @@ const Keranjang = ({navigation}) => {
   };
 
   function toggleChecked(idToToggle) {
-    console.log('checkbox', checkbox);
+    console.log('checkbox', idToToggle);
     setCheckbox(prev => {
       if (prev.includes(idToToggle)) {
         return prev.filter(id => id !== idToToggle);
@@ -69,12 +69,7 @@ const Keranjang = ({navigation}) => {
       getListCartProduct();
       console.log('product', product);
     }
-    console.log(pickProduct);
-    let totalItems = 0;
-    for (const item of checkbox) {
-      setTotalBelanja(totalItems += item.harga)
-    }
-  }, [isFocused, checkbox]);
+  }, [isFocused]);
 
   return (
     <View style={{flex: 1, backgroundColor: COLORS.white}}>
@@ -90,7 +85,7 @@ const Keranjang = ({navigation}) => {
         </Text>
 
         <FlatList
-          data={pickProduct}
+          data={product}
           numColumns={1}
           initialNumToRender={7}
           showsVerticalScrollIndicator={false}
@@ -119,20 +114,20 @@ const Keranjang = ({navigation}) => {
               />
               <Image
                 source={{
-                  uri: 'https://dharmajaya.co.id/assets/uploads/products/NewFolder%202/Daging%20Sengkel.jpg',
+                  uri: item?.tb_barang?.gambar_barang,
                 }}
                 style={{width: 80, height: 80, marginLeft: 10}}
               />
               <View style={{marginLeft: 20}}>
                 <Text style={{...FONTS.bodyLargeBold, color: COLORS.black}}>
-                  {item.name}
+                  {item.tb_barang?.nama_barang} {console.log("checkbox chec",checkbox.includes(item))}
                 </Text>
                 <Text
                   style={{
                     ...FONTS.bodyNormalMedium,
                     color: COLORS.primaryColor,
                   }}>
-                  {formatRupiah(item.harga)}/Kg
+                  {formatRupiah(item.harga_belanjaan)}/{item?.tb_barang?.ukuran_barang}
                 </Text>
               </View>
               <Text
@@ -143,7 +138,7 @@ const Keranjang = ({navigation}) => {
                   right: 20,
                   alignSelf: 'center',
                 }}>
-                x {item.qty}
+                x {item.jumlah_belanjaan}
               </Text>
             </TouchableOpacity>
           )}

@@ -1,60 +1,163 @@
 import {Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import style from './style';
-import {CustomButton, Headers, InputText} from '../../../components';
-import {COLORS, FONTS} from '../../../constant';
+import {
+  CustomButton,
+  Headers,
+  InputText,
+  LoadingScreen,
+  PhotoProfile,
+} from '../../../components';
+import {
+  BASE_URL,
+  COLORS,
+  FONTS,
+  showDanger,
+  showSuccess,
+} from '../../../constant';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {pengguna} from '../../../services';
+import axios from 'axios';
+import Auth from '../../../services/Auth';
 
 const UbahProfil = () => {
+  const [profile, setProfile] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [nama, setNama] = useState(null);
+  const [nohp, setNohp] = useState(null);
+  const [noktp, setNoktp] = useState(null);
+  const [kelamin, setKelamin] = useState(null);
+  const [alamat, setAlamat] = useState(null);
+  const [lat, setLat] = useState(null);
+  const [long, setLong] = useState(null);
+  const [fieldValue, setFieldValue] = useState(null);
+
+  const getMe = async () => {
+    const response = await pengguna();
+    setProfile(response?.data?.data?.pengguna);
+    setNama(response?.data?.data?.pengguna?.nama_pengguna);
+    setNohp(response?.data?.data?.pengguna?.nomor_hp);
+    setNoktp(response?.data?.data?.pengguna?.nomor_ktp);
+    setKelamin(response?.data?.data?.pengguna?.jenis_kelamin);
+    setFieldValue(response?.data?.data?.pengguna?.foto_pengguna)
+    if (response?.data?.data?.pengguna?.alamat_pengguna !== null) {
+      setAlamat("Tidak Ada alamat");
+    } else {
+      setAlamat(response?.data?.data?.pengguna?.alamat_pengguna);
+    }
+    if (response?.data?.data?.pengguna?.latitude_pengguna !== null && response?.data?.data?.pengguna?.longitude_pengguna === null) {
+      setLat(6.008812)
+      setLong(6.112212)
+    } else {
+      setLat(response?.data?.data?.pengguna?.latitude_pengguna)
+      setLong(response?.data?.data?.pengguna?.longitude_pengguna)
+    }
+    console.log('__res', response?.data);
+  };
+
+  const patchProfile = async () => {
+    setLoading(true)
+    // try {
+      const formdata = new FormData();
+      formdata.append('nama_pengguna', nama);
+      formdata.append('nomor_hp', nohp);
+      formdata.append('nomor_ktp', noktp);
+      console.log("fieldValue", fieldValue !== profile?.foto_pengguna);
+      if (fieldValue !== profile?.foto_pengguna) {
+        formdata.append('foto_pengguna', {
+          uri: fieldValue.uri,
+          type: fieldValue.type,
+          name: fieldValue.fileName,
+        });
+        console.log(formdata);
+      }
+      formdata.append('jenis_kelamin', kelamin);
+      formdata.append('alamat_pengguna', alamat);
+      formdata.append('latitude_pengguna', profile?.latitude_pengguna);
+      formdata.append('longitude_pengguna', profile?.longitude_pengguna);
+      const data = {
+        nama_pengguna: nama,
+        nomor_hp: nohp,
+        nomor_ktp: noktp,
+        foto_pengguna: {
+          uri: fieldValue.uri,
+          type: fieldValue.type,
+          name: fieldValue.fileName,
+        },
+        jenis_kelamin: kelamin,
+        alamat_pengguna: alamat,
+        latitude_pengguna: profile?.latitude_pengguna,
+        longitude_pengguna: profile?.longitude_pengguna
+      }
+
+   
+      const token = await Auth.getToken();
+      console.log(token);
+      const res = await fetch(
+        // 'https://2e5d-36-74-43-165.ngrok.io/api/v1/pengguna/toko',
+        `${BASE_URL}/pengguna`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: 'Bearer ' + token,
+          },
+          body: formdata,
+        },
+      );
+      console.log('status', res.status);
+      if (res.status === 200) {
+        showSuccess('Profile Berhasil Diubah');
+        setFieldValue(null);
+        // navigation.navigate('MainApp');
+      } else {
+        showDanger('Profile Gagal Diubah');
+      }
+    // } catch (error) {
+    //   // console.log('Gagal');
+    //   showDanger('Profile Gagal Diubah');
+    // }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    getMe();
+    console.log('profile', profile);
+  }, []);
+
   return (
-    <View style={style.container}>
-      <Headers title="Ubah Akun" />
+    <>
+      <View style={style.container}>
+        <Headers title="Ubah Akun" />
 
-      <TouchableOpacity
-        style={{
-          width: 150,
-          height: 150,
-          borderWidth: 3,
-          borderColor: COLORS.primaryColor,
-          borderRadius: 20,
-          alignSelf: 'center',
-          marginTop: 20,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <Icon name="file-picture-o" size={90} color={COLORS.primaryColor} />
-        <Text
-          style={{
-            ...FONTS.bodyNormalBold,
-            color: COLORS.primaryColor,
-            marginTop: 8,
-          }}>
-          Tambah Foto Profil
-        </Text>
-      </TouchableOpacity>
+        <PhotoProfile
+          name="image_url"
+          image={{
+            uri: 'https://png.pngtree.com/element_our/20190528/ourlarge/pngtree-file-icon-image_1128287.jpg',
+          }}
+          setFieldValue={setFieldValue}
+          icon="camera"
+          colorIcon={COLORS.primaryColor}
+          // styleImage={{marginTop: 20}}
+        />
 
-      <View style={{marginTop: 20}}>
-        <InputText
-          name="jenisKelamin"
-          placeholder="Bayu Cucan"
-          // style={{ marginTop: 20 }}
-          // onChangeText={handleChange('jenisKelamin')}
-          // onBlur={handleBlur('jenisKelamin')}
-          // value={values.jenisKelamin}
-          // error={touched.jenisKelamin && errors.jenisKelamin}
-          keyboardType="email-address"
-        />
-        <InputText
-          name="jenisKelamin"
-          placeholder="0895401053741"
-          styleOutlined={{marginTop: 20}}
-          // onChangeText={handleChange('jenisKelamin')}
-          // onBlur={handleBlur('jenisKelamin')}
-          // value={values.jenisKelamin}
-          // error={touched.jenisKelamin && errors.jenisKelamin}
-          keyboardType="email-address"
-        />
-        <InputText
+        <View style={{marginTop: 20}}>
+          <InputText
+            placeholder="Masukan nama anda"
+            // style={{ marginTop: 20 }}
+            value={nama}
+            onChangeText={val => setNama(val)}
+            // error={touched.jenisKelamin && errors.jenisKelamin}
+            keyboardType="email-address"
+          />
+          <InputText
+            placeholder="Masukan nomor handphone anda"
+            styleOutlined={{marginTop: 20}}
+            value={nohp}
+            onChangeText={val => setNohp(val)}
+            keyboardType="email-address"
+          />
+          {/* <InputText
           name="jenisKelamin"
           placeholder="********"
           styleOutlined={{marginTop: 20}}
@@ -63,36 +166,36 @@ const UbahProfil = () => {
           // value={values.jenisKelamin}
           // error={touched.jenisKelamin && errors.jenisKelamin}
           keyboardType="email-address"
-        />
-        <InputText
-          name="jenisKelamin"
-          placeholder="9999102771288828"
-          styleOutlined={{marginTop: 20}}
-          // onChangeText={handleChange('jenisKelamin')}
-          // onBlur={handleBlur('jenisKelamin')}
-          // value={values.jenisKelamin}
-          // error={touched.jenisKelamin && errors.jenisKelamin}
-          keyboardType="email-address"
-        />
-        <InputText
-          name="jenisKelamin"
-          placeholder="Laki-laki"
-          styleOutlined={{marginTop: 20}}
-          // onChangeText={handleChange('jenisKelamin')}
-          // onBlur={handleBlur('jenisKelamin')}
-          // value={values.jenisKelamin}
-          // error={touched.jenisKelamin && errors.jenisKelamin}
-          keyboardType="email-address"
-        />
-        <CustomButton
-          // onPress={handleSubmit}
-          title="Ubah Akun"
-          // enabled={isValid && !errors.email && !errors.password && dirty}
-          enabled={true}
-          buttonStyle={{marginTop: 20}}
-        />
+        /> */}
+          <InputText
+            placeholder="Masukan NIK anda"
+            styleOutlined={{marginTop: 20}}
+            onChangeText={val => setNoktp(val)}
+            value={noktp}
+          />
+          <InputText
+            placeholder={'Masukan alamat anda'}
+            styleOutlined={{marginTop: 20}}
+            onChangeText={val => setAlamat(val)}
+            value={alamat}
+          />
+          <InputText
+            name="jenisKelamin"
+            placeholder="Masukan jenis kelamin anda"
+            styleOutlined={{marginTop: 20}}
+            onChangeText={val => setKelamin(val)}
+            value={kelamin}
+          />
+          <CustomButton
+            onPress={() => patchProfile()}
+            title="Ubah Akun"
+            enabled={true}
+            buttonStyle={{marginTop: 20}}
+          />
+        </View>
       </View>
-    </View>
+      {loading && <LoadingScreen />}
+    </>
   );
 };
 

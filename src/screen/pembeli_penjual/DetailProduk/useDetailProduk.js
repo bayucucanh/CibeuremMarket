@@ -1,7 +1,7 @@
 import {Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {addCart, detailProduct, pengguna} from '../../../services';
-import {BASE_URL, showDanger, showSuccess} from '../../../constant';
+import {BASE_URL, COLORS, FONTS, showDanger, showSuccess} from '../../../constant';
 
 const useDetailProduk = ({navigation, route}) => {
   const {productId} = route.params;
@@ -9,11 +9,13 @@ const useDetailProduk = ({navigation, route}) => {
   const [product, setProduct] = useState([]);
   const [qty, setQty] = useState(1);
   const [tawaran, setTawaran] = useState(0);
+  const [visible, setVisible] = useState(false);
 
   const getDetailProduct = async () => {
     setLoading(true);
     const response = await detailProduct(productId);
     setProduct(response?.data?.data?.barang);
+    setTawaran(response?.data?.data?.barang?.harga_barang);
     setLoading(false);
   };
 
@@ -57,7 +59,18 @@ const useDetailProduk = ({navigation, route}) => {
 
   const [loading, setLoading] = useState(false);
 
-  return [loading, product, setProduct, buyProduct, qty, setQty, tawaran, setTawaran,];
+  return [
+    loading,
+    product,
+    setProduct,
+    buyProduct,
+    qty,
+    setQty,
+    tawaran,
+    setTawaran,
+    visible,
+    setVisible,
+  ];
 };
 
 export default useDetailProduk;
