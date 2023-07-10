@@ -71,6 +71,14 @@ const Keranjang = ({navigation}) => {
     }
   }, [isFocused]);
 
+  useEffect(() => {
+    console.log("Checkbox 2", checkbox);
+    let totalHarga = 0
+    for (const item of product) {
+      setTotalBelanja((totalHarga += item.harga_belanjaan));
+    }
+  }, [checkbox]);
+
   return (
     <View style={{flex: 1, backgroundColor: COLORS.white}}>
       <ScrollView contentContainerStyle={[style.container]}>
@@ -127,7 +135,7 @@ const Keranjang = ({navigation}) => {
                     ...FONTS.bodyNormalMedium,
                     color: COLORS.primaryColor,
                   }}>
-                  {formatRupiah(item.harga_belanjaan)}/{item?.tb_barang?.ukuran_barang}
+                  {formatRupiah(item.harga_belanjaan)}
                 </Text>
               </View>
               <Text
@@ -175,7 +183,7 @@ const Keranjang = ({navigation}) => {
               color: COLORS.black,
               marginLeft: 10,
             }}>
-            {checkbox.length === 0 ? "Rp. 0" : formatRupiah(totalBelanja)}
+            {checkbox.length === 0 && product.length === 0 ? "Rp. 0" : formatRupiah(totalBelanja)}
           </Text>
         </View>
         <TouchableOpacity

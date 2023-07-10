@@ -23,6 +23,10 @@ export const listProductBySearch = (value) => {
   return apiGet(`${BASE_URL}/pengguna/barang?cari=${value}`)
 }
 
+export const listProductByCategory = (value) => {
+  return apiGet(`${BASE_URL}/pengguna/barang?jenis_barang=${value}`)
+}
+
 export const listProductCart = () => {
   return apiGet(`${BASE_URL}/pengguna/belanjaan`)
 }

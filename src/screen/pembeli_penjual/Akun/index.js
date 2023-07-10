@@ -50,14 +50,17 @@ const Akun = ({navigation}) => {
 
   const getMyTransaction = async () => {
     const response = await myTransaction();
-    console.log("Transaksi", response?.data?.data.length === 0);
+    console.log("Transaksi", response?.data?.data.filter((item) => item.status_transaksi === "pending").length);
     if (response?.data?.data.length === 0) {
       setPending({...pending, total: 0})
       setDikemas({...dikemas, total: 0})
       setDikirim({...dikirim, total: 0})
       setSelesai({...selesai, total: 0})
     } else {
-      console.log("Belum");
+      setPending({...pending, total:response?.data?.data.filter((item) => item.status_transaksi === "pending").length})
+      setDikemas({...dikemas, total:response?.data?.data.filter((item) => item.status_transaksi === "dikemas").length})
+      setDikirim({...dikirim, total:response?.data?.data.filter((item) => item.status_transaksi === "dikirim").length})
+      setSelesai({...selesai, total:response?.data?.data.filter((item) => item.status_transaksi === "selesai").length})
     }
   }
 

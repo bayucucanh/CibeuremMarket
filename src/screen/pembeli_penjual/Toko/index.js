@@ -83,12 +83,14 @@ const Toko = ({navigation}) => {
               borderRadius: 20,
               position: 'relative',
             }]}>
-            <TouchableOpacity style={{ position: 'absolute', right: 5, top: 5, width: 50, height: 50, borderRadius: 50, justifyContent: 'center', alignItems: 'center' }}>
+            <TouchableOpacity 
+              onPress={() => navigation.navigate("UbahToko", {toko: dataToko})}
+            style={{ position: 'absolute', right: 5, top: 5, width: 50, height: 50, borderRadius: 50, justifyContent: 'center', alignItems: 'center' }}>
               <Icon2 name="edit" size={30} style={{color: COLORS.primaryColor}} />
             </TouchableOpacity>
             <Image
               source={{
-                uri: 'https://mmc.tirto.id/image/otf/500x0/2021/03/16/header-src_ratio-16x9.jpeg',
+                uri: dataToko?.gambar_toko,
               }}
               style={{
                 width: 100,

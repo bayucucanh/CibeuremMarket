@@ -31,7 +31,7 @@ const useHome = ({navigation}) => {
     setSearchProduct,
     prouducts,
     setProduct,
-    getProductsBySearch
+    getProducts
   ]
 }
 

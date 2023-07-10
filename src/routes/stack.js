@@ -6,6 +6,7 @@ import {
   DaftarToko,
   DetailPesanan,
   DetailProduk,
+  DetailTransaksi,
   EditBarang,
   IsiSaldo,
   Login,
@@ -16,6 +17,7 @@ import {
   SplashScreen,
   TambahBarang,
   UbahProfil,
+  UbahToko,
 } from '../screen';
 import MainApp from './MainApp';
 import {setUser} from '../redux/state/setUser';
@@ -134,6 +136,16 @@ const Router = () => {
       <Stack.Screen
         name="CariBarang"
         component={CariBarang}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="DetailTransaksi"
+        component={DetailTransaksi}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="UbahToko"
+        component={UbahToko}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

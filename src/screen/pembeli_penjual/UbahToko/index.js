@@ -20,8 +20,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {PhotoProfile} from '../../../components';
 import Auth from '../../../services/Auth';
+import { useEffect } from 'react';
 
-const DaftarToko = ({navigation}) => {
+const UbahToko = ({navigation, route}) => {
+  const {toko} = route.params;
+
   const [open1, setOpen1] = useState(false);
   const [loading, setLoading] = useState(false);
   const [open2, setOpen2] = useState(false);
@@ -30,14 +33,14 @@ const DaftarToko = ({navigation}) => {
   const [fieldValue, setFieldValue] = useState(null);
   const [fieldSurat, setFieldSurat] = useState(null);
   const [data, setData] = useState({
-    storeName: '',
-    address: '',
-    dayOpen: '',
-    openHour: valueOpen,
-    closeHour: valueClose,
-    noHp: '',
-    email: '',
-    description: '',
+    storeName: toko?.nama_toko,
+    address: toko?.alamat_toko,
+    dayOpen: toko?.hari_buka,
+    openHour: toko?.jam_buka,
+    closeHour: toko?.jam_tutup,
+    noHp: toko?.nomor_hp_toko,
+    email: toko?.email_toko,
+    description: toko?.deskripsi_toko,
   });
   const [items, setItems] = useState([
     {label: '07:00:00', value: '07:00:00'},
@@ -95,7 +98,7 @@ const DaftarToko = ({navigation}) => {
         // 'https://2e5d-36-74-43-165.ngrok.io/api/v1/pengguna/toko',
         `${BASE_URL}/pengguna/toko`,
         {
-          method: 'POST',
+          method: 'PATCH',
           headers: {
             'Content-Type': 'multipart/form-data',
             Authorization: 'Bearer ' + token,
@@ -105,7 +108,7 @@ const DaftarToko = ({navigation}) => {
       );
       console.log(res);
       if (res.status == 200 || (201 && res.status !== 400)) {
-        showSuccess('Toko Berhasil Didaftarkan');
+        showSuccess('Toko Berhasil Diubah');
         setFieldValue(null);
         setFieldSurat(null);
         navigation.navigate('MainApp');
@@ -117,11 +120,16 @@ const DaftarToko = ({navigation}) => {
     setLoading(false);
   };
 
+  useEffect(() => {
+    console.log("data toko", toko);
+  }, [])
+  
+
   return (
     <>
       <ScrollView
         style={[style.container, {paddingHorizontal: 20, paddingVertical: 20}]}>
-        <Headers title="Daftar Toko" />
+        <Headers title="Ubah Toko" />
         <PhotoProfile
           name="image_url"
           image={{
@@ -336,6 +344,6 @@ const DaftarToko = ({navigation}) => {
   );
 };
 
-export default DaftarToko;
+export default UbahToko;
 
 const styles = StyleSheet.create({});

@@ -8,7 +8,7 @@ import {
   FlatList,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {CustomModal, Headers, InputText, Separator} from '../../../components';
+import {CustomModal, Headers, InputText, LoadingScreen, Separator} from '../../../components';
 import style from './style';
 import {
   COLORS,
@@ -34,6 +34,8 @@ const NotaPembelian = ({route, navigation}) => {
   const [visible, setVisible] = useState(false);
   const [visiblePayment, setVisiblePayment] = useState(false);
   const [alamat, setAlamat] = useState(null);
+  const [namaPenerima, setNamaPenerima] = useState(null);
+  const [noHpPenerima, setNoHpPenerima] = useState(null);
   const [nama, setNama] = useState(null);
   const [nohp, setNohp] = useState(null);
   const [payment, setPayment] = useState(null);
@@ -101,8 +103,8 @@ const NotaPembelian = ({route, navigation}) => {
         </Text>
         <InputText
           placeholder={'Masukan Nama Lengkapmu'}
-          value={alamat}
-          onChangeText={val => setAlamat(val)}
+          value={namaPenerima}
+          onChangeText={val => setNamaPenerima(val)}
         />
         <Text
           style={{
@@ -115,8 +117,8 @@ const NotaPembelian = ({route, navigation}) => {
         </Text>
         <InputText
           placeholder={'Masukan No. Handphonemu'}
-          value={alamat}
-          onChangeText={val => setAlamat(val)}
+          value={noHpPenerima}
+          onChangeText={val => setNoHpPenerima(val)}
         />
 
         <TouchableOpacity
@@ -163,6 +165,7 @@ const NotaPembelian = ({route, navigation}) => {
         </View>
 
         <TouchableOpacity
+          onPress={() => setPayment('Saldo Dompet Cibeureum')}
           style={{flexDirection: 'row', marginTop: 20}}
           disabled={saldo === null || saldo < totalHarga}>
           <Icon2
@@ -190,7 +193,9 @@ const NotaPembelian = ({route, navigation}) => {
             )
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{flexDirection: 'row', marginTop: 20}}>
+        <TouchableOpacity
+          style={{flexDirection: 'row', marginTop: 20}}
+          onPress={() => setPayment('cod')}>
           <Icon2 name="gift" size={20} color={COLORS.primaryColor} />
           <Text
             style={{
@@ -216,7 +221,7 @@ const NotaPembelian = ({route, navigation}) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => setVisible(!visible)}
+          onPress={() => setVisiblePayment(!visiblePayment)}
           style={{
             width: '100%',
             height: 40,
@@ -228,7 +233,7 @@ const NotaPembelian = ({route, navigation}) => {
             // marginHorizontal: 10
           }}>
           <Text style={{...FONTS.bodyNormalBold, color: COLORS.white}}>
-            Simpan Alamat
+            Simpan Metode Pembayaran
           </Text>
         </TouchableOpacity>
       </View>
@@ -236,23 +241,21 @@ const NotaPembelian = ({route, navigation}) => {
   }
 
   const buyNow = async () => {
+    setLoading(true);
     for (const item of product) {
-      setLoading(true);
       const data = {
         nama_belanjaan: item?.tb_barang?.nama_barang,
         jumlah_belanjaan: item?.jumlah_belanjaan,
         harga_belanjaan: item?.harga_belanjaan,
         total_harga: item?.harga_belanjaan,
-        metode_pembayaran: 'cod',
+        metode_pembayaran: payment,
         status_transaksi: 'pending',
         id_pengguna: item?.id_pengguna,
         id_toko: item?.tb_barang?.tb_toko?.id_toko,
         id_belanjaan: item?.id_belanjaan,
-        id_barang: item?.tb_barang?.id_barang
+        id_barang: item?.tb_barang?.id_barang,
       };
-      console.log('Push___', data);
       const response = await buyProduct(data);
-      console.log(response);
       if (response.status === 201) {
         showSuccess(response?.data?.message);
         const hapus = await deleteProdukInCart(item?.id_belanjaan);
@@ -260,37 +263,15 @@ const NotaPembelian = ({route, navigation}) => {
         // navigation.replace('RiwayatTransaksi');
       }
     }
+    setLoading(false);
+    navigation.replace('RiwayatTransaksi', {status: "pending"});
   };
 
   return (
+    <>
     <View style={[style.container, {flex: 1}]}>
       <ScrollView>
         <Headers title="Pemesanan Barang" />
-        {/* <GooglePlacesAutocomplete
-        onFail={error => console.error(error)}
-        placeholder="Enter Location"
-        minLength={2}
-        autoFocus={false}
-        returnKeyType={'default'}
-        fetchDetails={true}
-        styles={{
-          textInputContainer: {
-            backgroundColor: 'grey',
-          },
-          textInput: {
-            height: 38,
-            color: '#5d5d5d',
-            fontSize: 16,
-          },
-          predefinedPlacesDescription: {
-            color: '#1faadb',
-          },
-        }}
-        query={{
-          key: 'AIzaSyAVMZMTtih_8UiN-qgnoL5fKwPF4qQkybE',
-          language: 'en',
-        }}
-      /> */}
         <Text
           style={{
             ...FONTS.headingLargeBold,
@@ -300,42 +281,6 @@ const NotaPembelian = ({route, navigation}) => {
           }}>
           Barang Belanjaan
         </Text>
-        {/* <View
-          style={[
-            style.card,
-            {padding: 10, backgroundColor: COLORS.white, position: 'relative'},
-          ]}>
-          <Image
-            source={{
-              uri: product?.tb_barang?.gambar_barang,
-            }}
-            style={{width: 100, height: 100}}
-          />
-          <View style={{marginLeft: 30, marginTop: 5}}>
-            <Text style={{...FONTS.bodyLargeMedium, color: COLORS.black}}>
-              {product?.tb_barang?.nama_barang}
-            </Text>
-            <Text
-              style={{
-                ...FONTS.bodyLargeMedium,
-                color: COLORS.primaryColor,
-                marginTop: 5,
-              }}>
-              {formatRupiah(product?.harga_belanjaan)}
-            </Text>
-          </View>
-          <Text
-            style={{
-              ...FONTS.bodyLargeBold,
-              position: 'absolute',
-              color: COLORS.black,
-              marginTop: 5,
-              right: 15,
-              alignSelf: 'center',
-            }}>
-            x 2
-          </Text>
-        </View> */}
 
         <FlatList
           data={product}
@@ -358,7 +303,7 @@ const NotaPembelian = ({route, navigation}) => {
               ]}>
               <Image
                 source={{
-                  uri: 'https://res.cloudinary.com/dk0z4ums3/image/upload/v1605524896/attached_image/mengolah-daging-sapi-dengan-benar.jpg',
+                  uri: item?.tb_barang?.gambar_barang,
                 }}
                 style={{width: 100, height: 100}}
               />
@@ -417,7 +362,7 @@ const NotaPembelian = ({route, navigation}) => {
                 color: COLORS.black,
                 // marginTop: 10,
               }}>
-              Penerima : Bayu Cucan Herdian
+              Penerima : {namaPenerima === null ? "Tidak ada nama penerima" : namaPenerima}
             </Text>
             <Text
               style={{
@@ -425,7 +370,7 @@ const NotaPembelian = ({route, navigation}) => {
                 color: COLORS.black,
                 // marginTop: 10,
               }}>
-              Jln. Sukamulus No.17 RT001/RW0018
+              {alamat === null ? 'Tidak ada alamat' : alamat}
             </Text>
           </View>
 
@@ -463,7 +408,7 @@ const NotaPembelian = ({route, navigation}) => {
                 color: COLORS.black,
                 // marginTop: 10,
               }}>
-              Saldo Dompet Cibeurem
+              {payment === null ? 'Metode Pembayaran Kosong' : payment}
             </Text>
           </View>
 
@@ -552,6 +497,8 @@ const NotaPembelian = ({route, navigation}) => {
         </TouchableOpacity>
       </View>
     </View>
+    {loading && (<LoadingScreen />)}
+    </>
   );
 };
 

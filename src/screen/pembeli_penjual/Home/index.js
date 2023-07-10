@@ -12,21 +12,34 @@ import {ProductCard, SearchBar} from '../../../components';
 import useHome from './useHome';
 import style from './style';
 import Auth from '../../../services/Auth';
-import {listProduct, listProductBySearch} from '../../../services';
+import {
+  listProduct,
+  listProductByCategory,
+  listProductBySearch,
+} from '../../../services';
 import {COLORS, FONTS, SIZES} from '../../../constant';
 import Icon from 'react-native-vector-icons/Feather';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
 
 const Home = ({navigation}) => {
-  const [searchProduct, setSearchProduct, prouducts, setProduct] = useHome({
-    navigation,
-  });
+  const [searchProduct, setSearchProduct, prouducts, setProduct, getProducts] =
+    useHome({
+      navigation,
+    });
 
   const getProductsBySearch = async () => {
     // const token = await Auth.getToken();
     // console.log('token', token);
     const response = await listProductBySearch(searchProduct);
+    console.log('res', response?.data);
+    setProduct(response?.data?.data?.barang);
+  };
+
+  const getProductsByCategory = async value => {
+    // const token = await Auth.getToken();
+    // console.log('token', token);
+    const response = await listProductByCategory(value);
     console.log('res', response?.data);
     setProduct(response?.data?.data?.barang);
   };
@@ -37,8 +50,8 @@ const Home = ({navigation}) => {
       <LinearGradient
         start={{x: 0.0, y: 0.25}}
         end={{x: 0.5, y: 1.0}}
-        colors={[ '#fdc69d', '#ffb27a', '#fe906e']}
-        style={{width: '100%', padding: 20,}}>
+        colors={['#fdc69d', '#ffb27a', '#fe906e']}
+        style={{width: '100%', padding: 20}}>
         {/* <View style={{marginBottom: 10}}>
           <Text style={{...FONTS.bodyLargeBold, color: COLORS.white}}>
             Hallo, Bayu Cucan Herdian
@@ -76,7 +89,12 @@ const Home = ({navigation}) => {
         </View>
 
         <Text
-          style={{...FONTS.bodyLargeBold, color: COLORS.white, marginTop: 10, marginBottom: 15}}>
+          style={{
+            ...FONTS.bodyLargeBold,
+            color: COLORS.white,
+            marginTop: 10,
+            marginBottom: 15,
+          }}>
           Pilih Sesuai Kategori
         </Text>
       </LinearGradient>
@@ -97,7 +115,7 @@ const Home = ({navigation}) => {
           },
         ]}>
         <TouchableOpacity
-          onPress={() => getProductsBySearch()}
+          onPress={() => getProductsByCategory('Daging')}
           style={{
             height: 50,
             // width: 50,
@@ -109,10 +127,12 @@ const Home = ({navigation}) => {
             alignItems: 'center',
           }}>
           <Icon2 name="cow" color={COLORS.primaryColor} size={35} />
-          <Text style={{ ...FONTS.bodySmallBold, color: COLORS.primaryColor }}>Daging</Text>
+          <Text style={{...FONTS.bodySmallBold, color: COLORS.primaryColor}}>
+            Daging
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => getProductsBySearch()}
+          onPress={() => getProductsByCategory('Sembako')}
           style={{
             height: 50,
             // width: 50,
@@ -124,10 +144,12 @@ const Home = ({navigation}) => {
             alignItems: 'center',
           }}>
           <Icon2 name="rice" color={COLORS.primaryColor} size={35} />
-          <Text style={{ ...FONTS.bodySmallBold, color: COLORS.primaryColor }}>Sembako</Text>
+          <Text style={{...FONTS.bodySmallBold, color: COLORS.primaryColor}}>
+            Sembako
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => getProductsBySearch()}
+          onPress={() => getProductsByCategory('Sandang')}
           style={{
             height: 50,
             // width: 50,
@@ -138,11 +160,17 @@ const Home = ({navigation}) => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Icon2 name="tshirt-crew-outline" color={COLORS.primaryColor} size={35} />
-          <Text style={{ ...FONTS.bodySmallBold, color: COLORS.primaryColor }}>Sandang</Text>
+          <Icon2
+            name="tshirt-crew-outline"
+            color={COLORS.primaryColor}
+            size={35}
+          />
+          <Text style={{...FONTS.bodySmallBold, color: COLORS.primaryColor}}>
+            Sandang
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => getProductsBySearch()}
+          onPress={() => getProducts()}
           style={{
             height: 50,
             // width: 50,
@@ -153,8 +181,14 @@ const Home = ({navigation}) => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Icon2 name="sort-alphabetical-ascending-variant" color={COLORS.primaryColor} size={35} />
-          <Text style={{ ...FONTS.bodySmallBold, color: COLORS.primaryColor }}>Semua</Text>
+          <Icon2
+            name="sort-alphabetical-ascending-variant"
+            color={COLORS.primaryColor}
+            size={35}
+          />
+          <Text style={{...FONTS.bodySmallBold, color: COLORS.primaryColor}}>
+            Semua
+          </Text>
         </TouchableOpacity>
       </View>
       <View

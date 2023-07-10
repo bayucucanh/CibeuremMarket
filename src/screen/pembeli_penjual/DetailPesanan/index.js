@@ -132,7 +132,7 @@ const DetailPesanan = ({navigation, route}) => {
               }}>
               <Image
                 source={{
-                  uri: 'https://pict.sindonews.net/dyn/850/pena/news/2022/01/13/39/655579/harga-fotofoto-ghozali-bikin-melongo-ada-yang-laku-rp42-miliiar-fwx.jpg',
+                  uri: transaksi?.tb_pengguna.foto_pengguna,
                 }}
                 style={{width: 50, height: 50, borderRadius: 50}}
               />
@@ -143,7 +143,7 @@ const DetailPesanan = ({navigation, route}) => {
                   textAlign: 'left',
                   marginLeft: 20,
                 }}>
-                Pemesan : Bayu
+                Pemesan : {transaksi?.tb_pengguna.nama_pengguna}
               </Text>
             </View>
             <TouchableOpacity

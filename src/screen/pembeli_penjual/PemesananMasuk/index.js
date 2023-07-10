@@ -70,13 +70,13 @@ const PemesananMasuk = ({navigation}) => {
             onPress={() => navigation.navigate('DetailPesanan', {id_transaksi: item.id_transaksi})}>
             <Image
               source={{
-                uri: 'https://pict.sindonews.net/dyn/850/pena/news/2022/01/13/39/655579/harga-fotofoto-ghozali-bikin-melongo-ada-yang-laku-rp42-miliiar-fwx.jpg',
+                uri: item?.tb_pengguna?.foto_pengguna,
               }}
               style={{width: 50, height: 50, borderRadius: 50}}
             />
             <View style={{marginLeft: 18}}>
               <Text style={{...FONTS.bodyNormalBold, color: COLORS.black}}>
-                Pemesan : Bayu
+                Pemesan : {item?.tb_pengguna?.nama_pengguna}
               </Text>
               <Text style={{...FONTS.bodyNormalMedium}}>{item?.nama_belanjaan}</Text>
               <Text style={{...FONTS.bodyNormalMedium}}>
