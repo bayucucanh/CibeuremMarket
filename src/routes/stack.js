@@ -19,6 +19,10 @@ import {
   AkunKurir,
   UbahAkunKurir,
   RiwayatPengiriman,
+  DetailRiwayat,
+  DetailPengiriman,
+  DenahToko,
+  Pengiriman,
 } from '../screen';
 import MainApp from './MainApp';
 import MainAppKurir from './MainAppKurir';
@@ -60,7 +64,7 @@ const Router = () => {
   }
 
   return (
-    <Stack.Navigator initialRouteName="MainApp">
+    <Stack.Navigator initialRouteName="LoginScreen">
       <Stack.Screen
         name="MainApp"
         component={MainApp}
@@ -71,7 +75,7 @@ const Router = () => {
         component={SplashScreen}
         options={{headerShown: false}}
       />
-      {!login && (
+      {/* {!login && (
         <>
           <Stack.Screen
             name="LoginScreen"
@@ -80,11 +84,16 @@ const Router = () => {
           />
           <Stack.Screen
             name="RegisterKurir"
-            component={RegisterUser}
+            component={RegisterKurir}
             options={{headerShown: false}}
           />
         </>
-      )}
+      )} */}
+      <Stack.Screen
+        name="RegisterKurir"
+        component={RegisterKurir}
+        options={{headerShown: false}}
+      />
       <Stack.Screen
         name="DetailProduk"
         component={DetailProduk}
@@ -93,6 +102,11 @@ const Router = () => {
       <Stack.Screen
         name="RiwayatTransaksi"
         component={RiwayatTransaksi}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="RegisterUser"
+        component={RegisterUser}
         options={{headerShown: false}}
       />
       <Stack.Screen
@@ -130,6 +144,7 @@ const Router = () => {
         component={TambahBarang}
         options={{headerShown: false}}
       />
+      {/* ===================================> */}
       <Stack.Screen
         name="HomeKurir"
         component={HomeKurir}
@@ -150,6 +165,32 @@ const Router = () => {
         component={RiwayatPengiriman}
         options={{headerShown: false}}
       />
+      <Stack.Screen
+        name="DetailRiwayat"
+        component={DetailRiwayat}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="DetailPengiriman"
+        component={DetailPengiriman}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="DenahToko"
+        component={DenahToko}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Pengiriman"
+        component={Pengiriman}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="LoginScreen"
+        component={Login}
+        options={{headerShown: false}}
+      />
+      {/* ===================================> */}
     </Stack.Navigator>
   );
 };

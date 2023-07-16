@@ -1,5 +1,5 @@
 /* eslint default-param-last: ["error"] */
-import { LOADING, REFRESH } from '../types';
+import {LOADING, REFRESH} from '../types';
 
 const initialGlobalState = {
   isLoading: false,

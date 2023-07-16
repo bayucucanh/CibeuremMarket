@@ -1,7 +1,12 @@
 import * as yup from 'yup';
 
 export const loginValidationSchema = yup.object().shape({
-  nomor_hp: yup.string().trim().max(13).min(10).required('emailAlertRequired'),
+  nomor_hp: yup
+    .string()
+    .trim()
+    .max(13, 'nomor lebih dari 13 digit')
+    .min(10, 'nomor hp kurang dari 10 digit')
+    .required('Silahkan isi Nomor Hp'),
   password: yup
     .string()
     .trim()
@@ -10,7 +15,7 @@ export const loginValidationSchema = yup.object().shape({
     //   /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/,
     //   'passwordAlertMatch',
     // )
-    .required('passwordAlertRequired'),
+    .required('Silahkan isi Password'),
 });
 
 export const registerValidationSchema = yup.object().shape({

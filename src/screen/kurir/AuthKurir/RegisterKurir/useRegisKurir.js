@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import {registerKurir} from '../../../../services';
+import {showDanger, showSuccess} from '../../../../constant';
 
 const useRegisterKurir = ({navigation}) => {
-  //   const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   async function registerHandle(values) {
     const data = {
@@ -12,7 +13,8 @@ const useRegisterKurir = ({navigation}) => {
       nomor_ktp: values.noKtp,
       jenis_kelamin: values.jenisKelamin,
       plat_motor: values.plat_motor,
-      //   foto_sim: values.foto_sim,
+      foto_sim: values.foto_sim,
+      foto_stnk: values.foto_stnk,
     };
 
     try {
@@ -20,20 +22,21 @@ const useRegisterKurir = ({navigation}) => {
       const response = await registerKurir(data);
       console.log('ini res___', response.status);
       if ((response.status = 201)) {
-        navigation.navigate('LoginScreen');
         setLoading(false);
+        showSuccess('Registrasi Berhasil');
+        navigation.navigate('LoginScreen');
       } else {
-        alert('Register Gagal');
+        showDanger('Registrasi Gagal');
         setLoading(false);
       }
     } catch (error) {
       console.log('kesalahan');
-      //   setLoading(false);
+      setLoading(false);
     }
   }
 
   //   return [registerHandle, loading];
-  return [registerHandle];
+  return [registerHandle, loading];
 };
 
 export default useRegisterKurir;

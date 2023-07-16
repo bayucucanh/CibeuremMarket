@@ -1,10 +1,10 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import { listProduct } from '../../../services';
+import {StyleSheet, Text, View} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {listProduct} from '../../../services';
 
 const useHome = ({navigation}) => {
-  const [searchProduct, setSearchProduct] = useState('')
-  const [prouducts, setProduct] = useState([])
+  const [searchProduct, setSearchProduct] = useState('');
+  const [prouducts, setProduct] = useState([]);
 
   const getProducts = async () => {
     // const token = await Auth.getToken();
@@ -15,17 +15,12 @@ const useHome = ({navigation}) => {
   };
 
   useEffect(() => {
-    getProducts()
-  }, [])
+    getProducts();
+  }, []);
 
-  return [
-    searchProduct,
-    setSearchProduct,
-    prouducts,
-    setProduct
-  ]
-}
+  return [searchProduct, setSearchProduct, prouducts, setProduct];
+};
 
-export default useHome
+export default useHome;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

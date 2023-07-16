@@ -13,11 +13,28 @@ import {COLORS, loginValidationSchema} from '../../../../constant';
 import {launchImageLibrary} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {showMessage} from 'react-native-flash-message';
+import DropDownPicker from 'react-native-dropdown-picker';
+// import useRegisterKurir from './useRegisKurir';
+import {showDanger, showSuccess} from '../../../../constant';
 
 const RegisterKurir = ({navigation}) => {
+  // const [loading] = useRegisterKurir({navigation});
+  const [loading, setLoading] = useState(false);
   const [photoSim, setPhotoSim] = useState(null);
   const [photoSimDB, setPhotoSimDB] = useState(null);
-  const [photoStnk, setPhotoStnk] = useState();
+  const [photoStnk, setPhotoStnk] = useState(null);
+  const [photoStnkDB, setPhotoStnkDB] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [gender, setGender] = useState(null);
+  const [items, setItems] = useState([
+    {label: 'Laki - laki', value: 'laki-laki'},
+    {label: 'Perempuan', value: 'perempuan'},
+  ]);
+
+  const handleJenisKelaminChange = value => {
+    setGender(value);
+    console.log(value);
+  };
 
   const getImageSim = async values => {
     await launchImageLibrary(
@@ -26,7 +43,7 @@ const RegisterKurir = ({navigation}) => {
         console.log('response:', response);
         if (response.didCancel || response.error) {
           showMessage({
-            message: 'fotonya mana?',
+            message: 'Silahkan simpan foto SIM',
             type: 'warning',
             backgroundColor: COLORS.primaryCream1,
             color: COLORS.black,
@@ -40,7 +57,29 @@ const RegisterKurir = ({navigation}) => {
       },
     );
   };
-  // ==========================================>
+
+  const getImageStnk = async values => {
+    await launchImageLibrary(
+      {mediaType: 'photo', quality: 1, includeBase64: true},
+      response => {
+        console.log('response:', response);
+        if (response.didCancel || response.error) {
+          showMessage({
+            message: 'Silahkan simpan foto STNK',
+            type: 'warning',
+            backgroundColor: COLORS.primaryCream1,
+            color: COLORS.black,
+          });
+        } else {
+          const source = {uri: response.assets[0].uri};
+          setPhotoStnk(source);
+          values.foto_stnk = source;
+          setPhotoStnkDB(response.assets[0]);
+        }
+      },
+    );
+  };
+
   const onSubmit = async values => {
     try {
       const formdata = new FormData();
@@ -48,16 +87,21 @@ const RegisterKurir = ({navigation}) => {
       formdata.append('nomor_hp', values.nomor_hp);
       formdata.append('password', values.password);
       formdata.append('nomor_ktp', values.nomor_ktp);
-      formdata.append('jenis_kelamin', values.jenis_kelamin);
+      formdata.append('jenis_kelamin', gender);
       formdata.append('plat_motor', values.plat_motor);
       formdata.append('foto_sim', {
         uri: photoSimDB.uri,
         type: photoSimDB.type,
         name: photoSimDB.fileName,
       });
+      formdata.append('foto_stnk', {
+        uri: photoStnkDB.uri,
+        type: photoStnkDB.type,
+        name: photoStnkDB.fileName,
+      });
 
       const res = await fetch(
-        'https://2fba-36-74-43-37.ngrok.io/api/v1/kurir/register',
+        'https://admin-pasar-server-bhczowagua-uc.a.run.app/api/v1/kurir/register',
         {
           method: 'POST',
           headers: {
@@ -70,42 +114,39 @@ const RegisterKurir = ({navigation}) => {
       const data = await res.json();
       console.log(data);
       console.log(res.status);
-      if (res.status >= 200 || 201) {
-        showMessage({
-          message: 'Berhasil Terbitkan Produk',
-          type: 'success',
-          backgroundColor: COLORS.lightGray,
-          color: COLORS.alertSuccess,
-        });
-        // resetForm({});
+      console.log(formdata);
+      if (res.status >= 200 && res.status <= 201) {
+        // showMessage({
+        //   message: 'Berhasil',
+        //   type: 'success',
+        //   backgroundColor: COLORS.lightGray,
+        //   color: COLORS.alertSuccess,
+        // });
+        showSuccess('Registrasi Berhasil');
         setPhotoSim(null);
+        setPhotoStnk(null);
         navigation.navigate('LoginScreen');
       }
     } catch (error) {
-      showMessage({
-        message: 'Gagal Terbitkan foto',
-        type: 'warning',
-        backgroundColor: COLORS.lightGray,
-        color: COLORS.alertDanger,
-      });
-    } finally {
-      console.log('error');
+      // showMessage({
+      //   message: 'Gagal Register',
+      //   type: 'warning',
+      //   backgroundColor: COLORS.lightGray,
+      //   color: COLORS.alertDanger,
+      // });
+      showDanger('Registrasi Gagal');
     }
   };
-  // ==========================================>
-  const getImageStnk = () => {
-    launchImageLibrary({}, response => {
-      console.log('response:', response);
-      const source = {uri: response.assets[0].uri};
-      setPhotoStnk(source);
-    });
-  };
+
   return (
     <>
-      <ScrollView style={style.container} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={style.container}
+        showsVerticalScrollIndicator={false}
+        nestedScrollEnabled={true}>
         <Headers title="Buat Akun" />
         <Formik
-          alidationSchema={loginValidationSchema}
+          validationSchema={loginValidationSchema}
           initialValues={{
             nama_kurir: '',
             nomor_hp: '',
@@ -114,6 +155,7 @@ const RegisterKurir = ({navigation}) => {
             jenis_kelamin: '',
             plat_motor: '',
             foto_sim: '',
+            foto_stnk: '',
           }}
           onSubmit={onSubmit}>
           {({
@@ -133,7 +175,7 @@ const RegisterKurir = ({navigation}) => {
                     marginBottom: 30,
                   }}>
                   <TouchableOpacity
-                    onPress={getImageSim}
+                    onPress={() => getImageSim(values)}
                     style={{
                       borderWidth: 3,
                       borderColor: COLORS.primaryColor,
@@ -153,7 +195,7 @@ const RegisterKurir = ({navigation}) => {
                   </TouchableOpacity>
 
                   <TouchableOpacity
-                    onPress={getImageStnk}
+                    onPress={() => getImageStnk(values)}
                     style={{
                       borderWidth: 3,
                       borderColor: COLORS.primaryColor,
@@ -226,19 +268,27 @@ const RegisterKurir = ({navigation}) => {
                     )}
                   </View>
                   <View style={{marginTop: 20}}>
-                    <InputText
-                      name="jenis_kelamin"
+                    <DropDownPicker
+                      open={open}
+                      value={gender}
+                      items={items}
+                      setOpen={setOpen}
+                      setValue={setGender}
+                      setItems={setItems}
+                      listMode="SCROLLVIEW"
+                      style={{
+                        borderRadius: 100,
+                        borderWidth: 2,
+                        borderColor: 'black',
+                        justifyContent: 'space-between',
+                        paddingHorizontal: 16,
+                        flexDirection: 'row',
+                      }}
                       placeholder="Jenis Kelamin"
-                      // style={{ marginTop: 20 }}
-                      onChangeText={handleChange('jenis_kelamin')}
-                      onBlur={handleBlur('jenis_kelamin')}
-                      value={values.jenis_kelamin}
-                      error={touched.jenis_kelamin && errors.jenis_kelamin}
-                      keyboardType="email-address"
+                      dropDownContainerStyle={{borderColor: 'black'}}
+                      dropDownStyle={{borderColor: 'black'}}
+                      onChangeValue={value => handleJenisKelaminChange(value)}
                     />
-                    {touched.jenis_kelamin && errors.jenis_kelamin && (
-                      <Text>Error</Text>
-                    )}
                   </View>
                   <View style={{marginTop: 20}}>
                     <InputText
@@ -266,7 +316,7 @@ const RegisterKurir = ({navigation}) => {
           )}
         </Formik>
       </ScrollView>
-      {/* {loading && <LoadingScreen />} */}
+      {loading && <LoadingScreen />}
     </>
   );
 };

@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import {COLORS, FONTS} from '../../../constant';
 import {useNavigation} from '@react-navigation/native';
 
-const Headers = ({title}) => {
+const Headers = ({title, color}) => {
   const navigation = useNavigation();
 
   const handleGoBack = useCallback(() => navigation.goBack(), [navigation]);
@@ -15,14 +15,16 @@ const Headers = ({title}) => {
         <Icon name="arrow-left" size={26} color={COLORS.black} />
       </TouchableOpacity>
       <Text
-        style={[{
-          ...FONTS.titleLargeBold,
-          // fontWeight: '700',
-          // fontSize: 20,
-          // lineHeight: 30,
-          color: COLORS.primaryColor,
-          marginLeft: 25,
-        }]}>
+        style={[
+          {
+            ...FONTS.titleLargeBold,
+            // fontWeight: '700',
+            // fontSize: 20,
+            // lineHeight: 30,
+            color: color,
+            marginLeft: 25,
+          },
+        ]}>
         {title}
       </Text>
     </View>

@@ -13,7 +13,7 @@ import {Headers, Loading, LoadingScreen} from '../../../components';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {changeStatusTrans, detailTransaction} from '../../../services';
 import axios from 'axios';
-import { RectButton } from 'react-native-gesture-handler';
+import {RectButton} from 'react-native-gesture-handler';
 
 const DetailPesanan = ({navigation, route}) => {
   const {id_transaksi} = route.params;
@@ -195,103 +195,134 @@ const DetailPesanan = ({navigation, route}) => {
             </View>
           </View>
 
-          {transaksi?.status_transaksi !== 'pending' && transaksi?.status_transaksi !== 'rejected' && (
-            <>
-              <Text
-                style={{
-                  ...FONTS.bodyLargeBold,
-                  color: COLORS.black,
-                  marginVertical: 10,
-                }}>
-                Pengiriman
-              </Text>
+          {transaksi?.status_transaksi !== 'pending' &&
+            transaksi?.status_transaksi !== 'rejected' && (
+              <>
+                <Text
+                  style={{
+                    ...FONTS.bodyLargeBold,
+                    color: COLORS.black,
+                    marginVertical: 10,
+                  }}>
+                  Pengiriman
+                </Text>
 
-              <View
-                style={{
-                  borderWidth: 2,
-                  borderColor: COLORS.primaryColor,
-                  padding: 10,
-                  borderRadius: 20,
-                }}>
                 <View
                   style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
+                    borderWidth: 2,
+                    borderColor: COLORS.primaryColor,
+                    padding: 10,
+                    borderRadius: 20,
                   }}>
-                  <Text style={{...FONTS.bodySmallBold, color: COLORS.black}}>
-                    Konfirmasi Barang Sudah Dikemas
-                  </Text>
-                  <TouchableOpacity
-                    disabled={transaksi?.status_transaksi === "dikemas" || transaksi?.status_transaksi === "dikirim" || transaksi?.status_transaksi === "dibayar"}
-                    onPress={() => patchDikemas()}
+                  <View
                     style={{
-                      width: 90,
-                      height: 25,
-                      backgroundColor:  transaksi?.status_transaksi === "dikemas" || transaksi?.status_transaksi === "dikirim" || transaksi?.status_transaksi === "dibayar"? COLORS.lightGray :  COLORS.alertSuccess,
-                      justifyContent: 'center',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
                       alignItems: 'center',
-                      borderRadius: 10,
                     }}>
-                    <Text style={{...FONTS.bodySmallBold, color: COLORS.white}}>
-                      Konfirmasi
+                    <Text style={{...FONTS.bodySmallBold, color: COLORS.black}}>
+                      Konfirmasi Barang Sudah Dikemas
                     </Text>
-                  </TouchableOpacity>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    marginVertical: 16,
-                  }}>
-                  <Text style={{...FONTS.bodySmallBold, color: COLORS.black}}>
-                    Konfirmasi Barang Sudah Dikirim
-                  </Text>
-                  <TouchableOpacity
-                    disabled={transaksi?.status_transaksi === "accepted" || transaksi?.status_transaksi === "dikirim" || transaksi?.status_transaksi === "dibayar"}
-                    onPress={() => patchDikim()}
+                    <TouchableOpacity
+                      disabled={
+                        transaksi?.status_transaksi === 'dikemas' ||
+                        transaksi?.status_transaksi === 'dikirim' ||
+                        transaksi?.status_transaksi === 'dibayar'
+                      }
+                      onPress={() => patchDikemas()}
+                      style={{
+                        width: 90,
+                        height: 25,
+                        backgroundColor:
+                          transaksi?.status_transaksi === 'dikemas' ||
+                          transaksi?.status_transaksi === 'dikirim' ||
+                          transaksi?.status_transaksi === 'dibayar'
+                            ? COLORS.lightGray
+                            : COLORS.alertSuccess,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: 10,
+                      }}>
+                      <Text
+                        style={{...FONTS.bodySmallBold, color: COLORS.white}}>
+                        Konfirmasi
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View
                     style={{
-                      width: 90,
-                      height: 25,
-                      backgroundColor: transaksi?.status_transaksi === "accepted" || transaksi?.status_transaksi === "dikirim" || transaksi?.status_transaksi === "dibayar" ? COLORS.lightGray : COLORS.alertSuccess,
-                      justifyContent: 'center',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
                       alignItems: 'center',
-                      borderRadius: 10,
+                      marginVertical: 16,
                     }}>
-                    <Text style={{...FONTS.bodySmallBold, color: COLORS.white}}>
-                      Konfirmasi
+                    <Text style={{...FONTS.bodySmallBold, color: COLORS.black}}>
+                      Konfirmasi Barang Sudah Dikirim
                     </Text>
-                  </TouchableOpacity>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}>
-                  <Text style={{...FONTS.bodySmallBold, color: COLORS.black}}>
-                    Konfirmasi Barang Sudah Dibayar
-                  </Text>
-                  <TouchableOpacity
-                    disabled={transaksi?.status_transaksi === "accepted" || transaksi?.status_transaksi === "dikemas" || transaksi?.status_transaksi === "dibayar"}
-                    onPress={() => patchDibayar()}
+                    <TouchableOpacity
+                      disabled={
+                        transaksi?.status_transaksi === 'accepted' ||
+                        transaksi?.status_transaksi === 'dikirim' ||
+                        transaksi?.status_transaksi === 'dibayar'
+                      }
+                      onPress={() => patchDikim()}
+                      style={{
+                        width: 90,
+                        height: 25,
+                        backgroundColor:
+                          transaksi?.status_transaksi === 'accepted' ||
+                          transaksi?.status_transaksi === 'dikirim' ||
+                          transaksi?.status_transaksi === 'dibayar'
+                            ? COLORS.lightGray
+                            : COLORS.alertSuccess,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: 10,
+                      }}>
+                      <Text
+                        style={{...FONTS.bodySmallBold, color: COLORS.white}}>
+                        Konfirmasi
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View
                     style={{
-                      width: 90,
-                      height: 25,
-                      backgroundColor: transaksi?.status_transaksi === "accepted" || transaksi?.status_transaksi === "dikemas" || transaksi?.status_transaksi === "dibayar" ? COLORS.lightGray : COLORS.alertSuccess,
-                      justifyContent: 'center',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
                       alignItems: 'center',
-                      borderRadius: 10,
                     }}>
-                    <Text style={{...FONTS.bodySmallBold, color: COLORS.white}}>
-                      Konfirmasi
+                    <Text style={{...FONTS.bodySmallBold, color: COLORS.black}}>
+                      Konfirmasi Barang Sudah Dibayar
                     </Text>
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      disabled={
+                        transaksi?.status_transaksi === 'accepted' ||
+                        transaksi?.status_transaksi === 'dikemas' ||
+                        transaksi?.status_transaksi === 'dibayar'
+                      }
+                      onPress={() => patchDibayar()}
+                      style={{
+                        width: 90,
+                        height: 25,
+                        backgroundColor:
+                          transaksi?.status_transaksi === 'accepted' ||
+                          transaksi?.status_transaksi === 'dikemas' ||
+                          transaksi?.status_transaksi === 'dibayar'
+                            ? COLORS.lightGray
+                            : COLORS.alertSuccess,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: 10,
+                      }}>
+                      <Text
+                        style={{...FONTS.bodySmallBold, color: COLORS.white}}>
+                        Konfirmasi
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
-            </>
-          )}
+              </>
+            )}
         </ScrollView>
 
         {transaksi?.status_transaksi === 'pending' && (

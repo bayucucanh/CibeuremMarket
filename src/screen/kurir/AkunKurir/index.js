@@ -4,23 +4,36 @@ import style from './style';
 import {COLORS, FONTS, SIZES} from '../../../constant';
 import {userAvatar} from '../../../assets';
 import {Gap, ListButton, Separator} from '../../../components';
-import {pengguna} from '../../../services';
+import {kurir, loginKurir, pengguna} from '../../../services';
 import {useIsFocused} from '@react-navigation/native';
+import Auth from '../../../services/Auth';
 
 const Akun = ({navigation}) => {
   const isFocused = useIsFocused();
   const [profile, setProfile] = useState([]);
+  const [id, setId] = useState({});
 
   const getMe = async () => {
-    const response = await pengguna();
-    console.log(response?.data);
-    setProfile(response?.data?.data?.pengguna);
+    const response = await kurir();
+    console.log(response.data);
+    setProfile(response.data);
   };
+
+  ///============>
+  const handleLogout = async () => {
+    try {
+      await Auth.logout();
+      navigation.navigate('LoginScreen');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  //============>
 
   useEffect(() => {
     if (isFocused) {
       getMe();
-      console.log('pengguna', profile);
+      console.log('Kurir', profile);
     }
   }, [isFocused, profile]);
 
@@ -46,7 +59,7 @@ const Akun = ({navigation}) => {
             justifyContent: 'space-between',
           }}>
           <Text style={{...FONTS.bodyNormalBold, color: COLORS.fourColor}}>
-            {profile?.nama_pengguna}
+            {profile?.nama_kurir}
           </Text>
           <Text style={{...FONTS.bodyNormalBold, color: COLORS.fourColor}}>
             {profile?.nomor_hp}
@@ -75,7 +88,7 @@ const Akun = ({navigation}) => {
         <ListButton
           onPress={() => navigation.navigate('UbahAkunKurir')}
           title="Ubah Profil"
-          iconName="profil"
+          iconName="user"
           isSeparate={true}
           style={{marginTop: 24}}
         />
@@ -92,6 +105,7 @@ const Akun = ({navigation}) => {
           style={{marginTop: 24}}
         />
         <ListButton
+          onPress={handleLogout}
           title="Keluar"
           iconName="sign-out"
           isSeparate={true}

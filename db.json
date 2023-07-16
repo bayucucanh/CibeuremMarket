@@ -1,0 +1,90 @@
+{
+  "orders": [
+    {
+      "id": 1,
+      "customerName": "Dzikri",
+      "quantityStoreBuy": 5,
+      "storeName": "ABC Mart",
+      "distance": 2
+    },
+    {
+      "id": 2,
+      "customerName": "Sidiq",
+      "quantityStoreBuy": 3,
+      "storeName": "XYZ Shop",
+      "distance": 1
+    },
+    {
+      "id": 3,
+      "customerName": "Ikhwan",
+      "quantityStoreBuy": 3,
+      "storeName": "XYZ Shop",
+      "distance": 3
+    },
+    {
+      "id": 4,
+      "customerName": "Jane Smith",
+      "quantityStoreBuy": 3,
+      "storeName": "XYZ Shop",
+      "distance": 9
+    },
+    {
+      "id": 5,
+      "customerName": "Jhon doe",
+      "quantity": 10,
+      "storeName": "XYZ Shop",
+      "distance": 7
+    }
+  ],
+  "user": [
+    {
+      "id": "1",
+      "nama_kurir": "jhon doe",
+      "nomor_hp": "08221222",
+      "password": "12345",
+      "nomor_ktp": "12345678",
+      "jenis_kelamin": "Perempuan",
+      "plat_motor": "AB 1900 ACC",
+      "token": "fjskadjfsjdfkljd"
+    },
+    {
+      "id": "2",
+      "nama_kurir": "jhon doe",
+      "nomor_hp": "08221222",
+      "password": "12345",
+      "nomor_ktp": "12345678",
+      "jenis_kelamin": "Perempuan",
+      "plat_motor": "AB 1900 ACC"
+    },
+    {
+      "nama_kurir": "",
+      "nomor_hp": "",
+      "password": "",
+      "nomor_ktp": "",
+      "jenis_kelamin": "",
+      "plat_motor": "",
+      "foto_sim": "",
+      "id": "gXAyHRA"
+    },
+    {
+      "nama_kurir": "Yana",
+      "nomor_hp": "081232769636",
+      "password": "Yana1234",
+      "nomor_ktp": "32145698771",
+      "jenis_kelamin": "",
+      "plat_motor": "D 1990 AV",
+      "foto_sim": "",
+      "id": "4fnOIAC"
+    },
+    {
+      "nomor_hp": "081232769636",
+      "password": "Yana1234",
+      "id": "1Z6vAyD"
+    },
+    {
+      "nomor_hp": "081232769636",
+      "password": "Yana1234",
+      "id": "g-SdFoN"
+    }
+  ]
+}

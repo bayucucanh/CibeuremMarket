@@ -6,7 +6,7 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import style from './style';
 import {Logo} from '../../../../assets';
 import {Formik} from 'formik';
@@ -14,7 +14,7 @@ import {COLORS, loginValidationSchema} from '../../../../constant';
 import {CustomButton, InputText, LoadingScreen} from '../../../../components';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import useLogin from './useLogin';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 
 const Login = ({navigation}) => {
   const [loading, loginHandle] = useLogin({navigation});
@@ -22,7 +22,7 @@ const Login = ({navigation}) => {
 
   useEffect(() => {
     console.log(isLoading);
-  }, [isLoading])
+  }, [isLoading]);
 
   return (
     <>
@@ -33,6 +33,7 @@ const Login = ({navigation}) => {
           validationSchema={loginValidationSchema}
           initialValues={{nomor_hp: '', password: ''}}
           onSubmit={values => loginHandle(values)}>
+          {/* values => loginHandle(values) */}
           {({
             handleChange,
             handleBlur,
@@ -55,7 +56,9 @@ const Login = ({navigation}) => {
                   error={touched.nomor_hp && errors.nomor_hp}
                   keyboardType="numeric"
                 />
-                {touched.nomor_hp && errors.nomor_hp && <Text>Error</Text>}
+                {touched.nomor_hp && errors.nomor_hp && (
+                  <Text style={style.errorInput}>{errors.nomor_hp}</Text>
+                )}
 
                 <View style={{marginTop: 21}}>
                   <InputText
@@ -69,7 +72,9 @@ const Login = ({navigation}) => {
                     error={touched.password && errors.password}
                     // keyboardType="email-address"
                   />
-                  {touched.password && errors.password && <Text>Error</Text>}
+                  {touched.password && errors.password && (
+                    <Text style={style.errorInput}>Silahkan isi Password</Text>
+                  )}
                 </View>
 
                 <CustomButton
@@ -121,6 +126,7 @@ const Login = ({navigation}) => {
                       </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
+                      onPress={() => navigation.navigate('RegisterKurir')}
                       style={{
                         borderWidth: 3,
                         borderColor: COLORS.primaryColor,

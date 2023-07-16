@@ -1,5 +1,5 @@
 import {showDanger, showSuccess} from '../../constant';
-import {loginPengguna} from '../../services';
+import {loginKurir, loginPengguna} from '../../services';
 import Auth from '../../services/Auth';
 import {LOGIN_FAILED, LOGIN_SUCCESS} from '../types';
 import {setLoading} from './globalAction';
@@ -20,20 +20,21 @@ export const loginUser = (nomor_hp, password, navigation) => async dispatch => {
     password: password,
   };
   try {
-    const response = await loginPengguna(data);
-    console.log(response.status);
-    if (response.status === 200) {
+    const response = await loginKurir(data);
+    console.log(response?.data);
+    if (response?.status === 200) {
       dispatch(setLoading(false));
       showSuccess('Login Berhasil');
-      if (response?.data?.data?.user?.role === 'penjual&pembeli') {
+      if (response?.data) {
         navigation.replace('MainApp');
-        Auth.setAccount(response.data);
-        Auth.setToken(response?.data?.data?.user?.token);
-        dispatch(setUser(response?.data?.data));
-      } else {
-        // Dani isi navigasi nya disini
-        alert('Kurir Main App');
+        Auth.setAccount(response?.data);
+        Auth.setToken(response?.data?.data?.token);
+        dispatch(setUser(response?.data));
       }
+      // else {
+      //   // Dani isi navigasi nya disini
+      //   alert('Kurir Main App');
+      // }
     } else {
       dispatch(setLoading(false));
       showDanger('Login Gagal');

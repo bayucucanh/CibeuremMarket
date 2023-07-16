@@ -1,29 +1,28 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import style from './style';
 import {COLORS, FONTS, SIZES} from '../../../constant';
 import {userAvatar} from '../../../assets';
 import {Gap, ListButton, Separator} from '../../../components';
-import { pengguna } from '../../../services';
-import { useIsFocused } from '@react-navigation/native';
+import {pengguna} from '../../../services';
+import {useIsFocused} from '@react-navigation/native';
 
 const Akun = ({navigation}) => {
   const isFocused = useIsFocused();
-  const [profile, setProfile] = useState([])
+  const [profile, setProfile] = useState([]);
 
   const getMe = async () => {
     const response = await pengguna();
     console.log(response?.data);
-    setProfile(response?.data?.data?.pengguna)
-  }
+    setProfile(response?.data?.data?.pengguna);
+  };
 
   useEffect(() => {
     if (isFocused) {
-      getMe()
+      getMe();
       console.log('pengguna', profile);
     }
-  }, [isFocused]);
-  
+  }, [isFocused, profile]);
 
   return (
     <View style={style.container}>

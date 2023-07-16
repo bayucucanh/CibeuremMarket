@@ -4,7 +4,13 @@ import {Separator} from '../../atoms';
 import {COLORS, FONTS} from '../../../constant';
 import CustomButton from '../CustomButton';
 
-const HistoryDrive = ({style, name, store, number, distance}) => {
+const HistoryDrive = ({
+  style,
+  customerName,
+  quantityStoreBuy,
+  distance,
+  onPress,
+}) => {
   return (
     <TouchableOpacity style={style}>
       <View
@@ -24,13 +30,13 @@ const HistoryDrive = ({style, name, store, number, distance}) => {
               color: COLORS.black,
               marginBottom: 4,
             }}>
-            Pemesan: {name}
+            Pemesan: {customerName}
           </Text>
           <Text style={{...FONTS.bodyNormalMedium, color: COLORS.black}}>
-            Membeli di {store} Toko
+            Membeli di {quantityStoreBuy} Toko
           </Text>
           <Text style={{...FONTS.bodyNormalMedium, color: COLORS.black}}>
-            Jarak Rumah ± {number} {distance}
+            Jarak Rumah ± {distance} KM
           </Text>
         </View>
         <View>
@@ -38,6 +44,7 @@ const HistoryDrive = ({style, name, store, number, distance}) => {
             title="Detail"
             size="small"
             enabled={true}
+            onPress={onPress}
             buttonStyle={{marginTop: 20, marginHorizontal: 80}}
             textStyle={{marginHorizontal: 12}}
           />

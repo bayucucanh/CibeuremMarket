@@ -21,7 +21,10 @@ import HomeKurir from './kurir/HomeKurir';
 import AkunKurir from './kurir/AkunKurir';
 import UbahAkunKurir from './kurir/UbahAkunKurir';
 import RiwayatPengiriman from './kurir/RiwayatPengiriman';
-
+import DetailRiwayat from './kurir/DetailRiwayat';
+import DetailPengiriman from './kurir/DetailPengiriman';
+import DenahToko from './kurir/DenahToko';
+import Pengiriman from './kurir/Pengiriman';
 export {
   DetailPesanan,
   Login,
@@ -44,4 +47,8 @@ export {
   AkunKurir,
   UbahAkunKurir,
   RiwayatPengiriman,
+  DetailRiwayat,
+  DetailPengiriman,
+  DenahToko,
+  Pengiriman,
 };
