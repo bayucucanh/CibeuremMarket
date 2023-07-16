@@ -73,7 +73,7 @@ const Login = ({navigation}) => {
                     // keyboardType="email-address"
                   />
                   {touched.password && errors.password && (
-                    <Text style={style.errorInput}>Silahkan isi Password</Text>
+                    <Text style={style.errorInput}>{errors.password}</Text>
                   )}
                 </View>
 

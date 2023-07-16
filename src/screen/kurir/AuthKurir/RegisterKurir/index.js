@@ -8,18 +8,19 @@ import {
 } from '../../../../components';
 import style from './style';
 import {Formik} from 'formik';
-import {COLORS, loginValidationSchema} from '../../../../constant';
+import {
+  COLORS,
+  loginValidationSchema,
+  registerValidationSchema,
+} from '../../../../constant';
 
 import {launchImageLibrary} from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {showMessage} from 'react-native-flash-message';
 import DropDownPicker from 'react-native-dropdown-picker';
-// import useRegisterKurir from './useRegisKurir';
 import {showDanger, showSuccess} from '../../../../constant';
 
 const RegisterKurir = ({navigation}) => {
-  // const [loading] = useRegisterKurir({navigation});
-  const [loading, setLoading] = useState(false);
   const [photoSim, setPhotoSim] = useState(null);
   const [photoSimDB, setPhotoSimDB] = useState(null);
   const [photoStnk, setPhotoStnk] = useState(null);
@@ -140,13 +141,13 @@ const RegisterKurir = ({navigation}) => {
 
   return (
     <>
+      <Headers title="Buat Akun" />
       <ScrollView
         style={style.container}
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled={true}>
-        <Headers title="Buat Akun" />
         <Formik
-          validationSchema={loginValidationSchema}
+          validationSchema={registerValidationSchema}
           initialValues={{
             nama_kurir: '',
             nomor_hp: '',
@@ -226,7 +227,7 @@ const RegisterKurir = ({navigation}) => {
                     keyboardType="email-address"
                   />
                   {touched.nama_kurir && errors.nama_kurir && (
-                    <Text>Error</Text>
+                    <Text style={style.errorInput}>{errors.nama_kurir}</Text>
                   )}
                   <View style={{marginTop: 20}}>
                     <InputText
@@ -238,7 +239,9 @@ const RegisterKurir = ({navigation}) => {
                       error={touched.nomor_hp && errors.nomor_hp}
                       keyboardType="email-address"
                     />
-                    {touched.nomor_hp && errors.nomor_hp && <Text>Error</Text>}
+                    {touched.nomor_hp && errors.nomor_hp && (
+                      <Text style={style.errorInput}>{errors.nomor_hp}</Text>
+                    )}
                   </View>
                   <View style={{marginTop: 20}}>
                     <InputText
@@ -251,7 +254,9 @@ const RegisterKurir = ({navigation}) => {
                       error={touched.password && errors.password}
                       keyboardType="email-address"
                     />
-                    {touched.password && errors.password && <Text>Error</Text>}
+                    {touched.password && errors.password && (
+                      <Text style={style.errorInput}>{errors.password}</Text>
+                    )}
                   </View>
                   <View style={{marginTop: 20}}>
                     <InputText
@@ -264,7 +269,7 @@ const RegisterKurir = ({navigation}) => {
                       keyboardType="email-address"
                     />
                     {touched.nomor_ktp && errors.nomor_ktp && (
-                      <Text>Error</Text>
+                      <Text style={style.errorInput}>{errors.nomor_ktp}</Text>
                     )}
                   </View>
                   <View style={{marginTop: 20}}>
@@ -289,6 +294,11 @@ const RegisterKurir = ({navigation}) => {
                       dropDownStyle={{borderColor: 'black'}}
                       onChangeValue={value => handleJenisKelaminChange(value)}
                     />
+                    {touched.jenis_kelamin && errors.jenis_kelamin && (
+                      <Text style={style.errorInput}>
+                        {errors.jenis_kelamin}
+                      </Text>
+                    )}
                   </View>
                   <View style={{marginTop: 20}}>
                     <InputText
@@ -301,7 +311,7 @@ const RegisterKurir = ({navigation}) => {
                       keyboardType="email-address"
                     />
                     {touched.plat_motor && errors.plat_motor && (
-                      <Text>Error</Text>
+                      <Text style={style.errorInput}>{errors.plat_motor}</Text>
                     )}
                   </View>
                   <CustomButton
@@ -316,9 +326,10 @@ const RegisterKurir = ({navigation}) => {
           )}
         </Formik>
       </ScrollView>
-      {loading && <LoadingScreen />}
+      {/* {isLoading && <LoadingScreen />} */}
     </>
   );
+  return [loading];
 };
 
 export default RegisterKurir;
