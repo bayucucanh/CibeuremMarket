@@ -22,14 +22,15 @@ const PemesananMasuk = ({navigation}) => {
     setLoading(true);
     const response = await incomingsOrder();
     console.log('orders___', response.data?.data);
-    if (response?.data?.data.length !== 0) {
-      setOrders(response?.data?.data?.filter((item) => item.status_transaksi !== "dibayar" && item.status_transaksi !== "rejected"));
+    if (response?.data?.data?.transaksi?.length !== 0) {
+      setOrders(response?.data?.data?.transaksi?.filter((item) => item.status_transaksi !== "dibayar" && item.status_transaksi !== "rejected"));
     }
     setLoading(false);
   };
 
   useEffect(() => {
     getOrder();
+    console.log("orders", orders);
   }, []);
 
   return (
@@ -70,7 +71,7 @@ const PemesananMasuk = ({navigation}) => {
             onPress={() => navigation.navigate('DetailPesanan', {id_transaksi: item.id_transaksi})}>
             <Image
               source={{
-                uri: item?.tb_pengguna?.foto_pengguna,
+                uri: item?.tb_pengguna?.foto_pengguna === null ? "https://assets-a1.kompasiana.com/items/album/2021/03/24/blank-profile-picture-973460-1280-605aadc08ede4874e1153a12.png?t=o&v=1200" : item?.tb_pengguna?.foto_pengguna,
               }}
               style={{width: 50, height: 50, borderRadius: 50}}
             />

@@ -8,25 +8,31 @@ import {
   Linking,
   Alert,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   CustomButton,
   Headers,
   InputDropdown,
   InputText,
+  LoadingScreen,
   SaldoButton,
   Separator,
 } from '../../../components';
 import style from './style';
-import {COLORS, FONTS, formatRupiah} from '../../../constant';
+import {BASE_URL, COLORS, FONTS, formatRupiah, showSuccess} from '../../../constant';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Auth from '../../../services/Auth';
+import axios from 'axios';
 // import DropDownPicker from 'react-native-dropdown-picker';
 
-const IsiSaldo = () => {
+const IsiSaldo = ({route}) => {
+
+  const {id_saldo} = route.params;
+  const {sisa_saldo} = route.params;
+
   const [open, setOpen] = useState(false);
-  const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [value, setValue] = useState(null);
   const [active, setActive] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -38,10 +44,10 @@ const IsiSaldo = () => {
     {label: 'BRI', value: 'bri'},
   ]);
 
-  const tambahSaldo = async () => {
-    const saldoKu = await Auth.getSaldo();
-    Auth.setSaldo(saldo + saldoKu);
-  };
+  // const tambahSaldo = async () => {
+  //   const saldoKu = await Auth.getSaldo();
+  //   Auth.setSaldo(saldo + saldoKu);
+  // };
 
   const OpenURLPayment = async () => {
     const web = `http://mysupir.com/api/order/proceed/payment/${2170}`;
@@ -52,7 +58,27 @@ const IsiSaldo = () => {
     console.log('supported', supported);
   };
 
+  useEffect(() => {
+    console.log("id_saldo", id_saldo);
+    console.log("sisa_saldo", sisa_saldo);
+  }, [])
+  
+  const tambahSaldo = async () => {
+    setLoading(true);
+    const res = await axios.patch(
+      `${BASE_URL}/pengguna/saldo/${id_saldo}`,
+      {jumlah: saldo + sisa_saldo},
+    );
+    if (res.status === 200) {
+      showSuccess('Top up saldo berhasil');
+      // order();
+    }
+    console.log(res);
+    setLoading(false);
+  };
+
   return (
+    <>
     <ScrollView style={style.container}>
       <Headers title="Isi Saldo Cibeurem Market" />
 
@@ -191,6 +217,8 @@ const IsiSaldo = () => {
         </Text>
       </TouchableOpacity>
     </ScrollView>
+    {loading && (<LoadingScreen />)}
+    </>
   );
 };
 

@@ -1,8 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { listProduct, listProductBySearch } from '../../../services';
+import { useIsFocused } from '@react-navigation/native';
 
 const useHome = ({navigation}) => {
+  const isFocused = useIsFocused();
   const [searchProduct, setSearchProduct] = useState('')
   const [prouducts, setProduct] = useState([])
 
@@ -23,8 +25,10 @@ const useHome = ({navigation}) => {
   };
 
   useEffect(() => {
-    getProducts();
-  }, [])
+    if (isFocused) {
+      getProducts();
+    }
+  }, [isFocused])
 
   return [
     searchProduct,

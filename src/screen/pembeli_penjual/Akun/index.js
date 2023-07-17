@@ -4,7 +4,7 @@ import style from './style';
 import {COLORS, FONTS, SIZES, formatRupiah} from '../../../constant';
 import {userAvatar} from '../../../assets';
 import {Gap, ListButton, Separator} from '../../../components';
-import {myTransaction, pengguna} from '../../../services';
+import {mySaldo, myTransaction, pengguna} from '../../../services';
 import {useIsFocused} from '@react-navigation/native';
 import Auth from '../../../services/Auth';
 import {useDispatch} from 'react-redux';
@@ -18,9 +18,13 @@ const Akun = ({navigation}) => {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const [profile, setProfile] = useState([]);
+  const [diterima, setDiterima] = useState({
+    total: 0,
+    status: "diterima"
+  });
   const [pending, setPending] = useState({
     total: 0,
-    status: "pending"
+    status: "menunggu"
   });
   const [dikemas, setDikemas] = useState({
     total: 0,
@@ -44,23 +48,27 @@ const Akun = ({navigation}) => {
   };
 
   const getSaldo = async () => {
-    const saldoku = await Auth.getSaldo();
-    setSaldo(saldoku);
+    // const saldoku = await Auth.getSaldo();
+    const reponse = await mySaldo();
+    console.log("saldo", reponse.data.data.saldo);
+    setSaldo(reponse.data.data.saldo);
   };
 
   const getMyTransaction = async () => {
     const response = await myTransaction();
-    console.log("Transaksi", response?.data?.data.filter((item) => item.status_transaksi === "pending").length);
-    if (response?.data?.data.length === 0) {
+    // console.log("Transaksi", response?.data?.data.filter((item) => item.status_transaksi === "menunggu").length);
+    console.log("Transaksi", response);
+    if (response?.data?.data?.transaksi?.length === 0) {
       setPending({...pending, total: 0})
       setDikemas({...dikemas, total: 0})
       setDikirim({...dikirim, total: 0})
       setSelesai({...selesai, total: 0})
     } else {
-      setPending({...pending, total:response?.data?.data.filter((item) => item.status_transaksi === "pending").length})
-      setDikemas({...dikemas, total:response?.data?.data.filter((item) => item.status_transaksi === "dikemas").length})
-      setDikirim({...dikirim, total:response?.data?.data.filter((item) => item.status_transaksi === "dikirim").length})
-      setSelesai({...selesai, total:response?.data?.data.filter((item) => item.status_transaksi === "selesai").length})
+      setPending({...pending, total:response?.data?.data?.transaksi?.filter((item) => item.status_transaksi === "menunggu").length})
+      setDiterima({...pending, total:response?.data?.data?.transaksi?.filter((item) => item.status_transaksi === "diterima").length})
+      setDikemas({...dikemas, total:response?.data?.data.transaksi?.filter((item) => item.status_transaksi === "dikemas").length})
+      setDikirim({...dikirim, total:response?.data?.data.transaksi?.filter((item) => item.status_transaksi === "dikirim").length})
+      setSelesai({...selesai, total:response?.data?.data.transaksi?.filter((item) => item.status_transaksi === "selesai").length})
     }
   }
 
@@ -75,6 +83,7 @@ const Akun = ({navigation}) => {
       getMe();
       getSaldo();
       getMyTransaction();
+      console.log("saldo___", saldo.saldo);
     }
   }, [isFocused]);
 
@@ -117,7 +126,7 @@ const Akun = ({navigation}) => {
             Saldo Anda
           </Text>
           <Text style={{...FONTS.headingLargeBold, color: COLORS.primaryColor}}>
-            {formatRupiah(saldo)}
+            {formatRupiah(saldo.saldo)}
           </Text>
         </View>
 
@@ -153,10 +162,10 @@ const Akun = ({navigation}) => {
             flexDirection: 'row',
             justifyContent: 'space-between',
 
-            padding: 20,
+            padding: 10,
           }}>
           <TouchableOpacity
-            onPress={() => navigation.navigate("RiwayatTransaksi", {status: "pending"})}
+            onPress={() => navigation.navigate("RiwayatTransaksi", {status: "menunggu"})}
           >
             <View
               style={{
@@ -192,8 +201,49 @@ const Akun = ({navigation}) => {
                 </Text>
               </View>
             </View>
-            <Text style={{...FONTS.bodySmallBold, color: COLORS.black}}>
-              Pending
+            <Text style={{...FONTS.bodySmallBold, color: COLORS.black,}}>
+              Menunggu
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("RiwayatTransaksi", {status: "diterima"})}
+          >
+            <View
+              style={{
+                width: 50,
+                height: 50,
+                borderRadius: 10,
+                backgroundColor: COLORS.primaryColor,
+                position: 'relative',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Icon
+                name="edit-3"
+                size={25}
+                color={COLORS.white}
+                style={{alignSelf: 'center'}}
+              />
+              <View
+                style={{
+                  position: 'absolute',
+                  right: -5,
+                  top: -5,
+                  backgroundColor: COLORS.secondaryColor,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  padding: 5,
+                  borderRadius: 100,
+                  height: 25,
+                  width: 25,
+                }}>
+                <Text style={{...FONTS.bodySmallRegular, color: COLORS.white}}>
+                  {diterima.total}
+                </Text>
+              </View>
+            </View>
+            <Text style={{...FONTS.bodySmallBold, color: COLORS.black,}}>
+              Diterima
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -279,7 +329,7 @@ const Akun = ({navigation}) => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate("RiwayatTransaksi", {status: "selesai"})}
+            onPress={() => navigation.navigate("RiwayatTransaksi", {status: "diterima"})}
           >
             <View
               style={{
@@ -326,7 +376,7 @@ const Akun = ({navigation}) => {
 
       <View style={{marginTop: 20}}>
         <ListButton
-          onPress={() => navigation.navigate('IsiSaldo')}
+          onPress={() => navigation.navigate('IsiSaldo', {id_saldo: saldo?.id_saldo, sisa_saldo: saldo?.saldo})}
           title="Isi Saldo"
           iconName="money"
           isSeparate={true}

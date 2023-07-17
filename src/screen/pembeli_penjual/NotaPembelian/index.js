@@ -11,6 +11,7 @@ import React, {useEffect, useState} from 'react';
 import {CustomModal, Headers, InputText, LoadingScreen, Separator} from '../../../components';
 import style from './style';
 import {
+  BASE_URL,
   COLORS,
   FONTS,
   SIZES,
@@ -18,12 +19,13 @@ import {
   showSuccess,
 } from '../../../constant';
 // import {ScrollView} from 'react-native-gesture-handler';
-import {buyProduct, deleteProdukInCart} from '../../../services';
+import {buyProduct, deleteProdukInCart, mySaldo} from '../../../services';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import Icon from 'react-native-vector-icons/Entypo';
 import Icon2 from 'react-native-vector-icons/AntDesign';
 import Auth from '../../../services/Auth';
 import {Logo} from '../../../assets';
+import axios from 'axios';
 
 const NotaPembelian = ({route, navigation}) => {
   const {product} = route.params;
@@ -41,14 +43,13 @@ const NotaPembelian = ({route, navigation}) => {
   const [payment, setPayment] = useState(null);
 
   const getSaldo = async () => {
-    const saldoKu = await Auth.getSaldo();
-    setSaldo(saldoKu);
+    const reponse = await mySaldo();
+    console.log("saldo", reponse.data.data.saldo);
+    setSaldo(reponse.data.data.saldo);
   };
 
   useEffect(() => {
-    console.log('product', product);
     getSaldo();
-    console.log('saldo', saldo);
     let totalHarga = 0;
     for (const item of product) {
       setTotalHarga((totalHarga += item.harga_belanjaan));
@@ -165,14 +166,14 @@ const NotaPembelian = ({route, navigation}) => {
         </View>
 
         <TouchableOpacity
-          onPress={() => setPayment('Saldo Dompet Cibeureum')}
+          onPress={() => setPayment('saldo')}
           style={{flexDirection: 'row', marginTop: 20}}
-          disabled={saldo === null || saldo < totalHarga}>
+          disabled={saldo.saldo === null || saldo.saldo < totalHarga}>
           <Icon2
             name="wallet"
             size={20}
             color={
-              saldo === null || saldo < totalHarga
+              saldo.saldo === null || saldo.saldo < totalHarga
                 ? COLORS.neutral3
                 : COLORS.primaryColor
             }
@@ -181,15 +182,15 @@ const NotaPembelian = ({route, navigation}) => {
             style={{
               ...FONTS.bodyNormalMedium,
               color:
-                saldo === null || saldo < totalHarga
+                saldo.saldo === null || saldo.saldo < totalHarga
                   ? COLORS.neutral3
                   : COLORS.black,
               marginLeft: 20,
             }}>
             Dompet Cibeurem (
-            {saldo === null || saldo < totalHarga
+            {saldo.saldo === 0 || saldo.saldo < totalHarga
               ? 'Saldo Kurang'
-              : formatRupiah(saldo === null ? 0 : saldo)}
+              : formatRupiah(saldo.saldo === 0 ? 0 : saldo.saldo)}
             )
           </Text>
         </TouchableOpacity>
@@ -249,22 +250,29 @@ const NotaPembelian = ({route, navigation}) => {
         harga_belanjaan: item?.harga_belanjaan,
         total_harga: item?.harga_belanjaan,
         metode_pembayaran: payment,
-        status_transaksi: 'pending',
+        status_transaksi: 'menunggu',
         id_pengguna: item?.id_pengguna,
         id_toko: item?.tb_barang?.tb_toko?.id_toko,
         id_belanjaan: item?.id_belanjaan,
         id_barang: item?.tb_barang?.id_barang,
       };
       const response = await buyProduct(data);
+      console.log("post transaksi", response);
       if (response.status === 201) {
         showSuccess(response?.data?.message);
         const hapus = await deleteProdukInCart(item?.id_belanjaan);
         console.log(hapus);
         // navigation.replace('RiwayatTransaksi');
       }
+
+      const res = await axios.patch(
+        `${BASE_URL}/pengguna/saldo/${saldo.id_saldo}`,
+        {jumlah: saldo.saldo - item?.harga_belanjaan},
+      );
+      console.log(res);
     }
     setLoading(false);
-    navigation.replace('RiwayatTransaksi', {status: "pending"});
+    navigation.replace('RiwayatTransaksi', {status: "menunggu"});
   };
 
   return (

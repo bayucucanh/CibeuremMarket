@@ -19,6 +19,10 @@ export const listProduct = () => {
   return apiGet(`${BASE_URL}/pengguna/barang`)
 }
 
+export const mySaldo = () => {
+  return apiGet(`${BASE_URL}/pengguna/saldo`)
+}
+
 export const listProductBySearch = (value) => {
   return apiGet(`${BASE_URL}/pengguna/barang?cari=${value}`)
 }

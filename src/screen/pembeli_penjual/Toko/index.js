@@ -52,6 +52,7 @@ const Toko = ({navigation}) => {
       getStore();
       getMyProduct();
     }
+    console.log('allProduct', allProduct);
   }, [isFocused]);
 
   return (

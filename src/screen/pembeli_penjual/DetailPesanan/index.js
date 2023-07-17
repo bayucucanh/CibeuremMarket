@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import style from './style';
-import {BASE_URL, COLORS, FONTS, SIZES, showSuccess} from '../../../constant';
+import {BASE_URL, COLORS, FONTS, SIZES, formatRupiah, showSuccess} from '../../../constant';
 import {Headers, Loading, LoadingScreen} from '../../../components';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {changeStatusTrans, detailTransaction} from '../../../services';
@@ -27,7 +27,7 @@ const DetailPesanan = ({navigation, route}) => {
   const order = async () => {
     const response = await detailTransaction(id_transaksi);
     if (response?.status === 200) {
-      setTransaksi(response?.data?.data);
+      setTransaksi(response?.data?.data?.transaksi);
     }
   };
 
@@ -35,7 +35,7 @@ const DetailPesanan = ({navigation, route}) => {
     setLoading(true);
     const res = await axios.patch(
       `${BASE_URL}/pengguna/transaksi/${id_transaksi}`,
-      {status_transaksi: 'accepted'},
+      {status_transaksi: 'diterima'},
     );
     if (res.status === 200) {
       showSuccess('Status Berhasil Diubah');
@@ -66,7 +66,7 @@ const DetailPesanan = ({navigation, route}) => {
       {status_transaksi: 'dikemas'},
     );
     if (res.status === 200) {
-      showSuccess('Status Berhasil Diubah');
+      showSuccess('Status Berhasil Diubah (Dikemas)');
       order();
     }
     console.log(res);
@@ -80,7 +80,7 @@ const DetailPesanan = ({navigation, route}) => {
       {status_transaksi: 'dikirim'},
     );
     if (res.status === 200) {
-      showSuccess('Status Berhasil Diubah');
+      showSuccess('Status Berhasil Diubah (Dikirim)');
       order();
     }
     console.log(res);
@@ -94,7 +94,7 @@ const DetailPesanan = ({navigation, route}) => {
       {status_transaksi: 'dibayar'},
     );
     if (res.status === 200) {
-      showSuccess('Status Berhasil Diubah');
+      showSuccess('Status Berhasil Diubah (Dibayar)');
       order();
     }
     console.log(res);
@@ -103,6 +103,7 @@ const DetailPesanan = ({navigation, route}) => {
 
   useEffect(() => {
     order();
+    console.log(transaksi);
   }, []);
 
   return (
@@ -132,7 +133,7 @@ const DetailPesanan = ({navigation, route}) => {
               }}>
               <Image
                 source={{
-                  uri: transaksi?.tb_pengguna.foto_pengguna,
+                  uri: transaksi?.tb_pengguna?.foto_pengguna === null ? "https://assets-a1.kompasiana.com/items/album/2021/03/24/blank-profile-picture-973460-1280-605aadc08ede4874e1153a12.png?t=o&v=1200" : transaksi?.tb_pengguna?.foto_pengguna,
                 }}
                 style={{width: 50, height: 50, borderRadius: 50}}
               />
@@ -143,7 +144,7 @@ const DetailPesanan = ({navigation, route}) => {
                   textAlign: 'left',
                   marginLeft: 20,
                 }}>
-                Pemesan : {transaksi?.tb_pengguna.nama_pengguna}
+                Pemesan : {transaksi?.tb_pengguna?.nama_pengguna}
               </Text>
             </View>
             <TouchableOpacity
@@ -182,7 +183,7 @@ const DetailPesanan = ({navigation, route}) => {
             }}>
             <Image
               source={{
-                uri: 'https://assets.pikiran-rakyat.com/crop/0x0:0x0/x/photo/2021/10/14/1452578967.jpg',
+                uri: transaksi?.tb_barang?.gambar_barang,
               }}
               style={{width: 100, height: 100}}
             />
@@ -191,7 +192,7 @@ const DetailPesanan = ({navigation, route}) => {
                 {transaksi?.nama_belanjaan}
               </Text>
               <Text style={{...FONTS.bodyNormalRegular, color: COLORS.black}}>Jumlah Pesanan : {transaksi?.jumlah_belanjaan}</Text>
-              <Text style={{...FONTS.bodyNormalRegular, color: COLORS.black}}>Total Harga : {transaksi?.total_harga}</Text>
+              <Text style={{...FONTS.bodyNormalRegular, color: COLORS.black}}>Total Harga : {formatRupiah(transaksi?.total_harga)}</Text>
             </View>
           </View>
 
@@ -208,18 +209,18 @@ const DetailPesanan = ({navigation, route}) => {
           <View
             style={[{backgroundColor: COLORS.white, padding: 10, borderRadius: 10, borderWidth: 1, borderColor: COLORS.primaryColor}]}>
             <Text style={{...FONTS.bodyNormalBold, color: COLORS.black}}>
-              Penerima : Bayu Cucan Herdian
+              Penerima : {transaksi?.tb_pengguna?.nama_pengguna}
             </Text>
             <Text style={{...FONTS.bodyNormalMedium, color: COLORS.black}}>
-              No. Kontak : 089523121312
+              No. Kontak : {transaksi?.tb_pengguna?.nomor_hp}
             </Text>
             <Text style={{...FONTS.bodyNormalMedium, color: COLORS.black}}>
-              Alamat Lenkap : Jln. Cigugur Girang
+              Alamat Lenkap : {transaksi?.tb_pengguna?.alamat_pengguna === null ? "Ambil ditoko" : transaksi?.tb_pengguna?.alamat_pengguna}
             </Text>
           </View>
 
-          {transaksi?.status_transaksi !== 'pending' &&
-            transaksi?.status_transaksi !== 'rejected' && (
+          {transaksi?.status_transaksi !== 'menunggu' &&
+            transaksi?.status_transaksi !== 'ditolak' && (
               <>
                 <Text
                   style={{
@@ -348,7 +349,7 @@ const DetailPesanan = ({navigation, route}) => {
             )}
         </ScrollView>
 
-        {transaksi?.status_transaksi === 'pending' && (
+        {transaksi?.status_transaksi === 'menunggu' && (
           <View
             style={{
               flexDirection: 'row',

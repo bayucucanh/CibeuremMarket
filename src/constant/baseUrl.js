@@ -1,1 +1,1 @@
-export const BASE_URL = 'https://c418-180-244-135-116.ngrok-free.app/api/v1';
+export const BASE_URL = 'https://pasar-bandung-api.cyclic.app/api/v1';
