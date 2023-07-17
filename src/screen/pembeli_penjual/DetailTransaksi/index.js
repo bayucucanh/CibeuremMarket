@@ -20,6 +20,7 @@ import axios from 'axios';
 import style from './style';
 import {formatDate} from '../../../constant/formatDate';
 import { LoadingScreen } from '../../../components';
+import Geolocation from 'react-native-geolocation-service';
 
 const DetailTransaksi = ({route}) => {
   const {id} = route.params;
@@ -67,6 +68,24 @@ const DetailTransaksi = ({route}) => {
     console.log("id__", id);
     getTransaksiDetail();
   }, []);
+
+  useEffect(() => {
+    Geolocation.getCurrentPosition(
+      position => {
+        alert(JSON.stringify(position));
+      },
+      error => {
+        // See error code charts below.
+        alert(error.message),
+          {
+            timeout: 20000,
+            maximumAge: 1000,
+          };
+      },
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+    );
+  });
+
 
   return (
     <>
