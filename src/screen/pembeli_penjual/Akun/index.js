@@ -329,7 +329,7 @@ const Akun = ({navigation}) => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate("RiwayatTransaksi", {status: "diterima"})}
+            onPress={() => navigation.navigate("RiwayatTransaksi", {status: "selesai"})}
           >
             <View
               style={{

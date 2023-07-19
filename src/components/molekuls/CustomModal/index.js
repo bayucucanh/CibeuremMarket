@@ -83,7 +83,7 @@ export default CustomModal;
 
 const styles = StyleSheet.create({
   overlay: {
-    backgroundColor: 'rgba(0,0,0,0.2)',
+    // backgroundColor: 'rgba(0,0,0,0.2)',
     flex: 1,
     justifyContent: 'flex-end',
   },

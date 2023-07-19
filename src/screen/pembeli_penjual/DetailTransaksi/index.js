@@ -19,8 +19,9 @@ import {
 import axios from 'axios';
 import style from './style';
 import {formatDate} from '../../../constant/formatDate';
-import { LoadingScreen } from '../../../components';
+import {CardOrder, CustomModal, LoadingScreen} from '../../../components';
 import Geolocation from 'react-native-geolocation-service';
+import MapView, {Marker, Callout, PROVIDER_GOOGLE} from 'react-native-maps';
 
 const DetailTransaksi = ({route}) => {
   const {id} = route.params;
@@ -38,10 +39,9 @@ const DetailTransaksi = ({route}) => {
 
   const patchDone = async () => {
     setLoading(true);
-    const res = await axios.patch(
-      `${BASE_URL}/pengguna/transaksi/${id}`,
-      {status_transaksi: 'diterima'},
-    );
+    const res = await axios.patch(`${BASE_URL}/pengguna/transaksi/${id}`, {
+      status_transaksi: 'disetujui',
+    });
     if (res.status === 200) {
       showSuccess('Status Berhasil Diubah');
       // order();
@@ -65,14 +65,14 @@ const DetailTransaksi = ({route}) => {
   };
 
   useEffect(() => {
-    console.log("id__", id);
+    console.log('id__', id);
     getTransaksiDetail();
   }, []);
 
   useEffect(() => {
     Geolocation.getCurrentPosition(
       position => {
-        alert(JSON.stringify(position));
+        // alert(JSON.stringify(position));
       },
       error => {
         // See error code charts below.
@@ -86,9 +86,134 @@ const DetailTransaksi = ({route}) => {
     );
   });
 
-
   return (
     <>
+      <View style={styles.wrapper}>
+        <MapView
+          style={styles.map}
+          initialRegion={{
+            latitude: -6.8399029455469496,
+            longitude: 107.58471953955168,
+            latitudeDelta: 0.001,
+            longitudeDelta: 0.001,
+          }}
+          provider={PROVIDER_GOOGLE}
+          showsUserLocation={true}></MapView>
+        <CustomModal
+          visibleModal={true}
+          content={
+            <View>
+              <Text style={{...FONTS.bodyNormalBold, color: COLORS.black}}>
+                Informasi Pengiriman
+              </Text>
+              {data?.tb_pengirimans[0].length !== 0 ? (
+                <View
+                  style={[
+                    style.card,
+                    {backgroundColor: COLORS.white, flexDirection: 'row'},
+                  ]}>
+                  <Image
+                    source={{
+                      uri: 'https://assets-a1.kompasiana.com/items/album/2021/03/24/blank-profile-picture-973460-1280-605aadc08ede4874e1153a12.png?t=o&v=1200',
+                    }}
+                    style={{width: 50, height: 50}}
+                  />
+                  <View style={{marginLeft: 15}}>
+                    <Text
+                      style={{...FONTS.bodyNormalBold, color: COLORS.black}}>
+                      Suhendani
+                    </Text>
+                    <Text style={{...FONTS.bodySmallMedium}}>
+                      No. Telp: 08621212131
+                    </Text>
+                  </View>
+                </View>
+              ) : (
+                <Text style={{...FONTS.bodyNormalRegular, color: COLORS.black}}>
+                  Pesanan ada kurir yang mengambil pesanan{' '}
+                </Text>
+              )}
+
+              <Text
+                style={{
+                  ...FONTS.bodyNormalBold,
+                  color: COLORS.black,
+                  marginTop: 10,
+                }}>
+                Informasi Barang
+              </Text>
+              <CardOrder
+                gambar={data?.tb_barang?.gambar_barang}
+                namaBarang={data?.tb_barang?.nama_barang}
+                jumlahBarang={data?.jumlahBarang}
+                totalHarga={data?.total_harga}
+              />
+
+              <View
+                style={{
+                  backgroundColor: COLORS.white,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginTop: 14
+                }}>
+                <TouchableOpacity
+                  disabled={
+                    data?.status_transaksi !== 'dikirim' ||
+                    data?.status_transaksi !== 'selesai'
+                  }
+                  onPress={() => patchDone()}
+                  style={{
+                    backgroundColor:
+                      data?.status_transaksi === 'dikirim' ||
+                      data?.status_transaksi !== 'selesai'
+                        ? COLORS.lightGray
+                        : COLORS.primaryColor,
+                    width: '48%',
+                    // alignSelf: 'flex-end',
+                    height: 40,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    left: 0,
+                    borderRadius: 100,
+                    // marginHorizontal: 14,
+                    marginBottom: 14,
+                  }}>
+                  <Text style={{color: 'white', ...FONTS.bodyNormalBold}}>
+                    Batalkan
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  disabled={
+                    data?.status_transaksi === 'menunggu' ||
+                    data?.status_transaksi === 'dikemas'
+                  }
+                  onPress={() => patchDone()}
+                  style={{
+                    backgroundColor:
+                      data?.status_transaksi === 'menunggu' ||
+                      data?.status_transaksi === 'dikemas'
+                        ? COLORS.lightGray
+                        : COLORS.primaryColor,
+                    width: '48%',
+                    // alignSelf: 'flex-end',
+                    height: 40,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    left: 0,
+                    borderRadius: 100,
+                    // marginHorizontal: 14,
+                    marginBottom: 14,
+                  }}>
+                  <Text style={{color: 'white', ...FONTS.bodyNormalBold}}>
+                    Selesai
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          }
+        />
+      </View>
+
       {/* <ScrollView contentContainerStyle={[style.container, {flex: 1}]}>
         <Image
           source={{uri: data?.tb_barang?.gambar_barang}}
@@ -120,61 +245,55 @@ const DetailTransaksi = ({route}) => {
           </Text>
         </View>
       </ScrollView> */}
-      {/* <View style={{backgroundColor: COLORS.white, flexDirection: 'row', justifyContent: 'space-between'}}>
-        <TouchableOpacity
-          disabled={
-            data?.status_transaksi === 'dikirim' ||
-            data?.status_transaksi === 'dikemas'
-          }
-          onPress={() => patchDone()}
-          style={{
-            backgroundColor:
-              data?.status_transaksi === 'dikirim' ||
-              data?.status_transaksi === 'dikemas'
-                ? COLORS.lightGray
-                : COLORS.primaryColor,
-            width: '43%',
-            // alignSelf: 'flex-end',
-            height: 40,
-            justifyContent: 'center',
-            alignItems: 'center',
-            left: 0,
-            borderRadius: 100,
-            marginHorizontal: 14,
-            marginBottom: 14,
-          }}>
-          <Text style={{color: 'white', ...FONTS.bodyNormalBold}}>Batalkan</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          disabled={
-            data?.status_transaksi === 'menunggu' ||
-            data?.status_transaksi === 'dikemas'
-          }
-          onPress={() => patchDone()}
-          style={{
-            backgroundColor:
-              data?.status_transaksi === 'menunggu' ||
-              data?.status_transaksi === 'dikemas'
-                ? COLORS.lightGray
-                : COLORS.primaryColor,
-            width: '43%',
-            // alignSelf: 'flex-end',
-            height: 40,
-            justifyContent: 'center',
-            alignItems: 'center',
-            left: 0,
-            borderRadius: 100,
-            marginHorizontal: 14,
-            marginBottom: 14,
-          }}>
-          <Text style={{color: 'white', ...FONTS.bodyNormalBold}}>Selesai</Text>
-        </TouchableOpacity>
-      </View> */}
-      {loading && (<LoadingScreen />)}
+
+      {loading && <LoadingScreen />}
     </>
   );
 };
 
 export default DetailTransaksi;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  wrapper: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  buble: {
+    // width: 200,
+    // height: 100,
+    // backgroundColor: '#fff',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 6,
+    borderColor: '#ccc',
+    borderWidth: 0.5,
+    padding: 15,
+    width: 150,
+  },
+  arrow: {
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+    borderTopColor: '#fff',
+    borderWidth: 16,
+    alignSelf: 'center',
+    marginTop: -32,
+  },
+  arrowBorder: {
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+    borderTopColor: '#007a87',
+    borderWidth: 16,
+    alignSelf: 'center',
+    marginTop: -0.5,
+    // marginBottom: -15
+  },
+  // Character name
+  name: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+});
