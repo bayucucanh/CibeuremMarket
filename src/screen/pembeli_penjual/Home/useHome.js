@@ -6,6 +6,7 @@ import { useIsFocused } from '@react-navigation/native';
 const useHome = ({navigation}) => {
   const isFocused = useIsFocused();
   const [searchProduct, setSearchProduct] = useState('')
+  const [refresh, setRefresh] = useState(false)
   const [prouducts, setProduct] = useState([])
 
   const getProducts = async () => {
@@ -24,6 +25,12 @@ const useHome = ({navigation}) => {
     setProduct(response?.data?.data?.barang);
   };
 
+  const Refresh = () => {
+    setRefresh(true);
+    getProducts();
+    setRefresh(false);
+  }
+
   useEffect(() => {
     if (isFocused) {
       getProducts();
@@ -35,7 +42,10 @@ const useHome = ({navigation}) => {
     setSearchProduct,
     prouducts,
     setProduct,
-    getProducts
+    getProducts,
+    refresh,
+    setRefresh,
+    Refresh
   ]
 }
 

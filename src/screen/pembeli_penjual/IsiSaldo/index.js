@@ -17,6 +17,7 @@ import {
   LoadingScreen,
   SaldoButton,
   Separator,
+  Toggle,
 } from '../../../components';
 import style from './style';
 import {BASE_URL, COLORS, FONTS, formatRupiah, showSuccess} from '../../../constant';
@@ -65,15 +66,19 @@ const IsiSaldo = ({route}) => {
   
   const tambahSaldo = async () => {
     setLoading(true);
-    const res = await axios.patch(
-      `${BASE_URL}/pengguna/saldo/${id_saldo}`,
-      {jumlah: saldo + sisa_saldo},
-    );
-    if (res.status === 200) {
-      showSuccess('Top up saldo berhasil');
-      // order();
+    if (saldo <= 19999) {
+      alert("Minimum top up Rp.20.000")
+    } else {
+      const res = await axios.patch(
+        `${BASE_URL}/pengguna/saldo/${id_saldo}`,
+        {jumlah: saldo + sisa_saldo},
+      );
+      if (res.status === 200) {
+        showSuccess('Top up saldo berhasil');
+        // order();
+      }
+      console.log(res);
     }
-    console.log(res);
     setLoading(false);
   };
 
@@ -81,7 +86,11 @@ const IsiSaldo = ({route}) => {
     <>
     <ScrollView style={style.container}>
       <Headers title="Isi Saldo Cibeurem Market" />
-
+      {
+        saldo === 0 || saldo <= 19999 && (
+          <Toggle label={"Minumum top adalah Rp.20.000"} color={COLORS.alertDanger}/>
+        )
+      }
       <Text
         style={{...FONTS.bodyLargeMedium, color: COLORS.black, marginTop: 10}}>
         Jumlah Top Up : {formatRupiah(saldo)}
@@ -198,10 +207,10 @@ const IsiSaldo = ({route}) => {
       </View>
 
       <TouchableOpacity
-        disabled={saldo === 0}
+        disabled={saldo <= 19999}
         onPress={() => tambahSaldo()}
         style={{
-          backgroundColor: saldo !== 0 ? COLORS.primaryColor : COLORS.neutral3,
+          backgroundColor: saldo <= 19999 ? COLORS.neutral3 : COLORS.primaryColor,
           // width: '90%',
           // alignSelf: 'flex-end',
           height: 40,

@@ -21,13 +21,19 @@ import style from './style';
 import {formatDate} from '../../../constant/formatDate';
 import {CardOrder, CustomModal, LoadingScreen} from '../../../components';
 import Geolocation from 'react-native-geolocation-service';
-import MapView, {Marker, Callout, PROVIDER_GOOGLE, Overlay} from 'react-native-maps';
+import MapView, {
+  Marker,
+  Callout,
+  PROVIDER_GOOGLE,
+  Overlay,
+} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
+import Icon2 from 'react-native-vector-icons/AntDesign';
 
 const DetailTransaksi = ({route}) => {
   const {id} = route.params;
 
-  const origin = {latitude: -6.8399029455469496, longitude: 107.58471953955168};
+  const origin = {latitude: -7.098560, longitude: 107.468391};
   const destination = {latitude: -7.025993, longitude: 107.517036};
   const GOOGLE_MAPS_API = 'AIzaSyAOSCS_We7u6ImZU9dhwvvTLnD01i2PTm8';
 
@@ -46,7 +52,7 @@ const DetailTransaksi = ({route}) => {
   const patchDone = async () => {
     setLoading(true);
     const res = await axios.patch(`${BASE_URL}/pengguna/transaksi/${id}`, {
-      status_transaksi: 'disetujui',
+      status_transaksi: 'selesai',
     });
     if (res.status === 200) {
       showSuccess('Status Berhasil Diubah');
@@ -75,32 +81,14 @@ const DetailTransaksi = ({route}) => {
     getTransaksiDetail();
   }, []);
 
-  // useEffect(() => {
-  //   Geolocation.getCurrentPosition(
-  //     position => {
-  //       // alert(JSON.stringify(position));
-  //       // console.log(JSON.stringify(position));
-  //     },
-  //     error => {
-  //       // See error code charts below.
-  //       alert(error.message),
-  //         {
-  //           timeout: 20000,
-  //           maximumAge: 1000,
-  //         };
-  //     },
-  //     {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-  //   );
-  // });
-
   return (
     <>
       {/* <View style={styles.wrapper}> */}
       <MapView
         style={[styles.map]}
         initialRegion={{
-          latitude: -6.8399029455469496,
-          longitude: 107.58471953955168,
+          latitude: -7.098560,
+          longitude: 107.468391,
           latitudeDelta: 0.01,
           longitudeDelta: 0.01,
         }}
@@ -112,46 +100,92 @@ const DetailTransaksi = ({route}) => {
           destination={destination}
           apikey={GOOGLE_MAPS_API}
           strokeWidth={3}
-          strokeColor="#17273F"
+          strokeColor={COLORS.primaryColor}
           mode="DRIVING"
           precision="high"
         />
+        
+        <Marker
+            coordinate={{
+              latitude: -7.098560,
+              longitude: 107.468391,
+            }}>
+              <View>
+                <Image
+                  source={{ uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1vUvbMHnxrCpKKMoAwcVhguMYYIPQF6fzXUpYkCI&shttps://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1vUvbMHnxrCpKKMoAwcVhguMYYIPQF6fzXUpYkCI&s" }}
+                  style={{ width: "100%",
+                    height: 31,
+                    aspectRatio: 2 / 3, }}
+                />
+                {/* <FastImage
+                  source={require('../assets/car.png')}
+                  // source={{ uri: 'https://t4.ftcdn.net/jpg/03/32/56/67/360_F_332566713_q0QLBQ0BWkG5ed7DGRiuFIjvZNwEL9k2.jpg' }}
+                  style={styles.car}
+                /> */}
+              </View>
+          </Marker>
+
       </MapView>
 
       {/* <Callout style={{ position: 'absolute', bottom: 5 }} onPress={() => setVisible(!visible)}>
         
       </Callout> */}
+      {/* <CustomModal 
+        visibleModal={true}
+        content={ */}
+
       <TouchableOpacity
-          disabled={
-            data?.status_transaksi !== 'menunggu' ||
-            data?.status_transaksi !== 'selesai'
-          }
-          onPress={() => setVisible(!visible)}
-          style={{
-            backgroundColor: COLORS.primaryColor,
-            // alignSelf: 'flex-end',
-            width: '90%',
-            position: 'absolute',
-            bottom: 5,
-            height: 40,
-            justifyContent: 'center',
-            alignItems: 'center',
-            left: 0,
-            borderRadius: 100,
-            marginHorizontal: 14,
-            marginBottom: 14,
-          }}>
-          <Text style={{color: 'white', ...FONTS.bodyNormalBold}}>
-            Lihat Informasi Transaksi
-          </Text>
-        </TouchableOpacity>
+        onPress={() => setVisible(!visible)}
+        style={{
+          backgroundColor: COLORS.primaryColor,
+          // alignSelf: 'flex-end',
+          width: '90%',
+          position: 'absolute',
+          bottom: 5,
+          height: 40,
+          justifyContent: 'center',
+          alignItems: 'center',
+          left: 0,
+          borderRadius: 100,
+          marginHorizontal: 14,
+          marginBottom: 14,
+        }}>
+        <Text style={{color: 'white', ...FONTS.bodyNormalBold}}>
+          Lihat Informasi Transaksi
+        </Text>
+      </TouchableOpacity>
+      {/* }
+      /> */}
 
       <CustomModal
-        visibleModal={true}
+        visibleModal={visible}
         content={
           <View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                // marginBottom: 20,
+              }}>
+              <Text
+                style={{
+                  ...FONTS.bodyLargeBold,
+                  color: COLORS.primaryColor,
+                }}>
+                Informasi Pengiriman
+              </Text>
+              <TouchableOpacity onPress={() => setVisible(!visible)}>
+                <Icon2
+                  name="closecircleo"
+                  size={20}
+                  color={COLORS.neutral3}
+                  style={{alignSelf: 'center'}}
+                />
+              </TouchableOpacity>
+            </View>
             <Text style={{...FONTS.bodyNormalBold, color: COLORS.black}}>
-              Informasi Pengiriman
+              Informasi Kurir
             </Text>
             {data?.tb_pengirimans.length !== 0 ? (
               <View
@@ -161,16 +195,16 @@ const DetailTransaksi = ({route}) => {
                 ]}>
                 <Image
                   source={{
-                    uri: 'https://assets-a1.kompasiana.com/items/album/2021/03/24/blank-profile-picture-973460-1280-605aadc08ede4874e1153a12.png?t=o&v=1200',
+                    uri: data?.tb_pengirimans[0]?.tb_kurir?.foto_kurir,
                   }}
                   style={{width: 50, height: 50}}
                 />
                 <View style={{marginLeft: 15}}>
                   <Text style={{...FONTS.bodyNormalBold, color: COLORS.black}}>
-                    Suhendani
+                    {data?.tb_pengirimans[0]?.tb_kurir?.nama_kurir}
                   </Text>
                   <Text style={{...FONTS.bodySmallMedium}}>
-                    No. Telp: 08621212131
+                    No. Telp: {data?.tb_pengirimans[0]?.tb_kurir?.nomor_hp}
                   </Text>
                 </View>
               </View>
@@ -191,7 +225,7 @@ const DetailTransaksi = ({route}) => {
             <CardOrder
               gambar={data?.tb_barang?.gambar_barang}
               namaBarang={data?.tb_barang?.nama_barang}
-              jumlahBarang={data?.jumlahBarang}
+              jumlahBarang={data?.jumlah_belanjaan}
               totalHarga={data?.total_harga}
             />
 

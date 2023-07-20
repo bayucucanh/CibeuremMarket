@@ -212,7 +212,7 @@ const Toko = ({navigation}) => {
               allProduct.map(item => (
                 <ProductCard
                   nama_barang={item.nama_barang}
-                  deskripsi_barang={item.deskripsi_barang}
+                  nama_toko={item.deskripsi_barang}
                   harga_barang={item.harga_barang}
                   gambarBarang={item.gambar_barang}
                   onPress={() =>

@@ -47,6 +47,8 @@ const TambahBarang = ({navigation, route}) => {
     {label: 'Daging Dan Ikan', value: 'Daging'},
     {label: 'Elektronik', value: 'Elektronik'},
     {label: 'Sayuran', value: 'Sayuran'},
+    {label: 'Sembako', value: 'Sembako'},
+    {label: 'Sandang', value: 'Sandang'},
   ]);
 
   useEffect(() => {
@@ -145,9 +147,9 @@ const TambahBarang = ({navigation, route}) => {
           fontSize: 14,
           paddingLeft: 15,
           paddingTop: 5,
-          borderRadius: 30,
+          borderRadius: 10,
           marginVertical: 5,
-          borderColor: 'black',
+          borderColor: COLORS.neutral2,
           borderWidth: 2,
           // alignSelf: 'flex-end'
         }}
@@ -157,6 +159,8 @@ const TambahBarang = ({navigation, route}) => {
         setOpen={setOpen2}
         setValue={setValueOpen2}
         setItems={setItemsKategori}
+        listMode='SCROLLVIEW'
+        onChangeValue={(value) => setData({...data, jenisBarang: value})}
       />
 
       <View
@@ -200,9 +204,9 @@ const TambahBarang = ({navigation, route}) => {
               fontSize: 14,
               paddingLeft: 15,
               paddingTop: 5,
-              borderRadius: 30,
+              borderRadius: 10,
               marginVertical: 5,
-              borderColor: 'black',
+              borderColor: COLORS.neutral2,
               borderWidth: 2,
               // alignSelf: 'flex-end'
             }}
@@ -212,6 +216,8 @@ const TambahBarang = ({navigation, route}) => {
             setOpen={setOpen1}
             setValue={setValueOpen}
             setItems={setItems}
+            listMode='SCROLLVIEW'
+            onChangeValue={(value) => setData({...data, per: value})}
           />
         </View>
       </View>

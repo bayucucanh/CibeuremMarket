@@ -6,7 +6,7 @@ import CustomButton from '../CustomButton';
 const ProductCard = ({
   onPress,
   nama_barang,
-  deskripsi_barang,
+  nama_toko,
   harga_barang,
   gambarBarang
 }) => {
@@ -36,6 +36,7 @@ const ProductCard = ({
         }}
       />
       <View style={{marginHorizontal: 10}}>
+      
         <Text
           style={[
             FONTS.bodyNormalBold,
@@ -47,20 +48,21 @@ const ProductCard = ({
         </Text>
         <Text
           style={[
-            FONTS.bodyNormalRegular,
-            {color: '#49454F', fontWeight: '400'},
+            FONTS.bodySmallRegular,
+            {color: '#49454F', fontWeight: '400', },
           ]}
           ellipsizeMode="tail"
           numberOfLines={1}>
-          {deskripsi_barang}
+          {nama_toko}
         </Text>
         <Text
           style={[
-            FONTS.bodyNormalRegular,
-            {color: '#49454F', fontWeight: '400'},
+            FONTS.bodyLargeBold,
+            {color: COLORS.primaryColor, fontWeight: '400'},
           ]}>
           {formatRupiah(harga_barang)}
         </Text>
+        
       </View>
       {/* <CustomButton
         onPress={() => alert('detail')}

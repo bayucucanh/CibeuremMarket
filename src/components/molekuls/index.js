@@ -15,5 +15,6 @@ import SaldoButton from "./SaldoButton";
 import BottomSheetComponent from "./BottomSheet";
 import CustomModal from "./CustomModal";
 import CardOrder from "./CardOrder";
+import Toggle from "./Toggle";
 
-export {InputText, CustomButton, Headers, SearchBar, ProductCard, LoadingScreen, ListButton, HistoryCard, Empty, PhotoProfile, ListProduct, InputTextNumeric, SaldoButton, InputDropdown, BottomSheetComponent, CustomModal, CardOrder}
+export {InputText, CustomButton, Headers, SearchBar, ProductCard, LoadingScreen, ListButton, HistoryCard, Empty, PhotoProfile, ListProduct, InputTextNumeric, SaldoButton, InputDropdown, BottomSheetComponent, CustomModal, CardOrder, Toggle}

@@ -7,14 +7,23 @@ import { showDanger, showSuccess } from '../../../../constant';
 const useRegister = ({navigation}) => {
 
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [valueOpen, setValueOpen] = useState(null);
+  const [gender, setGender] = useState(null);
+  const [items, setItems] = useState([
+    {label: 'Laki-Laki', value: 'Laki-Laki'},
+    {label: 'Perempuan', value: 'Perempuan'},
+  ]);
 
   async function registerHandle(values) {
+    console.log("values", values);
+    console.log("gender", gender);
     const data = {
       nama_pengguna: values.nama,
       nomor_hp: values.noHp,
       password: values.password,
       nomor_ktp: values.noKtp,
-      jenis_kelamin: values.jenisKelamin
+      jenis_kelamin: gender
     }
     
     try {
@@ -35,7 +44,7 @@ const useRegister = ({navigation}) => {
     }
   };
 
-  return [registerHandle, loading];
+  return [registerHandle, loading, open, setOpen, valueOpen, setValueOpen, items, setItems, gender, setGender];
 };
 
 export default useRegister;

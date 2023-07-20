@@ -264,12 +264,13 @@ const NotaPembelian = ({route, navigation}) => {
         console.log(hapus);
         // navigation.replace('RiwayatTransaksi');
       }
-
-      const res = await axios.patch(
-        `${BASE_URL}/pengguna/saldo/${saldo.id_saldo}`,
-        {jumlah: saldo.saldo - item?.harga_belanjaan},
-      );
-      console.log(res);
+      if (payment === "saldo") {
+        const res = await axios.patch(
+          `${BASE_URL}/pengguna/saldo/${saldo.id_saldo}`,
+          {jumlah: saldo.saldo - item?.harga_belanjaan},
+        );
+        console.log(res);
+      }
     }
     setLoading(false);
     navigation.replace('RiwayatTransaksi', {status: "menunggu"});

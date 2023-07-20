@@ -64,55 +64,55 @@ const DaftarToko = ({navigation}) => {
     setData({...data, closeHour: valueClose, openHour: valueOpen});
     if (data.openHour === null && data.closeHour === null) {
       alert('Klik Submit Sekali Lagi');
-    }
+    } else {
+      try {
+        const formdata = new FormData();
+        formdata.append('nama_toko', data.storeName);
+        formdata.append('alamat_toko', data.address);
+        formdata.append('hari_buka', data.dayOpen);
+        formdata.append('jam_buka', data.openHour);
+        formdata.append('jam_tutup', data.closeHour);
+        formdata.append('nomor_hp_toko', data.noHp);
+        formdata.append('email_toko', data.email);
+        formdata.append('deskripsi_toko', data.description);
+        formdata.append('gambar_toko', {
+          uri: fieldValue.uri,
+          type: fieldValue.type,
+          name: fieldValue.fileName,
+        });
+        formdata.append('gambar_surat', {
+          uri: fieldSurat.uri,
+          type: fieldSurat.type,
+          name: fieldSurat.fileName,
+        });
+        formdata.append('status_toko', false);
 
-    try {
-      const formdata = new FormData();
-      formdata.append('nama_toko', data.storeName);
-      formdata.append('alamat_toko', data.address);
-      formdata.append('hari_buka', data.dayOpen);
-      formdata.append('jam_buka', data.openHour);
-      formdata.append('jam_tutup', data.closeHour);
-      formdata.append('nomor_hp_toko', data.noHp);
-      formdata.append('email_toko', data.email);
-      formdata.append('deskripsi_toko', data.description);
-      formdata.append('gambar_toko', {
-        uri: fieldValue.uri,
-        type: fieldValue.type,
-        name: fieldValue.fileName,
-      });
-      formdata.append('gambar_surat', {
-        uri: fieldSurat.uri,
-        type: fieldSurat.type,
-        name: fieldSurat.fileName,
-      });
-      formdata.append('status_toko', true);
-
-      console.log(formdata);
-      const token = await Auth.getToken();
-      console.log(token);
-      const res = await fetch(
-        // 'https://2e5d-36-74-43-165.ngrok.io/api/v1/pengguna/toko',
-        `${BASE_URL}/pengguna/toko`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: 'Bearer ' + token,
+        console.log(formdata);
+        const token = await Auth.getToken();
+        console.log(token);
+        const res = await fetch(
+          // 'https://2e5d-36-74-43-165.ngrok.io/api/v1/pengguna/toko',
+          `${BASE_URL}/pengguna/toko`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: 'Bearer ' + token,
+            },
+            body: formdata,
           },
-          body: formdata,
-        },
-      );
-      console.log(res);
-      if (res.status == 200 || (201 && res.status !== 400)) {
-        showSuccess('Toko Berhasil Didaftarkan');
-        setFieldValue(null);
-        setFieldSurat(null);
-        navigation.navigate('MainApp');
+        );
+        console.log(res);
+        if (res.status == 200 || (201 && res.status !== 400)) {
+          showSuccess('Toko Berhasil Didaftarkan');
+          setFieldValue(null);
+          setFieldSurat(null);
+          navigation.navigate('MainApp');
+        }
+      } catch (error) {
+        // console.log('Gagal');
+        showDanger('Toko Gagal Didaftarkan');
       }
-    } catch (error) {
-      // console.log('Gagal');
-      showDanger('Toko Gagal Didaftarkan');
     }
     setLoading(false);
   };
@@ -196,9 +196,9 @@ const DaftarToko = ({navigation}) => {
             fontSize: 14,
             paddingLeft: 15,
             paddingTop: 5,
-            borderRadius: 30,
+            borderRadius: 10,
             marginVertical: 5,
-            borderColor: 'black',
+            borderColor: COLORS.neutral2,
             borderWidth: 2,
             backgroundColor: 'white',
             zIndex: 1000,
@@ -211,6 +211,8 @@ const DaftarToko = ({navigation}) => {
           setOpen={setOpen1}
           setValue={setValueOpen}
           setItems={setItems}
+          listMode='MODAL'
+          onChangeValue={(value) => setData({...data, openHour: value})}
         />
 
         <Text
@@ -223,16 +225,16 @@ const DaftarToko = ({navigation}) => {
           Jam Tutup
         </Text>
         <DropDownPicker
-        zIndex={3000}
-        zIndexInverse={1000}
+          zIndex={3000}
+          zIndexInverse={1000}
           style={{
             height: 30,
             fontSize: 14,
             paddingLeft: 15,
             paddingTop: 5,
-            borderRadius: 30,
+            borderRadius: 10,
             marginTop: 5,
-            borderColor: 'black',
+            borderColor: COLORS.neutral2,
             borderWidth: 2,
             // alignSelf: 'flex-end'
           }}
@@ -242,6 +244,8 @@ const DaftarToko = ({navigation}) => {
           setOpen={setOpen2}
           setValue={setValueClose}
           setItems={setItems}
+          listMode='MODAL'
+          onChangeValue={(value) => setData({...data, closeHour: value})}
         />
 
         <Text

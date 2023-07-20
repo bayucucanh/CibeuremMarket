@@ -8,10 +8,10 @@ const HistoryCard = ({style, name, price, status, date, onPress}) => {
     <TouchableOpacity style={style} onPress={onPress}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <Text style={{ ...FONTS.bodyNormalBold, color: COLORS.black, marginBottom:4 }}>{name}</Text>
-        <Text style={{ ...FONTS.bodySmallMedium, color: status === "pending" ? COLORS.black : COLORS.alertSuccess, textTransform: 'capitalize' }}>{status}</Text>
+        <Text style={{ ...FONTS.bodySmallMedium, color: status !== "selesai" ? COLORS.black : COLORS.alertSuccess, textTransform: 'capitalize' }}>{status}</Text>
       </View>
         <Text style={{ ...FONTS.bodyNormalMedium, color: COLORS.black }}>Total Harga : {formatRupiah(price)}</Text>
-        <Text style={{ ...FONTS.bodyNormalMedium, color: COLORS.black }}>{date}</Text>
+        <Text style={{ ...FONTS.bodySmallMedium, color: COLORS.black }}>{date}</Text>
       <Separator />
     </TouchableOpacity>
   )

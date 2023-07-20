@@ -20,7 +20,7 @@ const Akun = ({navigation}) => {
   const [profile, setProfile] = useState([]);
   const [diterima, setDiterima] = useState({
     total: 0,
-    status: "diterima"
+    status: "disetujui"
   });
   const [pending, setPending] = useState({
     total: 0,
@@ -65,7 +65,7 @@ const Akun = ({navigation}) => {
       setSelesai({...selesai, total: 0})
     } else {
       setPending({...pending, total:response?.data?.data?.transaksi?.filter((item) => item.status_transaksi === "menunggu").length})
-      setDiterima({...pending, total:response?.data?.data?.transaksi?.filter((item) => item.status_transaksi === "diterima").length})
+      setDiterima({...pending, total:response?.data?.data?.transaksi?.filter((item) => item.status_transaksi === "disetujui").length})
       setDikemas({...dikemas, total:response?.data?.data.transaksi?.filter((item) => item.status_transaksi === "dikemas").length})
       setDikirim({...dikirim, total:response?.data?.data.transaksi?.filter((item) => item.status_transaksi === "dikirim").length})
       setSelesai({...selesai, total:response?.data?.data.transaksi?.filter((item) => item.status_transaksi === "selesai").length})
@@ -202,11 +202,11 @@ const Akun = ({navigation}) => {
               </View>
             </View>
             <Text style={{...FONTS.bodySmallBold, color: COLORS.black,}}>
-              Menunggu
+              Tertunda
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate("RiwayatTransaksi", {status: "diterima"})}
+            onPress={() => navigation.navigate("RiwayatTransaksi", {status: "disetujui"})}
           >
             <View
               style={{
@@ -243,7 +243,7 @@ const Akun = ({navigation}) => {
               </View>
             </View>
             <Text style={{...FONTS.bodySmallBold, color: COLORS.black,}}>
-              Diterima
+              Disetujui
             </Text>
           </TouchableOpacity>
           <TouchableOpacity

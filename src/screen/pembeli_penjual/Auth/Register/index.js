@@ -9,11 +9,12 @@ import {
 } from '../../../../components';
 import style from './style';
 import {Formik} from 'formik';
-import {loginValidationSchema} from '../../../../constant';
+import {COLORS, loginValidationSchema} from '../../../../constant';
 import useRegister from './useRegister';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 const RegisterUser = ({navigation}) => {
-  const [registerHandle, loading] = useRegister({navigation});
+  const [registerHandle, loading, open, setOpen, valueOpen, setValueOpen, items, setItems, gender, setGender] = useRegister({navigation});
 
   return (
     <>
@@ -40,7 +41,7 @@ const RegisterUser = ({navigation}) => {
             isValid,
           }) => (
             <>
-              <View style={{marginTop: 20}}>
+              <View style={{marginTop: 20,}}>
                 <InputText
                   name="nama"
                   placeholder="Nama Lengkap"
@@ -94,7 +95,28 @@ const RegisterUser = ({navigation}) => {
                   {touched.noHp && errors.noHp && <Text>Error</Text>}
                 </View>
                 <View style={{marginTop: 20}}>
-                  <InputText
+                  <DropDownPicker
+                    style={{
+                      height: 30,
+                      fontSize: 14,
+                      paddingLeft: 15,
+                      paddingTop: 5,
+                      borderRadius: 10,
+                      marginBottom: 10,
+                      borderColor: COLORS.neutral2,
+                      borderWidth: 2,
+                      // alignSelf: 'flex-end'
+                    }}
+                    open={open}
+                    value={valueOpen}
+                    items={items}
+                    setOpen={setOpen}
+                    setValue={setValueOpen}
+                    setItems={setItems}
+                    listMode="SCROLLVIEW"
+                    onChangeValue={value => setGender(value)}
+                  />
+                  {/* <InputText
                     name="jenisKelamin"
                     placeholder="Jenis Kelamin"
                     // style={{ marginTop: 20 }}
@@ -103,7 +125,7 @@ const RegisterUser = ({navigation}) => {
                     value={values.jenisKelamin}
                     error={touched.jenisKelamin && errors.jenisKelamin}
                     keyboardType="email-address"
-                  />
+                  /> */}
                   {touched.jenisKelamin && errors.jenisKelamin && (
                     <Text>Error</Text>
                   )}
@@ -114,7 +136,7 @@ const RegisterUser = ({navigation}) => {
                   title="Buat Akun"
                   // enabled={isValid && !errors.email && !errors.password && dirty}
                   enabled={true}
-                  buttonStyle={{marginTop: 20}}
+                  buttonStyle={{marginTop: 50, backgroundColor: 'red'}}
                 />
                 {/* </View> */}
               </View>

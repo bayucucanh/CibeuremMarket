@@ -6,6 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
   StatusBar,
+  RefreshControl,
 } from 'react-native';
 import React, {useEffect} from 'react';
 import {ProductCard, SearchBar} from '../../../components';
@@ -23,10 +24,18 @@ import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
 
 const Home = ({navigation}) => {
-  const [searchProduct, setSearchProduct, prouducts, setProduct, getProducts] =
-    useHome({
-      navigation,
-    });
+  const [
+    searchProduct,
+    setSearchProduct,
+    prouducts,
+    setProduct,
+    getProducts,
+    refresh,
+    setRefresh,
+    Refresh,
+  ] = useHome({
+    navigation,
+  });
 
   const getProductsBySearch = async () => {
     // const token = await Auth.getToken();
@@ -45,7 +54,9 @@ const Home = ({navigation}) => {
   };
 
   return (
-    <ScrollView style={style.container}>
+    <ScrollView style={style.container} refreshControl={
+      <RefreshControl refreshing={refresh} onRefresh={() => Refresh()}/>
+    }>
       <StatusBar backgroundColor={'#fe906e'} />
       <LinearGradient
         start={{x: 0.0, y: 0.25}}
@@ -230,7 +241,7 @@ const Home = ({navigation}) => {
           renderItem={({item}) => (
             <ProductCard
               nama_barang={item.nama_barang}
-              deskripsi_barang={item.jenis_barang}
+              nama_toko={item?.tb_toko?.nama_toko}
               harga_barang={item.harga_barang}
               gambarBarang={item.gambar_barang}
               onPress={() =>

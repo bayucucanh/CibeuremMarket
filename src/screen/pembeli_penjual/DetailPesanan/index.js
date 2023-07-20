@@ -35,7 +35,7 @@ const DetailPesanan = ({navigation, route}) => {
     setLoading(true);
     const res = await axios.patch(
       `${BASE_URL}/pengguna/transaksi/${id_transaksi}`,
-      {status_transaksi: 'diterima'},
+      {status_transaksi: 'disetujui'},
     );
     if (res.status === 200) {
       showSuccess('Status Berhasil Diubah');

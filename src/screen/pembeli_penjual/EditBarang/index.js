@@ -141,7 +141,7 @@ const EditBarang = ({navigation, route}) => {
 
   return (
     <>
-    <ScrollView style={[styles.container, {padding: 10}]}>
+    <ScrollView style={[styles.container, {padding: 10, backgroundColor: COLORS.white}]}>
       <Headers title="Edit Barang" />
       <Text
         style={{
@@ -175,9 +175,9 @@ const EditBarang = ({navigation, route}) => {
           fontSize: 14,
           paddingLeft: 15,
           paddingTop: 5,
-          borderRadius: 30,
+          borderRadius: 10,
           marginVertical: 5,
-          borderColor: 'black',
+          borderColor: COLORS.neutral2,
           borderWidth: 2,
           // alignSelf: 'flex-end'
         }}
@@ -233,9 +233,9 @@ const EditBarang = ({navigation, route}) => {
               fontSize: 14,
               paddingLeft: 15,
               paddingTop: 5,
-              borderRadius: 30,
+              borderRadius: 10,
               marginVertical: 5,
-              borderColor: 'black',
+              borderColor: COLORS.neutral2,
               borderWidth: 2,
               // alignSelf: 'flex-end'
             }}

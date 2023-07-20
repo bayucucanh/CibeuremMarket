@@ -19,6 +19,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {pengguna} from '../../../services';
 import axios from 'axios';
 import Auth from '../../../services/Auth';
+import Geolocation from 'react-native-geolocation-service';
 
 const UbahProfil = () => {
   const [profile, setProfile] = useState([]);
@@ -45,13 +46,13 @@ const UbahProfil = () => {
     } else {
       setAlamat(response?.data?.data?.pengguna?.alamat_pengguna);
     }
-    if (response?.data?.data?.pengguna?.latitude_pengguna !== null && response?.data?.data?.pengguna?.longitude_pengguna === null) {
-      setLat(6.008812)
-      setLong(6.112212)
-    } else {
-      setLat(response?.data?.data?.pengguna?.latitude_pengguna)
-      setLong(response?.data?.data?.pengguna?.longitude_pengguna)
-    }
+    // if (response?.data?.data?.pengguna?.latitude_pengguna !== null && response?.data?.data?.pengguna?.longitude_pengguna === null) {
+    //   setLat(6.008812)
+    //   setLong(6.112212)
+    // } else {
+    //   setLat(response?.data?.data?.pengguna?.latitude_pengguna)
+    //   setLong(response?.data?.data?.pengguna?.longitude_pengguna)
+    // }
     console.log('__res', response?.data);
   };
 
@@ -123,6 +124,31 @@ const UbahProfil = () => {
   useEffect(() => {
     getMe();
     console.log('profile', profile);
+  }, []);
+
+   useEffect(() => {
+    Geolocation.getCurrentPosition(
+      position => {
+        // alert(JSON.stringify(position));
+        console.log(JSON.stringify(position));
+        if (profile?.latitude_pengguna !== null && profile?.longitude_pengguna === null) {
+          setLat(position.latitude)
+          setLong(position.longitude)
+        } else {
+          setLat(profile.latitude_pengguna)
+          setLong(profile.longitude_pengguna)
+        }
+      },
+      error => {
+        // See error code charts below.
+        alert(error.message),
+          {
+            timeout: 20000,
+            maximumAge: 1000,
+          };
+      },
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+    );
   }, []);
 
   return (

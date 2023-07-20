@@ -7,6 +7,7 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 30,
-    backgroundColor: COLORS.white
+    backgroundColor: COLORS.white,
+    position: 'relative'
   }
 })
