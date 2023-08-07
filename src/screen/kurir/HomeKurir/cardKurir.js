@@ -1,18 +1,32 @@
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {COLORS} from '../../../constant';
 import {CustomButton} from '../../../components';
+import {LogoHomeKurir} from '../../../assets';
 
-const CardKurir = ({customerName, quantityStoreBuy, distance, onPress}) => {
+const CardKurir = ({nama, barang, toko, onPress, uri}) => {
   return (
     <View style={styles.card}>
-      <Icon name="user-circle" size={54} color={COLORS.black} />
-
+      <Image
+        source={{
+          uri: uri,
+        }}
+        style={[styles.gambar]}
+      />
       <View style={styles.shadow}>
-        <Text style={styles.text}>Pemesan : {customerName}</Text>
-        <Text style={styles.text}>Membeli di {quantityStoreBuy} Toko</Text>
-        <Text style={styles.text}>Jarak rumah ± {distance} KM</Text>
+        <View style={{flexDirection: 'row'}}>
+          <Text style={styles.text1}>Pembeli: </Text>
+          <Text style={styles.text2}>{nama}</Text>
+        </View>
+        <View style={{flexDirection: 'row'}}>
+          <Text style={styles.text1}>Membeli: </Text>
+          <Text style={styles.text2}>{barang}</Text>
+        </View>
+        <View style={{flexDirection: 'row'}}>
+          <Text style={styles.text1}>ditoko: </Text>
+          <Text style={styles.text2}>{toko}</Text>
+        </View>
       </View>
       <CustomButton
         title="Detail"
@@ -29,16 +43,24 @@ const CardKurir = ({customerName, quantityStoreBuy, distance, onPress}) => {
 export default CardKurir;
 
 const styles = StyleSheet.create({
-  text: {
+  text1: {
+    color: COLORS.black,
+    fontSize: 14,
+    fontWeight: 'bold',
+    lineHeight: 20,
+    letterSpacing: 0.25,
+  },
+  text2: {
     color: COLORS.black,
     fontSize: 14,
     fontWeight: '400',
     lineHeight: 20,
     letterSpacing: 0.25,
+    maxWidth: 150,
   },
 
   shadow: {
-    marginHorizontal: 15,
+    marginHorizontal: 5,
   },
   card: {
     width: 350,
@@ -59,5 +81,11 @@ const styles = StyleSheet.create({
     shadowRadius: 6.68,
 
     elevation: 11,
+  },
+  gambar: {
+    width: 67,
+    height: 67,
+    marginRight: 5,
+    borderRadius: 50,
   },
 });

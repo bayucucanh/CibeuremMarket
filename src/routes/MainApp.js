@@ -27,7 +27,7 @@ const MainApp = () => {
         name="HomeKurir"
         component={HomeKurir}
         options={{
-          tabBarLabel: 'HomeKurir',
+          tabBarLabel: 'Home Kurir',
           headerShown: false,
           tabBarIcon: ({color}) => <Icon name="home" color={color} size={20} />,
         }}
@@ -36,10 +36,10 @@ const MainApp = () => {
         name="RiwayatPengiriman"
         component={RiwayatPengiriman}
         options={{
-          tabBarLabel: 'RiwayatPengiriman',
+          tabBarLabel: 'Riwayat Pengiriman',
           headerShown: false,
           tabBarIcon: ({color}) => (
-            <Icon name="settings" color={color} size={20} />
+            <Icon name="file-text" color={color} size={20} />
           ),
         }}
       />
@@ -47,7 +47,7 @@ const MainApp = () => {
         name="AkunKurir"
         component={AkunKurir}
         options={{
-          tabBarLabel: 'AkunKurir',
+          tabBarLabel: 'Akun Kurir',
           headerShown: false,
           tabBarIcon: ({color}) => (
             <Icon name="settings" color={color} size={20} />

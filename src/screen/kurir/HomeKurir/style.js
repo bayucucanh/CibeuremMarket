@@ -14,6 +14,7 @@ export default StyleSheet.create({
     height: windowHeight * 0.3,
     borderBottomRightRadius: 50,
     borderBottomLeftRadius: 50,
+    paddingVertical: 20,
     shadowColor: '#000000',
     shadowOffset: {
       width: 0,
@@ -25,7 +26,7 @@ export default StyleSheet.create({
   },
   logo: {
     marginTop: 20,
-    width: 158.97,
+    width: 160,
     height: 59,
   },
   textHighLight: {
@@ -33,6 +34,7 @@ export default StyleSheet.create({
     fontSize: 20,
     fontWeight: '700',
     marginLeft: 12,
+    marginTop: 17,
     marginBottom: 15,
   },
   text: {
@@ -41,5 +43,13 @@ export default StyleSheet.create({
     lineHeight: 20,
     letterSpacing: 0.25,
     marginLeft: 12,
+  },
+  textJudul: {
+    color: '#000000',
+    fontSize: 22,
+    fontWeight: '600',
+    textAlign: 'left',
+    marginTop: 20,
+    marginLeft: 20,
   },
 });

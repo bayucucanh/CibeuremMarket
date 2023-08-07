@@ -37,6 +37,7 @@ const InputText = ({
   onBlur,
   secureTextEntry,
   styleOutlined,
+  editable,
 }) => {
   const [isFocus, setIsFocus] = useState(false);
   const {passwordVisibility, rightIcon, handlePasswordVisibility} =
@@ -87,6 +88,7 @@ const InputText = ({
         maxLength={maxLength}
         keyboardType={type}
         placeholder={placeholder}
+        editable={editable}
       />
       {secureTextEntry && (
         <Pressable

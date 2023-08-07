@@ -1,263 +1,203 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-} from 'react-native';
-import React, {useCallback, useMemo, useRef} from 'react';
+import {Text, View, TouchableOpacity, Image, ScrollView} from 'react-native';
+import React, {useMemo, useRef, useState} from 'react';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
-import {COLORS, SIZES, FONTS} from '../../../constant';
+import MapViewDirections from 'react-native-maps-directions';
+import {Marker} from 'react-native-maps';
+import {COLORS, BASE_URL, showSuccess} from '../../../constant';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Headers} from '../../../components';
-import BottomSheet, {
-  BottomSheetScrollView,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
-const Pengiriman = () => {
-  // ref
+import BottomSheet, {BottomSheetScrollView} from '@gorhom/bottom-sheet';
+import style from './style';
+import PengirimanSelesai from './pengirimanSelesai';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {API_KEY} from '../../../constant/baseUrl';
+import axios from 'axios';
+import usePengiriman from './usePengiriman';
+
+const Pengiriman = ({navigation, route}) => {
+  const {idPengiriman} = route.params;
+  const [pengiriman, setPengiriman] = usePengiriman({navigation, route});
+  const [isSelesaiClicked, setIsSelesaiClicked] = useState(false);
   const bottomSheetRef = useRef(null);
 
   // variables
-  const snapPoints = useMemo(() => ['30%', '58%'], []);
+  const snapPoints = useMemo(() => ['37%', '70%'], []);
 
-  //calback
-  // const handleSheetChanges = useCallback(index => {
-  //   console.log('handleSheetChanges', index);
-  // }, []);
+  //=============>
+  const [state, setState] = useState({
+    pickupCords: {
+      latitude: -7.0986943,
+      // pengiriman?.tb_transaksi?.tb_toko?.latitude_toko,
+
+      longitude: 107.4678923,
+      // pengiriman?.tb_transaksi?.tb_toko?.longitude_toko,
+
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    },
+    dropCords: {
+      latitude: -7.0975488,
+      // pengiriman?.tb_transaksi?.tb_pengguna?.latitude_pengguna,
+      // -7.0959358,
+      longitude: 107.4661522,
+      // pengiriman?.tb_transaksi?.tb_pengguna?.longitude_pengguna,
+      // 107.4733964,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    },
+  });
+
+  const mapRef = useRef();
+  const {pickupCords, dropCords} = state;
+  //=============>
+
+  const handleSelesaiClick = async () => {
+    const res = await axios.patch(
+      `${BASE_URL}/kurir/pengiriman/${idPengiriman}`,
+      {status_pengiriman: 'selesai'},
+    );
+    console.log(res);
+    if (res.status === 200) {
+      showSuccess('Barang Berhasil Dikirim');
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <Headers title="Pengiriman" color={COLORS.black} />
+    <View style={style.container}>
+      <View style={style.wrapper}>
+        {isSelesaiClicked ? (
+          <TouchableOpacity onPress={() => navigation.navigate('MainApp')}>
+            <Icon name="arrow-left" size={26} color={COLORS.black} />
+          </TouchableOpacity>
+        ) : null}
+        <Text style={style.textHeader}>Pengiriman</Text>
+      </View>
       <GestureHandlerRootView style={{flex: 1}}>
-        <MapView
-          provider={PROVIDER_GOOGLE} // remove if not using Google Maps
-          style={{flex: 1}}
-          region={{
-            latitude: -7.0988708,
-            longitude: 107.4700574,
-            latitudeDelta: 0.011,
-            longitudeDelta: 0.0121,
-          }}></MapView>
+        {isSelesaiClicked ? (
+          <View style={{flex: 1}}>
+            <PengirimanSelesai />
+          </View>
+        ) : (
+          <MapView
+            ref={mapRef}
+            // provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+            style={{height: 340}}
+            initialRegion={pickupCords}
 
+            // region={{
+            //   latitude: -7.0988708,
+            //   longitude: 107.4700574,
+            //   latitudeDelta: 0.011,
+            //   longitudeDelta: 0.0121,
+            // }}
+          >
+            <Marker coordinate={pickupCords} />
+            <Marker coordinate={dropCords} />
+            <MapViewDirections
+              origin={pickupCords}
+              destination={dropCords}
+              apikey={API_KEY}
+              strokeWidth={4}
+              strokeColor="red"
+              optimizeWaypoints={true}
+              onReady={result => {
+                mapRef.current.fitToCoordinates(result.coordinates, {
+                  edgePadding: {
+                    right: 200,
+                    bottom: 20,
+                    left: 200,
+                    top: 20,
+                  },
+                });
+              }}
+            />
+            {/* <Marker
+              // key={index}
+              coordinate={{latitude: -7.0986943, longitude: 107.4678923}}
+              title={'Pasar Cibeureum'}
+              description={'Pasar'}
+            /> */}
+          </MapView>
+        )}
         <BottomSheet
           ref={bottomSheetRef}
           index={1}
           snapPoints={snapPoints}
           // onChange={handleSheetChanges}
           enableContentPanningGesture={true}>
-          {/* <BottomSheetView> */}
           <BottomSheetScrollView>
             <View>
-              {/* //=================Card Info Barang=======================> */}
-              <View
-                style={{
-                  width: 371,
-                  height: SIZES.height * 0.25,
-                  backgroundColor: 'white',
-                  borderRadius: 20,
-                  padding: 15,
-                  marginHorizontal: 10,
-                  justifyContent: 'space-between',
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 1,
-                  },
-                  shadowOpacity: 0.22,
-                  shadowRadius: 2.22,
-
-                  elevation: 3,
-                }}>
-                <Text
-                  style={{
-                    color: COLORS.primaryColor,
-                    fontWeight: '500',
-                    fontSize: 20,
-                  }}>
-                  Informasi Barang
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    paddingTop: 30,
-                    alignItems: 'center',
-                  }}>
+              <View style={style.cardInfoBarang}>
+                <Text style={style.textInfo}>Informasi Barang</Text>
+                <View style={style.viewKonfir}>
                   <Icon name="motorcycle" size={60} color={COLORS.black} />
-                  <Text
-                    style={{
-                      ...FONTS.titleNormalRegular,
-                      paddingHorizontal: 20,
-                      color: COLORS.black,
-                    }}>
-                    Konfirmasi pesanan telah sampai selesai
+                  <Text style={style.konfirInfoBarang}>
+                    {isSelesaiClicked
+                      ? 'Barang Selesai Dikirim'
+                      : 'Konfirmasi pesanan telah sampai selesai'}
                   </Text>
                 </View>
-                <View
-                  style={{
-                    width: '60%',
-                    height: '70%',
-                    justifyContent: 'space-between',
-                  }}>
-                  <TouchableOpacity
-                    style={{
-                      backgroundColor: COLORS.alertSuccess,
-                      width: 170,
-                      alignSelf: 'flex-end',
-                      height: 40,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      borderRadius: 100,
-                      marginTop: 14,
-                      marginHorizontal: -55,
-                    }}>
-                    <Text style={{color: 'white'}}>Selesai</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-              {/* //=================Card Info Barang=======================> */}
-              {/* //=================Card Info Pembeli=======================> */}
-              <View
-                style={{
-                  marginTop: 20,
-                  width: 371,
-                  height: SIZES.height * 0.16,
-                  backgroundColor: 'white',
-                  borderRadius: 20,
-                  padding: 19,
-                  marginHorizontal: 10,
-                  justifyContent: 'space-evenly',
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 1,
-                  },
-                  shadowOpacity: 0.22,
-                  shadowRadius: 2.22,
-
-                  elevation: 3,
-                }}>
-                <Text
-                  style={{
-                    color: COLORS.primaryColor,
-                    fontWeight: '500',
-                    fontSize: 20,
-                  }}>
-                  Informasi Pembeli
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    marginTop: 20,
-                  }}>
-                  <Icon name="user" size={60} color={COLORS.black} />
-                  <View>
-                    <Text
-                      style={{
-                        ...FONTS.titleNormalRegular,
-                        paddingLeft: 20,
-                        paddingRight: 90,
-                        color: COLORS.black,
-                      }}>
-                      Zikri
-                    </Text>
-                    <Text
-                      style={{
-                        ...FONTS.titleNormalRegular,
-                        paddingLeft: 20,
-                        paddingRight: 90,
-                        color: COLORS.black,
-                      }}>
-                      Alamat: Pagersari
-                    </Text>
+                {!isSelesaiClicked && (
+                  <View style={style.touchInfoBarang}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setIsSelesaiClicked(true);
+                        handleSelesaiClick();
+                      }}
+                      style={style.styleTouch}>
+                      <Text style={{color: 'white'}}>Selesai</Text>
+                    </TouchableOpacity>
                   </View>
-                  <TouchableOpacity
-                    style={{
-                      backgroundColor: '#FFA36E',
-                      width: 50,
-                      alignSelf: 'flex-end',
-                      height: 50,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      marginHorizontal: -55,
-                      borderRadius: 10,
-                    }}>
-                    <Icon name="comment" size={30} color={COLORS.neutral1} />
-                  </TouchableOpacity>
+                )}
+              </View>
+              <View style={style.cardInfoPembeli}>
+                <Text style={style.textInfo}>Informasi Pembeli</Text>
+                <View style={style.viewInfPembeli}>
+                  <Image
+                    style={style.imagePembeli}
+                    source={{
+                      uri: pengiriman?.tb_transaksi?.tb_pengguna.foto_pengguna,
+                    }}
+                  />
+                  <View>
+                    <Text style={style.Pembeli}>
+                      Nama:{' '}
+                      {pengiriman?.tb_transaksi?.tb_pengguna.nama_pengguna}
+                    </Text>
+                    <Text style={style.Pembeli}>Alamat: Pagersari</Text>
+                  </View>
                 </View>
               </View>
-              {/* //====================Card Info Pembeli====================> */}
-              {/* //===================Nota=====================> */}
-              <Text
-                style={{
-                  color: COLORS.primaryColor,
-                  fontWeight: '500',
-                  fontSize: 20,
-                  marginLeft: 12,
-                  marginTop: 20,
-                }}>
-                Nota Pembelian
-              </Text>
-              <View
-                style={{
-                  width: 371,
-                  height: SIZES.height * 0.26,
-                  borderRadius: 20,
-                  padding: 20,
-                  backgroundColor: '#FFFFFF',
-                  flexDirection: 'row',
-                  marginHorizontal: 10,
-                  marginBottom: 20,
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 1,
-                  },
-                  shadowOpacity: 0.22,
-                  shadowRadius: 2.22,
-
-                  elevation: 3,
-                }}>
+              <Text style={style.textNota}>Nota Pembelian</Text>
+              <View style={style.viewNota}>
                 <Image
                   source={{
-                    uri: 'https://assets.pikiran-rakyat.com/crop/0x0:0x0/x/photo/2021/10/14/1452578967.jpg',
+                    uri: pengiriman?.tb_transaksi?.tb_barang?.gambar_barang,
                   }}
-                  style={{
-                    width: 130,
-                    height: SIZES.height * 0.26,
-                    marginLeft: -20,
-                    borderTopLeftRadius: 20,
-                    borderBottomLeftRadius: 20,
-                    marginTop: -21,
-                  }}
+                  style={style.imageNota}
                 />
 
                 <View style={{marginHorizontal: 15}}>
-                  <Text style={styles.text}>Sayur Kol</Text>
-                  <Text style={styles.text}>10 Ikat</Text>
-                  <Text style={styles.text}>Rp 20,000.00</Text>
-                  <Text style={styles.text2}>Toko Sayur Menyair </Text>
-                  <Text style={styles.text2}>Blok B4 No 20</Text>
+                  <Text style={style.text}>
+                    {pengiriman?.tb_transaksi?.nama_belanjaan}
+                  </Text>
+                  <Text style={style.text}>
+                    Jumlah: {pengiriman?.tb_transaksi?.jumlah_belanjaan}
+                  </Text>
+                  <Text style={style.text}>
+                    Total harga {pengiriman?.tb_transaksi?.total_harga}
+                  </Text>
+                  <Text style={style.text2}>
+                    {pengiriman?.tb_transaksi?.tb_toko?.nama_toko}
+                  </Text>
+                  <Text style={style.text2}>Blok B4 No 20</Text>
                 </View>
               </View>
-              {/* //========================================> */}
             </View>
           </BottomSheetScrollView>
-          {/* </BottomSheetView> */}
         </BottomSheet>
       </GestureHandlerRootView>
     </View>
   );
 };
-
 export default Pengiriman;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-});

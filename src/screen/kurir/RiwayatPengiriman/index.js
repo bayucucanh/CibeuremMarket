@@ -11,15 +11,12 @@ const RiwayatPengiriman = ({navigation}) => {
     <View style={style.container}>
       <View
         style={{
-          marginTop: 47,
+          marginTop: 27,
           alignItems: 'baseline',
         }}>
         <Text
           style={{
             ...FONTS.titleLargeBold,
-            // fontWeight: '700',
-            // fontSize: 20,
-            // lineHeight: 30,
             color: COLORS.primaryColor,
           }}>
           Riwayat Pengiriman
@@ -31,34 +28,18 @@ const RiwayatPengiriman = ({navigation}) => {
           style={{paddingTop: 20}}
           renderItem={({item}) => (
             <HistoryDrive
-              customerName={item.customerName}
-              quantityStoreBuy={item.quantityStoreBuy}
-              distance={item.distance}
-              onPress={() => navigation.navigate('DetailRiwayat')}
+              uri={item.tb_transaksi.tb_pengguna.foto_pengguna}
+              nama={item.tb_transaksi.tb_pengguna.nama_pengguna}
+              jml_belanja={item.tb_transaksi.jumlah_belanjaan}
+              toko={item.tb_transaksi.tb_toko.nama_toko}
+              onPress={() =>
+                navigation.navigate('DetailRiwayat', {
+                  doneId: item.id_pengiriman,
+                })
+              }
             />
           )}
         />
-        {/* <HistoryDrive
-          name={'Zikri'}
-          store={'1'}
-          number={'3'}
-          distance={'KM'}
-          onPress={() => navigation.navigate('DetailRiwayat')}
-        />
-        <HistoryDrive
-          name={'Zikri'}
-          store={'2'}
-          number={'3'}
-          distance={'KM'}
-          onPress={() => navigation.navigate('DetailRiwayat')}
-        />
-        <HistoryDrive
-          name={'Zikri'}
-          store={'4'}
-          number={'3'}
-          distance={'KM'}
-          onPress={() => navigation.navigate('DetailRiwayat')}
-        /> */}
       </View>
     </View>
   );

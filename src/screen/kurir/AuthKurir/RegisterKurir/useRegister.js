@@ -12,6 +12,7 @@ const useRegister = ({navigation}) => {
   //   };
   const onSubmit = async values => {
     try {
+      setLoading(true);
       const formdata = new FormData();
       formdata.append('nama_kurir', values.nama_kurir);
       formdata.append('nomor_hp', values.nomor_hp);
@@ -52,6 +53,7 @@ const useRegister = ({navigation}) => {
         //   backgroundColor: COLORS.lightGray,
         //   color: COLORS.alertSuccess,
         // });
+        setLoading(false);
         showSuccess('Registrasi Berhasil');
         setPhotoSim(null);
         setPhotoStnk(null);
@@ -64,6 +66,7 @@ const useRegister = ({navigation}) => {
       //   backgroundColor: COLORS.lightGray,
       //   color: COLORS.alertDanger,
       // });
+      setLoading(false);
       showDanger('Registrasi Gagal');
     }
   };

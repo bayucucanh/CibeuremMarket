@@ -7,9 +7,9 @@ const uriHome = ({navigation}) => {
 
   const getPesanan = async () => {
     const response = await listPesanan();
-    console.log(response.data);
-    // console.log(response?.data);
-    setPesanan(response.data);
+    console.log(response?.data?.data);
+    console.log(response?.data?.data?.transaksi);
+    setPesanan(response?.data?.data?.transaksi);
   };
 
   useEffect(() => {
@@ -20,5 +20,3 @@ const uriHome = ({navigation}) => {
 };
 
 export default uriHome;
-
-const styles = StyleSheet.create({});

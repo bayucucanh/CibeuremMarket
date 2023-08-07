@@ -25,7 +25,6 @@ import {
   Pengiriman,
 } from '../screen';
 import MainApp from './MainApp';
-import MainAppKurir from './MainAppKurir';
 import {setUser} from '../redux/state/setUser';
 import Auth from '../services/Auth';
 
@@ -64,7 +63,7 @@ const Router = () => {
   }
 
   return (
-    <Stack.Navigator initialRouteName="LoginScreen">
+    <Stack.Navigator initialRouteName="SplashScreen">
       <Stack.Screen
         name="MainApp"
         component={MainApp}

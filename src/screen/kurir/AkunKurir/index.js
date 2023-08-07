@@ -11,19 +11,21 @@ import Auth from '../../../services/Auth';
 const Akun = ({navigation}) => {
   const isFocused = useIsFocused();
   const [profile, setProfile] = useState([]);
-  const [id, setId] = useState({});
+  const imageSource = profile?.foto_kurir
+    ? {uri: profile.foto_kurir}
+    : userAvatar;
 
   const getMe = async () => {
     const response = await kurir();
-    console.log(response.data);
-    setProfile(response.data);
+    console.log(response?.data?.data?.kurir);
+    setProfile(response?.data?.data?.kurir);
   };
 
   ///============>
   const handleLogout = async () => {
     try {
       await Auth.logout();
-      navigation.navigate('LoginScreen');
+      navigation.replace('LoginScreen');
     } catch (error) {
       console.error(error);
     }
@@ -33,54 +35,18 @@ const Akun = ({navigation}) => {
   useEffect(() => {
     if (isFocused) {
       getMe();
-      console.log('Kurir', profile);
     }
-  }, [isFocused, profile]);
+  }, [isFocused]);
 
   return (
     <View style={style.container}>
-      <View
-        style={{
-          width: '100%',
-          height: SIZES.height * 0.25,
-          backgroundColor: COLORS.thirdColor,
-          borderRadius: 20,
-          padding: 15,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          position: 'relative',
-        }}>
-        <Image source={userAvatar} />
-        <View
-          style={{
-            width: '60%',
-            height: '70%',
-            paddingVertical: 10,
-            justifyContent: 'space-between',
-          }}>
-          <Text style={{...FONTS.bodyNormalBold, color: COLORS.fourColor}}>
-            {profile?.nama_kurir}
-          </Text>
-          <Text style={{...FONTS.bodyNormalBold, color: COLORS.fourColor}}>
-            {profile?.nomor_hp}
-          </Text>
-          <Text style={{...FONTS.bodyNormalBold, color: COLORS.fourColor}}>
-            {profile?.nomor_ktp}
-          </Text>
-          <TouchableOpacity
-            style={{
-              backgroundColor: COLORS.primaryColor,
-              width: 120,
-              alignSelf: 'flex-end',
-              height: 40,
-              justifyContent: 'center',
-              alignItems: 'center',
-              left: 0,
-              borderRadius: 100,
-              marginTop: 14,
-            }}>
-            <Text style={{color: 'white'}}>Lihat Profil</Text>
-          </TouchableOpacity>
+      <View style={style.wrapperBox}>
+        <Image style={style.image} source={imageSource} />
+        <View style={style.Infotext}>
+          <Text style={style.text}>{profile?.nama_kurir}</Text>
+          <Text style={style.text}>{profile?.nomor_hp}</Text>
+          <Text style={style.text}>{profile?.jenis_kelamin}</Text>
+          <Text style={style.text}>{profile?.plat_motor}</Text>
         </View>
       </View>
 
@@ -115,7 +81,4 @@ const Akun = ({navigation}) => {
     </View>
   );
 };
-
 export default Akun;
-
-const styles = StyleSheet.create({});

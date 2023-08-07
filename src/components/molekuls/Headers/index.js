@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import {COLORS, FONTS} from '../../../constant';
 import {useNavigation} from '@react-navigation/native';
 
-const Headers = ({title, color}) => {
+const Headers = ({title, color, backgroundColor}) => {
   const navigation = useNavigation();
 
   const handleGoBack = useCallback(() => navigation.goBack(), [navigation]);
@@ -23,6 +23,7 @@ const Headers = ({title, color}) => {
             // lineHeight: 30,
             color: color,
             marginLeft: 25,
+            backgroundColor: backgroundColor,
           },
         ]}>
         {title}

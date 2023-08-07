@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {COLORS} from '../../../constant';
+import {COLORS, SIZES, FONTS} from '../../../constant';
 
 export default StyleSheet.create({
   container: {
@@ -11,19 +11,31 @@ export default StyleSheet.create({
   },
   wrapperBox: {
     width: '100%',
-    height: 175,
-    backgroundColor: '#FFEAEA',
+    height: SIZES.height * 0.2,
+    backgroundColor: COLORS.thirdColor,
+    borderColor: COLORS.primaryColor,
+    borderWidth: 2,
     borderRadius: 20,
     padding: 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
     position: 'relative',
   },
-  text: {
-    color: '#D10000',
-    fontSize: 16,
-    fontWeight: '500',
+  Infotext: {
+    width: '60%',
+    height: '70%',
+    paddingVertical: 10,
+    justifyContent: 'space-between',
+    marginLeft: 15,
   },
+  image: {
+    width: 110,
+    height: 120,
+    borderRadius: 20,
+    borderColor: COLORS.secondaryColor,
+    borderWidth: 2,
+  },
+  text: {...FONTS.bodyNormalBold, color: COLORS.fourColor},
   buttonProfile: {
     backgroundColor: COLORS.primaryColor,
     width: 120,

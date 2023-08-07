@@ -1,7 +1,5 @@
 import {Text, ActivityIndicator, TouchableOpacity} from 'react-native';
 import React from 'react';
-import {RectButton} from 'react-native-gesture-handler';
-import {useDispatch, useSelector} from 'react-redux';
 import {COLORS} from '../../../constant';
 
 function CustomButton({
@@ -10,12 +8,9 @@ function CustomButton({
   onPress,
   buttonStyle,
   textStyle,
-  // isLoading,
   type,
   size,
 }) {
-  // const isLoading = useSelector((state) => state.global.isLoading);
-
   return (
     <TouchableOpacity
       style={
@@ -41,9 +36,6 @@ function CustomButton({
       }
       enabled={enabled}
       onPress={onPress}>
-      {/* {isLoading ? (
-        <ActivityIndicator color={type ? COLORS.primaryPurple4 : COLORS.white} />
-      ) : ( */}
       <Text
         style={[
           type

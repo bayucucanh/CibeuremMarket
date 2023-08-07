@@ -31,6 +31,7 @@ const RegisterKurir = ({navigation}) => {
     {label: 'Laki - laki', value: 'laki-laki'},
     {label: 'Perempuan', value: 'perempuan'},
   ]);
+  const [loading, setLoading] = useState(false);
 
   const handleJenisKelaminChange = value => {
     setGender(value);
@@ -83,6 +84,7 @@ const RegisterKurir = ({navigation}) => {
 
   const onSubmit = async values => {
     try {
+      setLoading(true);
       const formdata = new FormData();
       formdata.append('nama_kurir', values.nama_kurir);
       formdata.append('nomor_hp', values.nomor_hp);
@@ -102,7 +104,7 @@ const RegisterKurir = ({navigation}) => {
       });
 
       const res = await fetch(
-        'https://admin-pasar-server-bhczowagua-uc.a.run.app/api/v1/kurir/register',
+        'https://pasar-bandung-api.cyclic.app/api/v1/kurir/register',
         {
           method: 'POST',
           headers: {
@@ -123,6 +125,7 @@ const RegisterKurir = ({navigation}) => {
         //   backgroundColor: COLORS.lightGray,
         //   color: COLORS.alertSuccess,
         // });
+        setLoading(false);
         showSuccess('Registrasi Berhasil');
         setPhotoSim(null);
         setPhotoStnk(null);
@@ -135,6 +138,7 @@ const RegisterKurir = ({navigation}) => {
       //   backgroundColor: COLORS.lightGray,
       //   color: COLORS.alertDanger,
       // });
+      setLoading(false);
       showDanger('Registrasi Gagal');
     }
   };
@@ -326,7 +330,7 @@ const RegisterKurir = ({navigation}) => {
           )}
         </Formik>
       </ScrollView>
-      {/* {isLoading && <LoadingScreen />} */}
+      {loading && <LoadingScreen />}
     </>
   );
   return [loading];

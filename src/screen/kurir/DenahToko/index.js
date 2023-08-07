@@ -75,13 +75,13 @@ const DenahToko = ({navigation}) => {
             )}
           </View>
         </View>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => navigation.navigate('DetailPengiriman')}
           style={{marginHorizontal: 90}}>
           <View style={styles.button}>
             <Text style={styles.textButton}>Lakukan pengiriman</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </>
   );

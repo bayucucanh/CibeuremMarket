@@ -1,11 +1,4 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ScrollView,
-  FlatList,
-} from 'react-native';
+import {StyleSheet, Text, View, Image, FlatList} from 'react-native';
 import React from 'react';
 import style from './style';
 import {LogoHomeKurir} from '../../../assets';
@@ -22,25 +15,15 @@ const HomeKurir = ({navigation}) => {
         />
         <Text style={style.textHighLight}>Selamat Datang, Fahdy</Text>
         <View style={{width: 320, height: 80}}>
-          <Text style={style.text}>
+          {/* <Text style={style.text}>
             Kamu sudah mengirimkan 2 pesanan hari ini.
-          </Text>
+          </Text> */}
           <Text style={style.text}>
             Segera ambil permintaan pengiriman selanjutnya :)
           </Text>
         </View>
       </View>
-      <Text
-        style={{
-          color: '#000000',
-          fontSize: 22,
-          fontWeight: '600',
-          textAlign: 'left',
-          marginTop: 20,
-          marginLeft: 20,
-        }}>
-        Permintaan Pengiriman yang Tersedia
-      </Text>
+      <Text style={style.textJudul}>Permintaan Pengiriman yang Tersedia</Text>
       <FlatList
         data={pesanan}
         showsVerticalScrollIndicator={false}
@@ -48,17 +31,19 @@ const HomeKurir = ({navigation}) => {
         style={{marginHorizontal: 20}}
         renderItem={({item}) => (
           <CardKurir
-            customerName={item.customerName}
-            quantityStoreBuy={item.quantityStoreBuy}
-            distance={item.distance}
-            onPress={() => navigation.navigate('DetailPengiriman')}
+            uri={item.tb_pengguna.foto_pengguna}
+            nama={item.tb_pengguna.nama_pengguna}
+            barang={item.nama_belanjaan}
+            toko={item.tb_toko.nama_toko}
+            onPress={() =>
+              navigation.navigate('DetailPengiriman', {
+                transaksiId: item.id_transaksi,
+              })
+            }
           />
         )}
       />
     </View>
   );
 };
-
 export default HomeKurir;
-
-const styles = StyleSheet.create({});

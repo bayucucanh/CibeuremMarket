@@ -21,15 +21,16 @@ export const loginUser = (nomor_hp, password, navigation) => async dispatch => {
   };
   try {
     const response = await loginKurir(data);
-    console.log(response?.data);
+    console.log(response);
     if (response?.status === 200) {
       dispatch(setLoading(false));
       showSuccess('Login Berhasil');
-      if (response?.data) {
+      if (response?.data?.data?.user?.role === 'kurir') {
         navigation.replace('MainApp');
         Auth.setAccount(response?.data);
-        Auth.setToken(response?.data?.data?.token);
-        dispatch(setUser(response?.data));
+        console.log(response);
+        Auth.setToken(response?.data?.data?.user?.token);
+        dispatch(setUser(response?.data?.data));
       }
       // else {
       //   // Dani isi navigasi nya disini
@@ -37,7 +38,7 @@ export const loginUser = (nomor_hp, password, navigation) => async dispatch => {
       // }
     } else {
       dispatch(setLoading(false));
-      showDanger('Login Gagal');
+      showDanger('Login Gagal: nomor hp dan password salah');
     }
   } catch (error) {
     // alert('Login Gagal')

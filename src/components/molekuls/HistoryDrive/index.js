@@ -1,18 +1,12 @@
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import {Separator} from '../../atoms';
 import {COLORS, FONTS} from '../../../constant';
 import CustomButton from '../CustomButton';
 
-const HistoryDrive = ({
-  style,
-  customerName,
-  quantityStoreBuy,
-  distance,
-  onPress,
-}) => {
+const HistoryDrive = ({style, nama, jml_belanja, toko, onPress, uri}) => {
   return (
-    <TouchableOpacity style={style}>
+    <TouchableOpacity style={style} onPress={onPress}>
       <View
         style={{
           width: 350,
@@ -21,8 +15,14 @@ const HistoryDrive = ({
           padding: 10,
           backgroundColor: '#FFFFFF',
           flexDirection: 'row',
-          justifyContent: 'space-evenly',
+          justifyContent: 'flex-start',
         }}>
+        <Image
+          source={{
+            uri: uri,
+          }}
+          style={[styles.gambar]}
+        />
         <View>
           <Text
             style={{
@@ -30,16 +30,16 @@ const HistoryDrive = ({
               color: COLORS.black,
               marginBottom: 4,
             }}>
-            Pemesan: {customerName}
+            Pemesan: {nama}
           </Text>
           <Text style={{...FONTS.bodyNormalMedium, color: COLORS.black}}>
-            Membeli di {quantityStoreBuy} Toko
+            Jumlah Barang: {jml_belanja}
           </Text>
           <Text style={{...FONTS.bodyNormalMedium, color: COLORS.black}}>
-            Jarak Rumah ± {distance} KM
+            Nama Toko: {toko}
           </Text>
         </View>
-        <View>
+        {/* <View>
           <CustomButton
             title="Detail"
             size="small"
@@ -48,7 +48,7 @@ const HistoryDrive = ({
             buttonStyle={{marginTop: 20, marginHorizontal: 80}}
             textStyle={{marginHorizontal: 12}}
           />
-        </View>
+        </View> */}
       </View>
       <Separator />
     </TouchableOpacity>
@@ -57,4 +57,11 @@ const HistoryDrive = ({
 
 export default HistoryDrive;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  gambar: {
+    width: 80,
+    height: 80,
+    marginRight: 30,
+    borderRadius: 10,
+  },
+});
